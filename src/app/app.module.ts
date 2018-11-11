@@ -5,18 +5,21 @@ import { AppComponent } from './app.component';
 import { RectComponent } from './rect/rect.component';
 import { ItemComponent } from './item/item.component';
 import { GroupItemsComponent } from './group-items/group-items.component';
+import { CustomShapeComponent } from './custom-shape/custom-shape.component';
+import { SVGConfigService } from './svgconfig.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     RectComponent,
     ItemComponent,
-    GroupItemsComponent
+    GroupItemsComponent,
+    CustomShapeComponent
   ],
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [SVGConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="svg" width="600" height="600">
+<svg xmlns="http://www.w3.org/2000/svg" id="main-svg" width="600" height="600">
 
   <!-- Utils SVG -->
   <defs>
@@ -28,8 +28,12 @@
     <!-- <svg:g app-item class="selectable"
       (click)="selectElem($event)" fill="rgb(160,160,0, 0.2)"/> -->
 
+    <polyline points="0,0 100,100" fill="none" stroke="black" />
+
     <svg:g app-group-items fill="rgba(102, 204, 255, 0.8)"
-      [originX]="200" [originY]="200" />
+      [originX]="400" [originY]="200" [outputX]="100" [outputY]="100"  />
+
+    <svg:g app-custom-shape></svg:g>
 
   </g>
 

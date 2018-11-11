@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import * as SVG from 'svg.js';
+import { SVGConfigService } from '../svgconfig.service';
 
 interface Item {
   id: number;
@@ -26,18 +27,23 @@ export class GroupItemsComponent implements OnInit {
   @Input()
   originY: number;
 
+  @Input()
+  outputX: number;
+  @Input()
+  outputY: number;
+
   items: Item[] = [
     { id: 1, desc: 'Item 1' },
     { id: 2, desc: 'Item 2' },
     { id: 3, desc: 'Item 2' },
   ];
 
-  constructor() { }
+  constructor(private svgService: SVGConfigService) { }
 
   ngOnInit() {
-    const svgElem = document.getElementById('drawing');
+    // const svgElem = document.getElementById('drawing');
 
-    this.svg = SVG(svgElem);
+    this.svg = this.svgService.mainSvg;
 
     this.diameter = 50;
     this.margin = 5;
@@ -47,7 +53,9 @@ export class GroupItemsComponent implements OnInit {
 
     for (let i = 0; i < this.items.length; i++) {
       const circle = this.svg.circle(this.diameter)
-        .move((this.diameter + this.margin) * i, 2 * lengthLine - this.diameter / 2);
+        .move(
+          this.originX + (this.diameter + this.margin) * i,
+          this.originY + 2 * lengthLine - this.diameter / 2);
         this.circles.push(circle);
     }
 
@@ -106,6 +114,12 @@ export class GroupItemsComponent implements OnInit {
         .attr('fill', 'none')
         .attr('stroke', 'black');
     }
+
+    this.svg.polyline([
+      endX, endY,
+      this.outputX, this.outputY
+    ]).attr('fill', 'none')
+      .attr('stroke', 'blue');
   }
 
 }

@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core';
+import { SVGConfigService } from './svgconfig.service';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,13 @@ export class AppComponent implements OnInit {
   group: ElementRef;
   matrix = [1, 0, 0, 1, 0, 0];
 
+  constructor(private svgService: SVGConfigService) { }
+
   ngOnInit(): void {
     this.group.nativeElement.setAttribute('transform',
       'matrix(' + this.matrix.join(' ') + ')');
+
+    this.svgService.init('main-svg');
   }
 
   selectElem(event: MouseEvent) {
@@ -73,7 +78,7 @@ export class AppComponent implements OnInit {
       this.matrix[i] *= scale;
     }
 
-    const svg = document.getElementById('svg');
+    const svg = document.getElementById('main-svg');
     const centerX = parseFloat(svg.getAttribute('width')) / 2;
     const centerY = parseFloat(svg.getAttribute('height')) / 2;
 
