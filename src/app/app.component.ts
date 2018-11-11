@@ -1,7 +1,9 @@
 import {
   Component,
   OnInit,
-  HostListener
+  HostListener,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 
 @Component({
@@ -9,14 +11,43 @@ import {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
   title = 'AngularAndSvg';
 
-  selection: HTMLElement;
+  selection: HTMLElement = null;
+  selectionColor: string;
+
+  @ViewChild('group')
+  group: ElementRef;
+  matrix = [1, 0, 0, 1, 0, 0];
+
+  ngOnInit(): void {
+    this.group.nativeElement.setAttribute('transform',
+      'matrix(' + this.matrix.join(' ') + ')');
+  }
 
   selectElem(event: MouseEvent) {
-    console.log(event);
-    this.selection = event.srcElement.parentElement;
+    if (this.selection === null) {
+      this.selection = event.srcElement.parentElement;
+      this.selectionColor = this.selection.style.fill;
+      this.selection.style.fill = 'rgba(0, 0, 0, 0.2)';
+      this.selection.parentElement.classList.add('selected');
+    } else if (this.selection === event.srcElement.parentElement) {
+      console.log('deselect');
+      this.selection.style.fill = this.selectionColor;
+      this.selection.parentElement.classList.remove('selected');
+      this.selection = null;
+    } else {
+      this.selection.style.fill = this.selectionColor;
+      this.selection.parentElement.classList.remove('selected');
+
+      this.selection = event.srcElement.parentElement;
+
+      this.selectionColor = this.selection.style.fill;
+      this.selection.style.fill = 'rgba(0, 0, 0, 0.2)';
+      this.selection.parentElement.classList.add('selected');
+    }
   }
 
   private getPosFromAttribute(elem: HTMLElement): number[] {
@@ -26,9 +57,48 @@ export class AppComponent {
       .split(', ');
 
     const newPosition = [];
-    position.forEach(item => { newPosition.push(parseInt(item, 10)); });
+    position.forEach(item => {
+      newPosition.push(parseInt(item, 10));
+    });
 
     return newPosition;
+  }
+
+  private pan(dx, dy) {
+    const vel = 2.5;
+
+    this.matrix[4] += dx * vel;
+    this.matrix[5] += dy * vel;
+
+    this.group.nativeElement.setAttribute(
+      'transform',
+      'matrix(' + this.matrix.join(' ') + ')'
+    );
+  }
+
+  private zoom(scale) {
+    for (let i = 0; i < 4; i++) {
+      this.matrix[i] *= scale;
+    }
+
+    const svg = document.getElementById('svg');
+    const centerX = parseFloat(svg.getAttribute('width')) / 2;
+    const centerY = parseFloat(svg.getAttribute('height')) / 2;
+
+    this.matrix[4] += (1 - scale) * centerX;
+    this.matrix[5] += (1 - scale) * centerY;
+
+    this.group.nativeElement.setAttributeNS(null, 'transform', 'matrix(' + this.matrix.join(' ') + ')');
+  }
+
+  @HostListener('document:keydown.Q', ['$event'])
+  zoomIn(event: KeyboardEvent) {
+    this.zoom(1.10);
+  }
+
+  @HostListener('document:keydown.A', ['$event'])
+  zoomOut(event: KeyboardEvent) {
+    this.zoom(.9);
   }
 
   @HostListener('document:keydown.ArrowLeft', ['$event'])
@@ -39,27 +109,9 @@ export class AppComponent {
       const newY = position[1];
 
       this.selection.setAttribute('transform', 'translate(' + newX + ', ' + newY + ')');
+    } else {
+      this.pan(1, 0);
     }
-  }
-
-  getComputedTranslateXY(obj) {
-    const transArr = [];
-    if (!window.getComputedStyle) {
-      return;
-    }
-    const style = getComputedStyle(obj),
-          transform = style.transform || style.webkitTransform;
-
-    let mat = transform.match(/^matrix3d\((.+)\)$/);
-    if (mat) {
-      return parseFloat(mat[1].split(', ')[13]);
-    }
-
-    mat = transform.match(/^matrix\((.+)\)$/);
-    mat ? transArr.push(parseFloat(mat[1].split(', ')[4])) : transArr.push(0);
-    mat ? transArr.push(parseFloat(mat[1].split(', ')[5])) : transArr.push(0);
-
-    return transArr;
   }
 
   @HostListener('document:keydown.ArrowRight', ['$event'])
@@ -70,6 +122,8 @@ export class AppComponent {
       const newY = position[1];
 
       this.selection.setAttribute('transform', 'translate(' + newX + ', ' + newY + ')');
+    } else {
+      this.pan(-1, 0);
     }
   }
 
@@ -81,6 +135,8 @@ export class AppComponent {
       const newY = position[1] - 1;
 
       this.selection.setAttribute('transform', 'translate(' + newX + ', ' + newY + ')');
+    } else {
+      this.pan(0, +1);
     }
   }
 
@@ -92,6 +148,8 @@ export class AppComponent {
       const newY = position[1] + 1;
 
       this.selection.setAttribute('transform', 'translate(' + newX + ', ' + newY + ')');
+    } else {
+      this.pan(0, -1);
     }
   }
 

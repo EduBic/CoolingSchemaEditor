@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
+import { CombineLatestOperator } from 'rxjs/internal/observable/combineLatest';
 
 @Component({
   // tslint:disable-next-line:component-selector

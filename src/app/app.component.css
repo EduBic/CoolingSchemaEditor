@@ -1,0 +1,11 @@
+
+
+.selected {
+  stroke-width: 1;
+  stroke: #0099ff;
+}
+
+.selectable:hover {
+  stroke-width: 1;
+  stroke: #0099ff;
+}
