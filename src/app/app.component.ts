@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
   title = 'AngularAndSvg';
 
   selection: HTMLElement = null;
-  selectionColor: string;
 
   @ViewChild('group')
   group: ElementRef;
@@ -30,22 +29,15 @@ export class AppComponent implements OnInit {
   selectElem(event: MouseEvent) {
     if (this.selection === null) {
       this.selection = event.srcElement.parentElement;
-      this.selectionColor = this.selection.style.fill;
-      this.selection.style.fill = 'rgba(0, 0, 0, 0.2)';
       this.selection.parentElement.classList.add('selected');
+
     } else if (this.selection === event.srcElement.parentElement) {
-      console.log('deselect');
-      this.selection.style.fill = this.selectionColor;
       this.selection.parentElement.classList.remove('selected');
       this.selection = null;
+
     } else {
-      this.selection.style.fill = this.selectionColor;
       this.selection.parentElement.classList.remove('selected');
-
       this.selection = event.srcElement.parentElement;
-
-      this.selectionColor = this.selection.style.fill;
-      this.selection.style.fill = 'rgba(0, 0, 0, 0.2)';
       this.selection.parentElement.classList.add('selected');
     }
   }
