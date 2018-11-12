@@ -1,44 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="main-svg" width="600" height="600">
+<div style="display: flex">
 
-  <!-- Utils SVG -->
-  <defs>
-    <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-      <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5" />
-    </pattern>
-    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-      <rect width="80" height="80" fill="url(#smallGrid)" />
-      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1" />
-    </pattern>
-  </defs>
+  <div>
+    <svg xmlns="http://www.w3.org/2000/svg" id="main-svg" width="600" height="600">
 
-  <rect width="100%" height="100%" fill="url(#grid)" />
+      <!-- Utils SVG -->
+      <defs>
+        <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
+          <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5" />
+        </pattern>
+        <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+          <rect width="80" height="80" fill="url(#smallGrid)" />
+          <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1" />
+        </pattern>
+      </defs>
 
-  <g #group id="svg-wrapper">
+      <rect width="100%" height="100%" fill="url(#grid)" />
 
-    <!-- CONTENT -->
-    <!-- <svg:g app-rect class="selectable"
-      x="150" y="150" width="200" height="200" content="Hello World" (click)="selectElem($event)" fill="rgb(0,125,0, 0.2)" />
+      <g #group id="svg-wrapper">
 
-    <svg:g app-rect class="selectable"
-      x="50" y="50" width="50" height="50" (click)="selectElem($event)" fill="rgb(0,125,125, 0.2)" /> -->
+        <!-- CONTENT -->
+        <!-- <svg:g app-rect class="selectable"
+          x="150" y="150" width="200" height="200" content="Hello World" (click)="selectElem($event)" fill="rgb(0,125,0, 0.2)" />
 
-    <!-- <ellipse class="selectable" fill="rgb(190,50,20,0.2)" cx="500" cy="500" rx="50" ry="50"
-      transform="translate(3.44574)" /> -->
+        <svg:g app-rect class="selectable"
+          x="50" y="50" width="50" height="50" (click)="selectElem($event)" fill="rgb(0,125,125, 0.2)" /> -->
 
-    <!-- <svg:g app-item class="selectable"
-      (click)="selectElem($event)" fill="rgb(160,160,0, 0.2)"/> -->
+        <!-- <ellipse class="selectable" fill="rgb(190,50,20,0.2)" cx="500" cy="500" rx="50" ry="50"
+          transform="translate(3.44574)" /> -->
 
-    <polyline points="0,0 100,100" fill="none" stroke="black" />
+        <!-- <svg:g app-item class="selectable"
+          (click)="selectElem($event)" fill="rgb(160,160,0, 0.2)"/> -->
 
-    <svg:g app-group-items fill="rgba(102, 204, 255, 0.8)"
-      [originX]="400" [originY]="200" [outputX]="100" [outputY]="100"  />
+        <polyline points="0,0 100,100" fill="none" stroke="black" />
 
-    <svg:g app-custom-shape></svg:g>
+        <svg:g app-group-items fill="rgba(102, 204, 255, 0.8)"
+          [originX]="400" [originY]="200" [outputX]="100" [outputY]="100"  />
 
-  </g>
+        <svg:g app-custom-shape></svg:g>
 
-</svg>
+      </g>
 
-<div>
-  <p *ngIf="selection">Selection: {{ selection.getAttribute('transform') }}</p>
+    </svg>
+
+    <div>
+      <p *ngIf="selection">Selection: {{ selection.getAttribute('transform') }}</p>
+    </div>
+  </div>
+
+  <div style="padding: 1%">
+    <app-color-store></app-color-store>
+  </div>
+
 </div>
+

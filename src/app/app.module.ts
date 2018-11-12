@@ -7,6 +7,7 @@ import { ItemComponent } from './item/item.component';
 import { GroupItemsComponent } from './group-items/group-items.component';
 import { CustomShapeComponent } from './custom-shape/custom-shape.component';
 import { SVGConfigService } from './svgconfig.service';
+import { ColorStoreComponent } from './color-store/color-store.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { SVGConfigService } from './svgconfig.service';
     RectComponent,
     ItemComponent,
     GroupItemsComponent,
-    CustomShapeComponent
+    CustomShapeComponent,
+    ColorStoreComponent
   ],
   imports: [
     BrowserModule
