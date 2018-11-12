@@ -6,6 +6,7 @@ import {
   ElementRef
 } from '@angular/core';
 import { SVGConfigService } from './svgconfig.service';
+import { Utils } from './model/Utils';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,27 @@ export class AppComponent implements OnInit {
       'matrix(' + this.matrix.join(' ') + ')');
 
     this.svgService.init('main-svg');
+
+    const svg = this.svgService.mainSvg;
+
+    const center = {
+      x: (0 + 600) / 2,
+      y: (0 + 600) / 2
+    };
+
+  }
+
+  private drawElbowPolyline(start, end, svg) {
+    // important to maintaine the start and end point
+    const points = Utils.computeElbow(start, end);
+
+    svg.polyline([
+      start.x, start.y,
+      points[0].x, points[0].y,
+      points[1].x, points[1].y,
+      end.x, end.y
+    ]).attr('fill', 'none')
+      .attr('stroke', 'black');
   }
 
   selectElem(event: MouseEvent) {

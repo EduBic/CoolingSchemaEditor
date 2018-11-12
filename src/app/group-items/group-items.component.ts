@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import * as SVG from 'svg.js';
 import { SVGConfigService } from '../svgconfig.service';
+import { Utils } from '../model/Utils';
 
 interface Item {
   id: number;
@@ -59,8 +60,10 @@ export class GroupItemsComponent implements OnInit {
         this.circles.push(circle);
     }
 
-    this.drawLines(lengthLine);
-    this.drawLines(- lengthLine);
+    const hangPointIn = this.drawLines(lengthLine);
+    const hangPointOut = this.drawLines(-lengthLine);
+
+    // this.drawElbowPolyline(hangPointIn, hangPointOut, this.svg);
   }
 
   private drawLines(lengthLine) {
@@ -115,11 +118,20 @@ export class GroupItemsComponent implements OnInit {
         .attr('stroke', 'black');
     }
 
-    this.svg.polyline([
-      endX, endY,
-      this.outputX, this.outputY
+    return {x: endX, y: endY};
+  }
+
+  private drawElbowPolyline(start, end, svg) {
+    // important to maintaine the start and end point
+    const points = Utils.computeElbow(start, end);
+
+    svg.polyline([
+      start.x, start.y,
+      points[0].x, points[0].y,
+      points[1].x, points[1].y,
+      end.x, end.y
     ]).attr('fill', 'none')
-      .attr('stroke', 'blue');
+      .attr('stroke', 'black');
   }
 
 }
