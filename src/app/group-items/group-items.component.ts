@@ -17,7 +17,7 @@ interface Item {
 })
 export class GroupItemsComponent implements OnInit {
 
-  private svg: SVG.Doc;
+  private svg: SVG.G;
   private circles: SVG.Circle[];
 
   diameter: number;
@@ -39,12 +39,15 @@ export class GroupItemsComponent implements OnInit {
     { id: 3, desc: 'Item 2' },
   ];
 
+  border: SVG.Rect;
+
   constructor(private svgService: SVGConfigService) { }
 
   ngOnInit() {
     // const svgElem = document.getElementById('drawing');
 
-    this.svg = this.svgService.mainSvg;
+    this.svg = SVG.get('main') as SVG.G;
+    this.border = SVG.get('border') as SVG.Rect;
 
     this.diameter = 50;
     this.margin = 5;
@@ -55,8 +58,9 @@ export class GroupItemsComponent implements OnInit {
     for (let i = 0; i < this.items.length; i++) {
       const circle = this.svg.circle(this.diameter)
         .move(
-          this.originX + (this.diameter + this.margin) * i,
-          this.originY + 2 * lengthLine - this.diameter / 2);
+          (this.diameter + this.margin) * i,
+          2 * lengthLine - this.diameter / 2)
+        .attr('stroke-width', '0');
         this.circles.push(circle);
     }
 
@@ -64,6 +68,14 @@ export class GroupItemsComponent implements OnInit {
     const hangPointOut = this.drawLines(-lengthLine);
 
     // this.drawElbowPolyline(hangPointIn, hangPointOut, this.svg);
+
+    // this.border.attr({ width: 300, height: 300 });
+
+    this.svg.rect(
+        (this.circles.length * this.diameter) + (this.circles.length - 1) * this.margin,
+        lengthLine * 4
+      )
+      .attr('fill', 'none');
   }
 
   private drawLines(lengthLine) {
@@ -132,6 +144,13 @@ export class GroupItemsComponent implements OnInit {
       end.x, end.y
     ]).attr('fill', 'none')
       .attr('stroke', 'black');
+  }
+
+  dragEnd(event) {
+    console.log('Event:', event, 'From service:', this.svgService.dragData);
+
+    this.svg.attr('fill', this.svgService.dragData);
+    this.svgService.dragData = undefined;
   }
 
 }

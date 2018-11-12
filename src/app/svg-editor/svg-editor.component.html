@@ -21,8 +21,9 @@
           <!-- <svg:g app-rect class="selectable"
             x="150" y="150" width="200" height="200" content="Hello World" (click)="selectElem($event)" fill="rgb(0,125,0, 0.2)" /> -->
 
-          <svg:g app-rect class="selectable"
-            x="50" y="50" width="100" height="100" (click)="selectElem($event)" fill="rgb(0,125,125, 0.2)" />
+          <!-- <svg:g app-rect class="selectable"
+            mwlDroppable (drop)="drop($event.dropData)"
+            x="50" y="50" width="100" height="100" (click)="selectElem($event)" fill="rgb(0,125,125, 0.2)" /> -->
 
           <!-- <ellipse class="selectable" fill="rgb(190,50,20,0.2)" cx="500" cy="500" rx="50" ry="50"
             transform="translate(3.44574)" /> -->
@@ -33,10 +34,17 @@
           <!-- <polyline points="0,0 100,100" fill="none" stroke="black" /> -->
 
           <svg:g app-group-items
-            fill="rgba(102, 204, 255, 0.8)" [originX]="400" [originY]="200" [outputX]="100"
-            [outputY]="100" />
+            class="selectable"
+            (click)="selectElem($event)"
+            fill="rgba(102, 204, 255, 0.8)"
+            [originX]="400" [originY]="200"
+            [outputX]="100" [outputY]="100" />
 
           <svg:g app-custom-shape></svg:g>
+
+          <!-- <svg:g app-html-group-items
+            [originX]="400" [originY]="200"
+            [outputX]="100" [outputY]="100" /> -->
 
         </g>
 

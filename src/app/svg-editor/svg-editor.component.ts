@@ -30,8 +30,6 @@ export class SvgEditorComponent implements OnInit {
 
     this.svgService.init('main-svg');
 
-    const svg = this.svgService.mainSvg;
-
     const center = {
       x: (0 + 600) / 2,
       y: (0 + 600) / 2
@@ -53,6 +51,7 @@ export class SvgEditorComponent implements OnInit {
   }
 
   selectElem(event: MouseEvent) {
+    console.log(event);
     if (this.selection === null) {
       this.selection = event.srcElement.parentElement;
       this.selection.parentElement.classList.add('selected');
@@ -69,17 +68,22 @@ export class SvgEditorComponent implements OnInit {
   }
 
   private getPosFromAttribute(elem: HTMLElement): number[] {
-    const position = this.selection.getAttribute('transform')
-      .replace('translate(', '')
-      .replace(')', '')
-      .split(', ');
+    if (elem.hasAttribute('transform')) {
+      const position = this.selection.getAttribute('transform')
+        .replace('translate(', '')
+        .replace(')', '')
+        .split(', ');
 
-    const newPosition = [];
-    position.forEach(item => {
-      newPosition.push(parseInt(item, 10));
-    });
+      const newPosition = [];
+      position.forEach(item => {
+        newPosition.push(parseInt(item, 10));
+      });
 
-    return newPosition;
+      return newPosition;
+    } else {
+      return [0, 0];
+    }
+
   }
 
   private pan(dx, dy) {
@@ -117,6 +121,12 @@ export class SvgEditorComponent implements OnInit {
   @HostListener('document:keydown.A', ['$event'])
   zoomOut(event: KeyboardEvent) {
     this.zoom(.9);
+  }
+
+  @HostListener('document:keydown.K', ['$event'])
+  test(event: KeyboardEvent) {
+    const x = this.selection.getAttribute('x');
+    this.selection.setAttribute('x', (parseFloat(x) + 5).toString());
   }
 
   @HostListener('document:keydown.ArrowLeft', ['$event'])
@@ -171,8 +181,9 @@ export class SvgEditorComponent implements OnInit {
     }
   }
 
-  drop(e) {
-    console.log('drop', e);
+  dragEnd(event) {
+    console.log('Event:', event, 'From service:', this.svgService.dragData);
+    this.svgService.dragData = undefined;
   }
 
 }

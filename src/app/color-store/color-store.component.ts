@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SVGConfigService } from '../svgconfig.service';
 
 @Component({
   selector: 'app-color-store',
@@ -14,9 +15,13 @@ export class ColorStoreComponent implements OnInit {
     'yellow'
   ];
 
-  constructor() { }
+  constructor(private service: SVGConfigService) { }
 
   ngOnInit() {
+  }
+
+  dragStart(data) {
+    this.service.dragData = data;
   }
 
 }

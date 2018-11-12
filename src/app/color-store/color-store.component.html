@@ -2,8 +2,9 @@
 
   <div id="store-panel">
 
-    <div id="elem-list" cdkDropList>
-      <div class="elem" *ngFor="let color of colors" style.backgroundColor="{{ color }}" cdkDrag>
+    <div id="elem-list">
+      <div mwlDraggable (dragStart)="dragStart(color)"
+        class="elem" *ngFor="let color of colors" style.backgroundColor="{{ color }}">
         {{ color }}
       </div>
     </div>

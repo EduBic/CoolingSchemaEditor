@@ -10,9 +10,9 @@ import { SVGConfigService } from './svgconfig.service';
 import { ColorStoreComponent } from './color-store/color-store.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { MatButtonToggleModule, MatButtonModule } from '@angular/material';
-import { TestDragAndDropComponent } from './test-drag-and-drop/test-drag-and-drop.component';
 import { SvgEditorComponent } from './svg-editor/svg-editor.component';
+import { DragAndDropModule } from 'angular-draggable-droppable';
+import { HtmlGroupItemsComponent } from './html-group-items/html-group-items.component';
 
 @NgModule({
   declarations: [
@@ -22,14 +22,15 @@ import { SvgEditorComponent } from './svg-editor/svg-editor.component';
     GroupItemsComponent,
     CustomShapeComponent,
     ColorStoreComponent,
-    TestDragAndDropComponent,
-    SvgEditorComponent
+    SvgEditorComponent,
+    HtmlGroupItemsComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
 
-    MaterialModule
+    MaterialModule,
+    DragAndDropModule
   ],
   providers: [SVGConfigService],
   bootstrap: [AppComponent]
