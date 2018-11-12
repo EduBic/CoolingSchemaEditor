@@ -40,7 +40,11 @@
             [originX]="400" [originY]="200"
             [outputX]="100" [outputY]="100" />
 
-          <svg:g app-custom-shape></svg:g>
+          <svg:g app-custom-shape
+            class="selectable"
+            (click)="selectElem($event)"
+            [originX]="335" [originY]="275"
+          />
 
           <!-- <svg:g app-html-group-items
             [originX]="400" [originY]="200"

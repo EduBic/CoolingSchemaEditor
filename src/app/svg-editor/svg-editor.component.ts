@@ -182,8 +182,7 @@ export class SvgEditorComponent implements OnInit {
   }
 
   dragEnd(event) {
-    console.log('Event:', event, 'From service:', this.svgService.dragData);
-    this.svgService.dragData = undefined;
+    console.log('Event:', event, 'From service:', this.svgService.getDragData());
   }
 
 }

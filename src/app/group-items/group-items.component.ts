@@ -39,7 +39,7 @@ export class GroupItemsComponent implements OnInit {
     { id: 3, desc: 'Item 2' },
   ];
 
-  border: SVG.Rect;
+  fillColor: string;
 
   constructor(private svgService: SVGConfigService) { }
 
@@ -47,7 +47,6 @@ export class GroupItemsComponent implements OnInit {
     // const svgElem = document.getElementById('drawing');
 
     this.svg = SVG.get('main') as SVG.G;
-    this.border = SVG.get('border') as SVG.Rect;
 
     this.diameter = 50;
     this.margin = 5;
@@ -68,8 +67,6 @@ export class GroupItemsComponent implements OnInit {
     const hangPointOut = this.drawLines(-lengthLine);
 
     // this.drawElbowPolyline(hangPointIn, hangPointOut, this.svg);
-
-    // this.border.attr({ width: 300, height: 300 });
 
     this.svg.rect(
         (this.circles.length * this.diameter) + (this.circles.length - 1) * this.margin,
@@ -147,10 +144,14 @@ export class GroupItemsComponent implements OnInit {
   }
 
   dragEnd(event) {
-    console.log('Event:', event, 'From service:', this.svgService.dragData);
+    const data = this.svgService.getDragData();
+    console.log('Event:', event, 'From service:', data);
 
-    this.svg.attr('fill', this.svgService.dragData);
-    this.svgService.dragData = undefined;
+    this.fillColor = data;
+  }
+
+  getTranslate(): string {
+    return 'translate(' + this.originX + ', ' + this.originY + ')';
   }
 
 }

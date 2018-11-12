@@ -21,7 +21,7 @@ export class ColorStoreComponent implements OnInit {
   }
 
   dragStart(data) {
-    this.service.dragData = data;
+    this.service.setDragData(data);
   }
 
 }

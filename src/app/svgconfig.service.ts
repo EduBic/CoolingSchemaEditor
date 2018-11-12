@@ -10,7 +10,7 @@ export class SVGConfigService {
   mainSvg: SVG.Doc;
   groupItems: any;
 
-  dragData: any;
+  private dragData: any;
 
   constructor() { }
 
@@ -18,6 +18,16 @@ export class SVGConfigService {
     this.mainSvg = SVG(ref);
     this.groupItems = SVG.get('group-items');
     console.log('Group Item init:', this.groupItems);
+  }
+
+  setDragData(data: any) {
+    this.dragData = data;
+  }
+
+  getDragData(): any {
+    const data = this.dragData;
+    this.dragData = undefined;
+    return data;
   }
 
 

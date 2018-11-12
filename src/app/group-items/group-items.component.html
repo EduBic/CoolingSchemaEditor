@@ -1,6 +1,7 @@
 <svg:g
   id="main"
-  attr.transform="translate({{ originX }}, {{ originY }})"
+  [attr.fill]="fillColor"
+  [attr.transform]="getTranslate()"
   mwlDroppable (drop)="dragEnd($event)"
   [attr.x]="originX" [attr.y]="originY">
 </svg:g>
