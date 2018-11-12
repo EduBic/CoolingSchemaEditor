@@ -8,6 +8,9 @@ import { GroupItemsComponent } from './group-items/group-items.component';
 import { CustomShapeComponent } from './custom-shape/custom-shape.component';
 import { SVGConfigService } from './svgconfig.service';
 import { ColorStoreComponent } from './color-store/color-store.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
+import { MatButtonToggleModule, MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { ColorStoreComponent } from './color-store/color-store.component';
     ColorStoreComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+
+    MaterialModule
   ],
   providers: [SVGConfigService],
   bootstrap: [AppComponent]

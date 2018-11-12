@@ -1,5 +1,4 @@
 <div style="display: flex">
-
   <div>
     <svg xmlns="http://www.w3.org/2000/svg" id="main-svg" width="600" height="600">
 
@@ -20,10 +19,10 @@
 
         <!-- CONTENT -->
         <!-- <svg:g app-rect class="selectable"
-          x="150" y="150" width="200" height="200" content="Hello World" (click)="selectElem($event)" fill="rgb(0,125,0, 0.2)" />
+          x="150" y="150" width="200" height="200" content="Hello World" (click)="selectElem($event)" fill="rgb(0,125,0, 0.2)" /> -->
 
         <svg:g app-rect class="selectable"
-          x="50" y="50" width="50" height="50" (click)="selectElem($event)" fill="rgb(0,125,125, 0.2)" /> -->
+          x="50" y="50" width="100" height="100" (click)="selectElem($event)" fill="rgb(0,125,125, 0.2)" />
 
         <!-- <ellipse class="selectable" fill="rgb(190,50,20,0.2)" cx="500" cy="500" rx="50" ry="50"
           transform="translate(3.44574)" /> -->
@@ -31,10 +30,11 @@
         <!-- <svg:g app-item class="selectable"
           (click)="selectElem($event)" fill="rgb(160,160,0, 0.2)"/> -->
 
-        <polyline points="0,0 100,100" fill="none" stroke="black" />
+        <!-- <polyline points="0,0 100,100" fill="none" stroke="black" /> -->
 
-        <svg:g app-group-items fill="rgba(102, 204, 255, 0.8)"
-          [originX]="400" [originY]="200" [outputX]="100" [outputY]="100"  />
+        <svg:g app-group-items
+          fill="rgba(102, 204, 255, 0.8)" [originX]="400" [originY]="200" [outputX]="100"
+          [outputY]="100" />
 
         <svg:g app-custom-shape></svg:g>
 
@@ -52,4 +52,3 @@
   </div>
 
 </div>
-

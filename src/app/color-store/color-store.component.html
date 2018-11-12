@@ -2,11 +2,11 @@
 
   <div id="store-panel">
 
-    <ul id="element-list">
-      <li class="elem" *ngFor="let color of colors" style.backgroundColor="{{ color }}">
+    <div id="elem-list" cdkDropList>
+      <div class="elem" *ngFor="let color of colors" style.backgroundColor="{{ color }}" cdkDrag>
         {{ color }}
-      </li>
-    </ul>
+      </div>
+    </div>
 
   </div>
 

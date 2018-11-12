@@ -172,4 +172,8 @@ export class AppComponent implements OnInit {
     }
   }
 
+  drop(e) {
+    console.log('drop', e);
+  }
+
 }
