@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as SVG from 'svg.js';
+import { Editor } from '../model/Editor';
 
 
 @Component({
@@ -10,38 +11,13 @@ import * as SVG from 'svg.js';
 })
 export class PureSvgEditorComponent implements OnInit {
 
-  svg: SVG.G;
+  editor: Editor;
 
   constructor() { }
 
   ngOnInit() {
-
-
-    const cols = document.querySelectorAll('#columns .column');
-    [].forEach.call(cols, function(col) {
-      col.addEventListener('dragstart', (e) => {
-        this.style.opacity = '0.4';  // this / e.target is the source node.
-      }, false);
-    });
-
-    const centerX = 300;
-    const centerY = 300;
-
-    this.svg = SVG.get('main') as SVG.G;
-
-    this.svg.rect(100, 100)
-      .move(centerX, centerY);
-
-    const rect = this.svg.rect(100, 60)
-      .move(100, 200);
-
-    rect.on('mouseup', (e) => {
-      console.log('drop', e);
-    });
-  }
-
-  drag(event) {
-    console.log('start drag', event);
+    this.editor = new Editor('editor');
+    this.editor.draw();
   }
 
 }

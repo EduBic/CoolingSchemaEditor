@@ -10,20 +10,20 @@ export class InOut {
   inElem: SVG.Element;
   outElem: SVG.Element;
 
-  // constructor(inX: number, inY: number, outX: number, outY: number) {
-  //   this.inCoordinate = new Point(inX, inY);
-  //   this.outCoordinate = new Point(outX, outY);
-  // }
-
-  constructor(totWidth: number, totHeight: number, originX: number = 0, originY: number = 0) {
-    this.inCoordinate = new Point(
-      totWidth / 2 + originX, totHeight + originY
-    );
-
-    this.outCoordinate = new Point(
-      totWidth / 2 + originX, originY
-    );
+  constructor(inX: number, inY: number, outX: number, outY: number) {
+    this.inCoordinate = new Point(inX, inY);
+    this.outCoordinate = new Point(outX, outY);
   }
+
+  // constructor(totWidth: number, totHeight: number) {
+  //   this.inCoordinate = new Point(
+  //     totWidth / 2, totHeight
+  //   );
+
+  //   this.outCoordinate = new Point(
+  //     totWidth / 2, 0
+  //   );
+  // }
 
   public drawInputPoint(host: SVG.G) {
     this.inElem = host.rect(InOut.IN_OUT_SIZE, InOut.IN_OUT_SIZE)

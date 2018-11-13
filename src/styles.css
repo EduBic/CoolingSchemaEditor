@@ -2,3 +2,19 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* MY STYLE */
+.inputPoint {
+  stroke: yellow;
+  fill: yellow;
+}
+
+.outputPoint {
+  stroke: greenyellow;
+  fill: greenyellow;
+}
+
+.rect {
+  fill: rgba(0, 0, 0, 0.6);
+}
