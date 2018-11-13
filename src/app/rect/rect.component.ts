@@ -1,6 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { Content } from '@angular/compiler/src/render3/r3_ast';
-import { CombineLatestOperator } from 'rxjs/internal/observable/combineLatest';
+import { Component, OnInit, Input } from '@angular/core';
+import { InOut } from '../model/InOut';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -14,18 +13,42 @@ export class RectComponent implements OnInit {
   content: string;
 
   @Input()
-  x: number;
+  originX: number;
 
   @Input()
-  y: number;
+  originY: number;
 
-  @Input()
-  width: number;
+  outputX: number;
+  outputY: number;
 
-  @Input()
-  height: number;
+  width = 250;
+  height = 50;
 
-  constructor() { }
+  inOuts: InOut[] = [];
+
+  constructor() {
+
+    const topleft = { x: 0, y: 0 };
+    const topRight = { x: this.width, y: 0 };
+    const bottomRight = { x: this.width, y: this.height };
+    const bottomLeft = { x: 0, y: this.height };
+
+    this.inOuts.push(
+      new InOut(
+        Math.abs(topleft.x - topRight.x) / 2, topleft.y,
+        Math.abs(topleft.x - topRight.x) / 2, topleft.y
+      ),
+      new InOut(
+        bottomLeft.x , bottomLeft.y,
+        bottomLeft.x, bottomLeft.y
+      ),
+      new InOut(
+        bottomRight.x , bottomRight.y,
+        bottomRight.x, bottomRight.y
+      )
+    );
+
+  }
 
   ngOnInit() {
   }

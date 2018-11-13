@@ -33,6 +33,12 @@
 
           <!-- <polyline points="0,0 100,100" fill="none" stroke="black" /> -->
 
+          <svg:g app-rect
+            class="selectable"
+            (click)="selectElem($event)"
+            [originX]="415" [originY]="130"
+          />
+
           <svg:g app-group-items
             class="selectable"
             (click)="selectElem($event)"
