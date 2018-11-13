@@ -7,7 +7,7 @@ interface Item {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: '[app-item]',
+  selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.css']
 })

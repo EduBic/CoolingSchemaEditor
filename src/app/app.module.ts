@@ -13,6 +13,7 @@ import { MaterialModule } from './material/material.module';
 import { SvgEditorComponent } from './svg-editor/svg-editor.component';
 import { DragAndDropModule } from 'angular-draggable-droppable';
 import { HtmlGroupItemsComponent } from './html-group-items/html-group-items.component';
+import { PureSvgEditorComponent } from './pure-svg-editor/pure-svg-editor.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { HtmlGroupItemsComponent } from './html-group-items/html-group-items.com
     ColorStoreComponent,
     SvgEditorComponent,
     HtmlGroupItemsComponent,
+    PureSvgEditorComponent,
   ],
   imports: [
     BrowserModule,
