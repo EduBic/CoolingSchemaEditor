@@ -11,7 +11,7 @@ export class ButterflyEx extends SchemaElement {
 
   constructor(origin: Point, width: number, height: number) {
     super(origin,
-      InOut.createAutoInOut(width, height, origin.x, origin.y)
+      InOut.createAutoInOut(width, height, origin.x, origin.y, true)
     );
     this.width = width;
     this.heigth = height;

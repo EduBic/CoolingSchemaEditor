@@ -21,6 +21,20 @@ export abstract class SchemaElement {
     return this.inOutList[index].outCoordinate;
   }
 
+  public getAbsoluteOutCoordinates(index: number): Point {
+    return new Point(
+      this.inOutList[index].outCoordinate.x + this.origin.x,
+      this.inOutList[index].outCoordinate.y + this.origin.y
+    );
+  }
+
+  public getAbsoluteInCoordinates(index: number): Point {
+    return new Point(
+      this.inOutList[index].inCoordinate.x + this.origin.x,
+      this.inOutList[index].inCoordinate.y + this.origin.y
+    );
+  }
+
   public drawInputPoint(host: SVG.G) {
     this.inOutList.forEach(inOut => {
       inOut.drawInputPoint(host);

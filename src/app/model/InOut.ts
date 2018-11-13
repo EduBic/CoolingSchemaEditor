@@ -25,11 +25,19 @@ export class InOut {
   //   );
   // }
 
-  public static createAutoInOut(totWidth, totHeight, originX: number = 0, originY: number = 0): InOut {
-    return new InOut(
-      totWidth / 2 + originX, totHeight + originY,
-      totWidth / 2 + originX, originY
-    );
+  public static createAutoInOut(totWidth: number, totHeight: number,
+      originX = 0, originY = 0, invert = false): InOut {
+      if (invert) {
+        return new InOut(
+          totWidth / 2 + originX, originY,
+          totWidth / 2 + originX, totHeight + originY,
+        );
+      } else {
+        return new InOut(
+          totWidth / 2 + originX, totHeight + originY,
+          totWidth / 2 + originX, originY
+        );
+      }
   }
 
   public drawInputPoint(host: SVG.G) {
