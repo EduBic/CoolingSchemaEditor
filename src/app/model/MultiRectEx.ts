@@ -18,7 +18,7 @@ export class MultiRectEx extends SchemaElement {
 
 
   constructor(origin: Point, totalRects: number, widthRect: number, heigthRect: number, margin: number = 5) {
-    super(origin, new InOut(
+    super(origin, InOut.createAutoInOut(
       (totalRects * widthRect + (totalRects - 1) * margin),
       heigthRect + MultiRectEx.TOT_LINE_LENGTH * 2
     ));
@@ -42,14 +42,14 @@ export class MultiRectEx extends SchemaElement {
         60, 60
       );
 
-      this.drawElbowPolyline(aRect.getOutCoordinates(), this.inOut.outCoordinate, this.groupSVG);
-      this.drawElbowPolyline(aRect.getInCoordinates(), this.inOut.inCoordinate, this.groupSVG);
+      this.drawElbowPolyline(aRect.getOutCoordinates(0), this.getOutCoordinates(0), this.groupSVG);
+      this.drawElbowPolyline(aRect.getInCoordinates(0), this.getInCoordinates(0), this.groupSVG);
 
       aRect.draw(this.groupSVG);
     }
 
-    this.inOut.drawInputPoint(this.groupSVG);
-    this.inOut.drawOutputPoint(this.groupSVG);
+    this.drawInputPoint(this.groupSVG);
+    this.drawOutputPoint(this.groupSVG);
 
   }
 

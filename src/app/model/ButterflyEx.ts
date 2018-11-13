@@ -3,16 +3,38 @@ import { SchemaElement } from './SchemaElement';
 import { Point } from './Point';
 import { InOut } from './InOut';
 
-
 export class ButterflyEx extends SchemaElement {
+  private width: number;
+  private heigth: number;
 
-  constructor(origin: Point) {
-    super(origin, new InOut(0, 0));
+  private shape: SVG.Polygon;
+
+  constructor(origin: Point, width: number, height: number) {
+    super(origin,
+      InOut.createAutoInOut(width, height, origin.x, origin.y)
+    );
+    this.width = width;
+    this.heigth = height;
   }
 
-
   draw(host: SVG.G): void {
-    throw new Error('Method not implemented.');
+    this.shape = host.polygon([
+      this.origin.x, this.origin.y,
+      this.origin.x + this.width, this.origin.y,
+      this.origin.x, this.origin.y + this.heigth,
+      this.origin.x + this.width, this.origin.y + this.heigth
+    ])
+      // .move(this.origin.x, this.origin.y)
+      .addClass('butterfly');
+
+    this.shape.on('mouseover', (e) => {
+      this.drawInputPoint(host);
+      this.drawOutputPoint(host);
+    });
+
+    this.shape.on('mouseleave', (e) => {
+      this.removePoints();
+    });
   }
 
 }

@@ -3,6 +3,8 @@ import * as SVG from 'svg.js';
 import { MultiRectEx } from './MultiRectEx';
 import { Rect } from './Rect';
 import { InOut } from './InOut';
+import { ButterflyEx } from './ButterflyEx';
+import { BigRectEx } from './BigRecEx';
 
 
 export class Editor {
@@ -30,6 +32,19 @@ export class Editor {
       3, 60, 60);
 
     multiRect.draw(this.main);
+
+    const but = new ButterflyEx(
+      {x: 100, y: 300},
+      30, 60
+    );
+    but.draw(this.main);
+
+    const big = new BigRectEx(
+      {x: 100, y: 10 },
+      200, 40
+    );
+    big.draw(this.main);
+
   }
 
 
