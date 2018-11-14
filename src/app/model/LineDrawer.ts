@@ -1,37 +1,48 @@
-import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { HangPosition } from './InOut';
+import { HookPosition } from './HookPosition';
+import { HookPoint } from './HookPoint';
 
 export class LineDrawer {
 
-  public static createLinePoints(outPoint: Point, outPos: HangPosition, inPoint: Point, inPos: HangPosition): Point[] {
-    const log = console.log;
+  private static readonly DEBUG = false;
+
+
+  public static createLinePoints(_out: HookPoint, _in: HookPoint): Point[] {
+
+    const outPoint: Point = _out.coord,
+          outPos: HookPosition = _out.position,
+          inPoint: Point = _in.coord,
+          inPos: HookPosition = _in.position;
 
     const distanceY = 5;
     const distanceX = 5;
 
-    log(outPos + ' -> ');
+    if (LineDrawer.DEBUG) {
+      console.log(outPos + ' -> ');
+    }
     switch (outPos) {
-      case HangPosition.Top:
+      case HookPosition.Top:
         return LineDrawer.getOutTopPoints(outPoint, inPoint, inPos, distanceX, distanceY);
-      case HangPosition.Right:
+      case HookPosition.Right:
         return LineDrawer.getOutRightPoints(outPoint, inPoint, inPos, distanceX, distanceY);
-      case HangPosition.Bottom:
+      case HookPosition.Bottom:
         return LineDrawer.getOutBottomPoints(outPoint, inPoint, inPos, distanceX, distanceY);
-      case HangPosition.Left:
+      case HookPosition.Left:
         return LineDrawer.getOutLeftPoints(outPoint, inPoint, inPos, distanceX, distanceY);
     }
   }
 
-  private static getOutTopPoints(outPoint: Point, inPoint: Point, inPos: HangPosition, distanceX: number, distanceY: number): Point[] {
+  private static getOutTopPoints(outPoint: Point, inPoint: Point, inPos: HookPosition, distanceX: number, distanceY: number): Point[] {
 
     const points: Point[] = [];
     points.push(outPoint);
 
-    console.log(inPos);
+    if (LineDrawer.DEBUG) {
+      console.log(inPos);
+    }
 
     switch (inPos) {
-      case HangPosition.Top: {
+      case HookPosition.Top: {
         if (inPoint.isTopRightOf(outPoint) ||
             inPoint.isTopLeftOf(outPoint) ||
             inPoint.isBottomRightOf(outPoint) ||
@@ -44,7 +55,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Right: {
+      case HookPosition.Right: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isBottomRightOf(outPoint)) {
 
           const m1 = new Point(outPoint.x, outPoint.y - distanceY);
@@ -69,7 +80,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Bottom: {
+      case HookPosition.Bottom: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isTopLeftOf(outPoint)) {
 
           const m1 = new Point(outPoint.x, outPoint.y - distanceY);
@@ -90,7 +101,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Left: {
+      case HookPosition.Left: {
         if (inPoint.isTopRightOf(outPoint)) {
 
           const m1 = new Point(outPoint.x, inPoint.y);
@@ -114,15 +125,17 @@ export class LineDrawer {
     return points;
   }
 
-  private static getOutBottomPoints(outPoint: Point, inPoint: Point, inPos: HangPosition, distanceX: number, distanceY: number): Point[] {
+  private static getOutBottomPoints(outPoint: Point, inPoint: Point, inPos: HookPosition, distanceX: number, distanceY: number): Point[] {
     const points: Point[] = [];
     points.push(outPoint);
 
-    console.log(inPos);
-    // console.log('Points Out/In', outPoint, inPoint);
+    if (LineDrawer.DEBUG) {
+      console.log(inPos);
+      // console.log('Points Out/In', outPoint, inPoint);
+    }
 
     switch (inPos) {
-      case HangPosition.Top: {
+      case HookPosition.Top: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isTopLeftOf(outPoint)) {
           // S shape vertical
 
@@ -145,7 +158,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Right: {
+      case HookPosition.Right: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isBottomRightOf(outPoint)) {
 
           const m1 = new Point(outPoint.x, outPoint.y + distanceY);
@@ -171,7 +184,7 @@ export class LineDrawer {
 
         break;
       }
-      case HangPosition.Bottom: {
+      case HookPosition.Bottom: {
         // TODO: can remove this if
         if (inPoint.isTopRightOf(outPoint) ||
             inPoint.isBottomRightOf(outPoint) ||
@@ -184,7 +197,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Left: {
+      case HookPosition.Left: {
         if (inPoint.isTopRightOf(outPoint) ||
             inPoint.isBottomLeftOf(outPoint) ||
             inPoint.isTopLeftOf(outPoint)) {
@@ -208,14 +221,16 @@ export class LineDrawer {
     return points;
   }
 
-  private static getOutRightPoints(outPoint: Point, inPoint: Point, inPos: HangPosition, distanceX: number, distanceY: number): Point[] {
+  private static getOutRightPoints(outPoint: Point, inPoint: Point, inPos: HookPosition, distanceX: number, distanceY: number): Point[] {
     const points: Point[] = [];
     points.push(outPoint);
 
-    console.log(inPos);
+    if (LineDrawer.DEBUG) {
+      console.log(inPos);
+    }
 
     switch (inPos) {
-      case HangPosition.Top: {
+      case HookPosition.Top: {
         if (inPoint.isTopRightOf(outPoint)) {
           // G shape
           const halfX = LineDrawer.getHalfX(outPoint, inPoint);
@@ -248,7 +263,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Right: {
+      case HookPosition.Right: {
         if (inPoint.isTopRightOf(outPoint) ||
             inPoint.isBottomRightOf(outPoint) ||
             inPoint.isBottomLeftOf(outPoint) ||
@@ -260,7 +275,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Bottom: {
+      case HookPosition.Bottom: {
         if (inPoint.isTopRightOf(outPoint)) {
           // L shape
           const m1 = new Point(outPoint.x, inPoint.y);
@@ -293,7 +308,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Left: {
+      case HookPosition.Left: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isBottomRightOf(outPoint)) {
           // Z shape
           const halfX = LineDrawer.getHalfX(outPoint, inPoint);
@@ -320,15 +335,17 @@ export class LineDrawer {
     return points;
   }
 
-  private static getOutLeftPoints(outPoint: Point, inPoint: Point, inPos: HangPosition, distanceX: number, distanceY: number): Point[] {
+  private static getOutLeftPoints(outPoint: Point, inPoint: Point, inPos: HookPosition, distanceX: number, distanceY: number): Point[] {
     const points: Point[] = [];
     points.push(outPoint);
 
-    console.log(inPos);
+    if (LineDrawer.DEBUG) {
+      console.log(inPos);
+    }
     // console.log('Points Out/In', outPoint, inPoint);
 
     switch (inPos) {
-      case HangPosition.Top: {
+      case HookPosition.Top: {
         if (inPoint.isTopRightOf(outPoint)) {
           // C shape
 
@@ -362,7 +379,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Right: {
+      case HookPosition.Right: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isBottomRightOf(outPoint)) {
           // S shape horizontal
           const halfY = LineDrawer.getHalfY(outPoint, inPoint);
@@ -384,7 +401,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Bottom: {
+      case HookPosition.Bottom: {
         if (inPoint.isTopRightOf(outPoint)) {
           // G shape horizontal
           const halfY = LineDrawer.getHalfY(outPoint, inPoint);
@@ -417,7 +434,7 @@ export class LineDrawer {
         }
         break;
       }
-      case HangPosition.Left: {
+      case HookPosition.Left: {
         if (inPoint.isTopRightOf(outPoint) ||
             inPoint.isBottomRightOf(outPoint) ||
             inPoint.isBottomLeftOf(outPoint) ||

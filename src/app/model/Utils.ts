@@ -1,6 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { InOut, HangPosition } from './InOut';
+import { InOut } from './InOut';
+import { HookPosition } from './HookPosition';
 import { Input } from '@angular/core';
 
 export class Utils {
@@ -75,17 +76,17 @@ export class Utils {
   public static drawSingleElbowPolyline(_out: InOut, _in: InOut, svg: SVG.G) {
     // N.B. the flow is: out -> in
     const log = console.log;
-    const inPoint = _in.inCoordinate;
-    const inPos = _in.inPosition;
-    const outPoint = _out.outCoordinate;
-    const outPos = _out.outPosition;
+    const inPoint = _in.getInCoordinate();
+    const inPos = _in.getInPosition();
+    const outPoint = _out.getOutCoordinate();
+    const outPos = _out.getOutPosition();
 
     log('drawSingleElbow', outPos, '->', inPos);
 
     if (inPoint.x < outPoint.x && inPoint.y < outPoint.y) {
       // output right bottom
       log('Output bottom right', inPos, outPos);
-      if (inPos === HangPosition.Bottom && outPos === HangPosition.Left) { // L shape
+      if (inPos === HookPosition.Bottom && outPos === HookPosition.Left) { // L shape
         const middle = new Point(Math.min(inPoint.x, outPoint.x), Math.max(inPoint.y, outPoint.y));
 
         svg.polyline([
@@ -95,14 +96,14 @@ export class Utils {
         ]).attr('fill', 'none')
           .attr('stroke', 'orange');
 
-      } else if (inPos === HangPosition.Bottom && outPos === HangPosition.Top) {
+      } else if (inPos === HookPosition.Bottom && outPos === HookPosition.Top) {
         Utils.drawElbowPolyline(inPoint, outPoint, svg);
       }
 
     } else if (inPoint.x > outPoint.x && inPoint.y < outPoint.y) {
       // output left bottom
       log('output bottom left');
-      if (inPos === HangPosition.Bottom && outPos === HangPosition.Right) {
+      if (inPos === HookPosition.Bottom && outPos === HookPosition.Right) {
 
         const middle = new Point(Math.max(inPoint.x, outPoint.x), Math.max(inPoint.y, outPoint.y));
 
@@ -113,7 +114,7 @@ export class Utils {
         ]).attr('fill', 'none')
           .attr('stroke', 'orange');
 
-      } else if (outPos === HangPosition.Top && inPos === HangPosition.Bottom) {
+      } else if (outPos === HookPosition.Top && inPos === HookPosition.Bottom) {
         Utils.drawElbowPolyline(inPoint, outPoint, svg);
       }
 
@@ -121,7 +122,7 @@ export class Utils {
     } else if (inPoint.x > outPoint.x && inPoint.y > outPoint.y) {
       // output left top
       log('output top left');
-      if (outPos === HangPosition.Bottom && inPos === HangPosition.Left) {
+      if (outPos === HookPosition.Bottom && inPos === HookPosition.Left) {
         const middle = new Point(Math.min(inPoint.x, outPoint.x), Math.max(inPoint.y, outPoint.y));
 
         svg.polyline([
@@ -136,7 +137,7 @@ export class Utils {
     } else if (inPoint.x < outPoint.x && inPoint.y > outPoint.y) {
       // output right top
       log('output top right');
-      if (inPos === HangPosition.Left && outPos === HangPosition.Top) {
+      if (inPos === HookPosition.Left && outPos === HookPosition.Top) {
         const middle = new Point(Math.min(inPoint.x, outPoint.x), Math.max(inPoint.y, outPoint.y));
 
         svg.polyline([

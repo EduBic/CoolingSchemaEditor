@@ -1,43 +1,36 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-
-export enum HangPosition {
-  Top = 'Top',
-  Right = 'Right',
-  Bottom = 'Bottom',
-  Left = 'Left'
-}
+import { HookPosition } from './HookPosition';
+import { HookPoint } from './HookPoint';
 
 export class InOut {
-  private static IN_OUT_SIZE = 6;
+  private static readonly IN_OUT_SIZE = 6;
 
-  readonly inCoordinate: Point;
-  readonly inPosition: HangPosition;
+  private readonly inHook: HookPoint;
+  private readonly outHook: HookPoint;
 
-  readonly outCoordinate: Point;
-  readonly outPosition: HangPosition;
-
+  // GraphicComponent
   inElem: SVG.Element;
   outElem: SVG.Element;
 
   constructor(inX: number, inY: number, outX: number, outY: number,
-    inPos: HangPosition, outPos: HangPosition) {
-    this.inCoordinate = new Point(inX, inY);
-    this.inPosition = inPos;
-    this.outCoordinate = new Point(outX, outY);
-    this.outPosition = outPos;
+    inPos: HookPosition, outPos: HookPosition) {
+
+    this.outHook = new HookPoint(new Point(outX, outY), outPos);
+    this.inHook = new HookPoint(new Point(inX, inY), inPos);
   }
 
   public static createAutoTopInBottomOut(totWidth: number, totHeight: number,
-      inPos: HangPosition, outPos: HangPosition,
-      originX = 0, originY = 0): InOut {
-      if (inPos === HangPosition.Top && outPos === HangPosition.Bottom) {
+      inPos: HookPosition, outPos: HookPosition,
+      originX: number, originY: number): InOut {
+
+      if (inPos === HookPosition.Top && outPos === HookPosition.Bottom) {
         return new InOut(
           totWidth / 2 + originX, originY,
           totWidth / 2 + originX, totHeight + originY,
           inPos, outPos
         );
-      } else if (inPos === HangPosition.Bottom && outPos === HangPosition.Top) {
+      } else if (inPos === HookPosition.Bottom && outPos === HookPosition.Top) {
         return new InOut(
           totWidth / 2 + originX, totHeight + originY,  // input
           totWidth / 2 + originX, originY,              // output
@@ -48,15 +41,37 @@ export class InOut {
       }
   }
 
-  public drawInputPoint(host: SVG.G) {
+  public static createAuto(totWidth: number, totHeight: number,
+    inPos: HookPosition, outPos: HookPosition,
+    originX = 0, originY = 0): InOut {
+    if (inPos === HookPosition.Top && outPos === HookPosition.Bottom) {
+      return new InOut(
+        totWidth / 2 + originX, originY,
+        totWidth / 2 + originX, totHeight + originY,
+        inPos, outPos
+      );
+    } else if (inPos === HookPosition.Bottom && outPos === HookPosition.Top) {
+      return new InOut(
+        totWidth / 2 + originX, totHeight + originY,  // input
+        totWidth / 2 + originX, originY,              // output
+        inPos, outPos
+      );
+    } else {
+      console.log('Error: cannot create InOut automatically', inPos, outPos);
+    }
+}
+
+  public drawInputPoint(host: SVG.G, relativeOrigin: Point = new Point(0, 0)) {
     this.inElem = host.rect(InOut.IN_OUT_SIZE, InOut.IN_OUT_SIZE)
-        .move(this.inCoordinate.x - InOut.IN_OUT_SIZE / 2, this.inCoordinate.y - InOut.IN_OUT_SIZE / 2)
+        .move(this.getInCoordinate().x - relativeOrigin.x - InOut.IN_OUT_SIZE / 2,
+              this.getInCoordinate().y - relativeOrigin.y - InOut.IN_OUT_SIZE / 2)
         .addClass('inputPoint');
   }
 
-  public drawOutputPoint(host: SVG.G) {
+  public drawOutputPoint(host: SVG.G, relativeOrigin: Point = new Point(0, 0)) {
     this.outElem = host.circle(InOut.IN_OUT_SIZE)
-      .move(this.outCoordinate.x - InOut.IN_OUT_SIZE / 2, this.outCoordinate.y - InOut.IN_OUT_SIZE / 2)
+      .move(this.getOutCoordinate().x - relativeOrigin.x - InOut.IN_OUT_SIZE / 2,
+            this.getOutCoordinate().y - relativeOrigin.y - InOut.IN_OUT_SIZE / 2)
       .addClass('outputPoint');
   }
 
@@ -67,6 +82,30 @@ export class InOut {
     if (this.outElem) {
       this.outElem.remove();
     }
+  }
+
+  public getInCoordinate(): Point {
+    return this.inHook.coord;
+  }
+
+  public getInPosition(): HookPosition {
+    return this.inHook.position;
+  }
+
+  public getOutCoordinate(): Point {
+    return this.outHook.coord;
+  }
+
+  public getOutPosition(): HookPosition {
+    return this.outHook.position;
+  }
+
+  getInHook(): HookPoint {
+    return this.inHook;
+  }
+
+  getOutHook(): HookPoint {
+    return this.outHook;
   }
 
 }

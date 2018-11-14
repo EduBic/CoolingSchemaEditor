@@ -1,7 +1,8 @@
 import * as SVG from 'svg.js';
 import { SchemaElement } from './SchemaElement';
 import { Point } from './Point';
-import { InOut, HangPosition } from './InOut';
+import { InOut } from './InOut';
+import { HookPosition } from './HookPosition';
 
 export class ButterflyEx extends SchemaElement {
   private width: number;
@@ -12,7 +13,7 @@ export class ButterflyEx extends SchemaElement {
   constructor(origin: Point, width: number, height: number) {
     super(origin,
       InOut.createAutoTopInBottomOut(width, height,
-        HangPosition.Top, HangPosition.Bottom,
+        HookPosition.Top, HookPosition.Bottom,
         origin.x, origin.y)
     );
     this.width = width;

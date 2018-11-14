@@ -1,6 +1,8 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { InOut, HangPosition } from './InOut';
+import { InOut } from './InOut';
+import { HookPosition } from './HookPosition';
+import { HookPoint } from './HookPoint';
 
 
 /**
@@ -17,33 +19,13 @@ export abstract class SchemaElement {
 
   abstract draw(host: SVG.G): void;
 
-  public getInCoordinates(index?: number): Point {
-    if (index) {
-      return this.inOutList[index].inCoordinate;
-    }
-    return this.inOutList[0].inCoordinate;
+  public getInCoordinates(index: number = 0): Point {
+    return this.inOutList[index].getInCoordinate();
   }
 
-  public getOutCoordinates(index?: number): Point {
+  public getOutCoordinates(index: number = 0): Point {
     // console.log('From getOutCoordinate', this.inOutList);
-    if (index) {
-      return this.inOutList[index].outCoordinate;
-    }
-    return this.inOutList[0].outCoordinate;
-  }
-
-  public getOutHangPosition(index?: number): HangPosition {
-    if (index) {
-      return this.inOutList[index].outPosition;
-    }
-    return this.inOutList[0].outPosition;
-  }
-
-  public getInHangPosition(index?: number): HangPosition {
-    if (index) {
-      return this.inOutList[index].inPosition;
-    }
-    return this.inOutList[0].inPosition;
+    return this.inOutList[index].getOutCoordinate();
   }
 
   public drawInputPoint(host: SVG.G) {
@@ -62,5 +44,13 @@ export abstract class SchemaElement {
     this.inOutList.forEach(inOut => {
       inOut.removePoints();
     });
+  }
+
+  public getInHook(index: number = 0): HookPoint {
+    return this.inOutList[index].getInHook();
+  }
+
+  public getOutHook(index: number = 0): HookPoint {
+    return this.inOutList[index].getOutHook();
   }
 }

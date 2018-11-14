@@ -70,21 +70,14 @@ export class SystemElement extends SchemaGroup {
     const circuits = Math.min(this.compressors.length, this.expansionValves.length);
 
     for (let i = 0; i < circuits; i++) {
-      this.drawPolyline(
-        LineDrawer.createLinePoints(this.compressors[i].getOutCoordinates(), this.compressors[i].getOutHangPosition(),
-          this.condenser.getInCoordinates(i + 1), this.condenser.getInHangPosition(i + 1)));
 
-      this.drawPolyline(
-        LineDrawer.createLinePoints(this.condenser.getOutCoordinates(i + 1), this.condenser.getOutHangPosition(i + 1),
-        this.expansionValves[i].getInCoordinates(), this.expansionValves[i].getInHangPosition()));
+      this.drawPolyline(LineDrawer.createLinePoints(this.compressors[i].getOutHook(), this.condenser.getInHook(i + 1)));
 
-      this.drawPolyline(
-        LineDrawer.createLinePoints(this.expansionValves[i].getOutCoordinates(), this.expansionValves[i].getOutHangPosition(),
-          this.evaporator.getInCoordinates(i + 1), this.evaporator.getInHangPosition(i + 1)));
+      this.drawPolyline(LineDrawer.createLinePoints(this.condenser.getOutHook(i + 1), this.expansionValves[i].getInHook()));
 
-      this.drawPolyline(
-        LineDrawer.createLinePoints(this.evaporator.getOutCoordinates(i + 1), this.evaporator.getOutHangPosition(i + 1),
-          this.compressors[i].getInCoordinates(), this.compressors[i].getInHangPosition()));
+      this.drawPolyline(LineDrawer.createLinePoints(this.expansionValves[i].getOutHook(), this.evaporator.getInHook(i + 1)));
+
+      this.drawPolyline(LineDrawer.createLinePoints(this.evaporator.getOutHook(i + 1), this.compressors[i].getInHook()));
     }
 
     this.drawChildren(this.system);

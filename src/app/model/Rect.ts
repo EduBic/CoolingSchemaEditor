@@ -7,7 +7,8 @@ import {
 import {
   Point
 } from './Point';
-import { InOut, HangPosition } from './InOut';
+import { InOut } from './InOut';
+import { HookPosition } from './HookPosition';
 
 export class Rect extends SchemaElement {
 
@@ -18,7 +19,7 @@ export class Rect extends SchemaElement {
 
   constructor(origin: Point, width: number, height: number) {
     super(origin,
-      InOut.createAutoTopInBottomOut(width, height, HangPosition.Bottom, HangPosition.Top, origin.x, origin.y)
+      InOut.createAutoTopInBottomOut(width, height, HookPosition.Bottom, HookPosition.Top, origin.x, origin.y)
     );
     this.width = width;
     this.height = height;

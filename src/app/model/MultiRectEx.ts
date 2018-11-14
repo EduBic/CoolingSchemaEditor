@@ -1,7 +1,8 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { Rect } from './Rect';
-import { InOut, HangPosition } from './InOut';
+import { InOut } from './InOut';
+import { HookPosition } from './HookPosition';
 import { Utils } from './Utils';
 import { SchemaGroup } from './SchemaGroup';
 
@@ -21,7 +22,8 @@ export class MultiRectEx extends SchemaGroup {
     super(origin, InOut.createAutoTopInBottomOut(
       (totalRects * widthRect + (totalRects - 1) * margin),
       heigthRect + MultiRectEx.TOT_LINE_LENGTH * 2,
-      HangPosition.Bottom, HangPosition.Top
+      HookPosition.Bottom, HookPosition.Top,
+      origin.x, origin.y
     ));
     this.totalRects = totalRects;
     this.width = widthRect;

@@ -1,7 +1,8 @@
 import * as SVG from 'svg.js';
 import { SchemaElement } from './SchemaElement';
 import { Point } from './Point';
-import { InOut, HangPosition } from './InOut';
+import { InOut } from './InOut';
+import { HookPosition } from './HookPosition';
 
 export class BigRectEx extends SchemaElement {
 
@@ -33,8 +34,8 @@ export class BigRectEx extends SchemaElement {
     }
 
     return new InOut(_in.x, _in.y, _out.x, _out.y,
-      invert ? HangPosition.Bottom : HangPosition.Top,
-      invert ? HangPosition.Bottom : HangPosition.Top
+      invert ? HookPosition.Bottom : HookPosition.Top,
+      invert ? HookPosition.Bottom : HookPosition.Top
     );
   }
 
@@ -51,8 +52,8 @@ export class BigRectEx extends SchemaElement {
     }
 
     return new InOut(_in.x, _in.y, _out.x, _out.y,
-      invert ? HangPosition.Left : HangPosition.Bottom,
-      invert ? HangPosition.Top : HangPosition.Left
+      invert ? HookPosition.Left : HookPosition.Bottom,
+      invert ? HookPosition.Top : HookPosition.Left
     );
   }
 
@@ -69,8 +70,8 @@ export class BigRectEx extends SchemaElement {
     }
 
     return new InOut(_in.x, _in.y, _out.x, _out.y,
-      invert ? HangPosition.Right : HangPosition.Bottom,
-      invert ? HangPosition.Top : HangPosition.Right
+      invert ? HookPosition.Right : HookPosition.Bottom,
+      invert ? HookPosition.Top : HookPosition.Right
     );
   }
 
