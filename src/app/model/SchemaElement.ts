@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { InOut } from './InOut';
+import { InOut, HangPosition } from './InOut';
 
 export abstract class SchemaElement {
   protected readonly origin: Point;
@@ -13,33 +13,33 @@ export abstract class SchemaElement {
 
   abstract draw(host: SVG.G): void;
 
-  public getInCoordinates(index: number): Point {
-    // console.log('From getInCoordinate', this.inOutList);
-    return this.inOutList[index].inCoordinate;
+  public getInCoordinates(index?: number): Point {
+    if (index) {
+      return this.inOutList[index].inCoordinate;
+    }
+    return this.inOutList[0].inCoordinate;
   }
 
-  public getOutCoordinates(index: number): Point {
-    // console.log('From getOutCoordinate', this.inOutList);
-    return this.inOutList[index].outCoordinate;
+  public getOutCoordinates(index?: number): Point {
+    console.log('From getOutCoordinate', this.inOutList);
+    if (index) {
+      return this.inOutList[index].outCoordinate;
+    }
+    return this.inOutList[0].outCoordinate;
   }
 
-  public getAbsoluteOutCoordinates(index: number): Point {
-    return new Point(
-      this.inOutList[index].outCoordinate.x + this.origin.x,
-      this.inOutList[index].outCoordinate.y + this.origin.y
-    );
+  public getOutHangPosition(index?: number): HangPosition {
+    if (index) {
+      return this.inOutList[index].outPosition;
+    }
+    return this.inOutList[0].outPosition;
   }
 
-  public getAbsoluteInCoordinates(index: number): Point {
-    return new Point(
-      this.inOutList[index].inCoordinate.x + this.origin.x,
-      this.inOutList[index].inCoordinate.y + this.origin.y
-    );
-  }
-
-  public getInOut(index: number): InOut {
-    console.log('InOut', this.inOutList);
-    return this.inOutList[index];
+  public getInHangPosition(index?: number): HangPosition {
+    if (index) {
+      return this.inOutList[index].inPosition;
+    }
+    return this.inOutList[0].inPosition;
   }
 
   public drawInputPoint(host: SVG.G) {

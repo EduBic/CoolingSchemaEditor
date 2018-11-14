@@ -43,16 +43,16 @@ export class BigRectEx extends SchemaElement {
     let _out;
 
     if (invert) {
-      _in = new Point(origin.x + width, origin.y + height / 2);
-      _out = new Point(origin.x + width * (1 - percent * 2), origin.y);
+      _in = new Point(origin.x, origin.y + height / 2);
+      _out = new Point(origin.x + width * (percent * 2), origin.y);
     } else {
       _in = new Point(origin.x + width * percent * 2, origin.y + height);
       _out = new Point(origin.x, origin.y + height / 2);
     }
 
     return new InOut(_in.x, _in.y, _out.x, _out.y,
-      invert ? HangPosition.Right : HangPosition.Bottom,
-      invert ? HangPosition.Top : HangPosition.Right
+      invert ? HangPosition.Left : HangPosition.Bottom,
+      invert ? HangPosition.Top : HangPosition.Left
     );
   }
 
@@ -61,16 +61,16 @@ export class BigRectEx extends SchemaElement {
     let _out;
 
     if (invert) {
-      _in = new Point(origin.x, origin.y + height / 2);
-      _out = new Point(origin.x + width * percent * 2, origin.y);
+      _in = new Point(origin.x + width, origin.y + height / 2);
+      _out = new Point(origin.x + width * (1 - percent * 2), origin.y);
     } else {
       _in = new Point(origin.x + width * (1 - percent * 2), origin.y + height);
       _out = new Point(origin.x + width, origin.y + height / 2);
     }
 
     return new InOut(_in.x, _in.y, _out.x, _out.y,
-      invert ? HangPosition.Left : HangPosition.Bottom,
-      invert ? HangPosition.Top : HangPosition.Left
+      invert ? HangPosition.Right : HangPosition.Bottom,
+      invert ? HangPosition.Top : HangPosition.Right
     );
   }
 

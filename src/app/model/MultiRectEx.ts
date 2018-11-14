@@ -3,9 +3,9 @@ import { Point } from './Point';
 import { Rect } from './Rect';
 import { InOut, HangPosition } from './InOut';
 import { Utils } from './Utils';
-import { SchemaElement } from './SchemaElement';
+import { SchemaGroup } from './SchemaGroup';
 
-export class MultiRectEx extends SchemaElement {
+export class MultiRectEx extends SchemaGroup {
   private static TOT_LINE_LENGTH = 80;
 
   private totalRects: number;
@@ -39,19 +39,18 @@ export class MultiRectEx extends SchemaElement {
       //   .move((this.width + this.margin) * i, 0);
 
       const aRect = new Rect(
-        {x: (this.width + this.margin) * i, y: MultiRectEx.TOT_LINE_LENGTH},
+        new Point((this.width + this.margin) * i, MultiRectEx.TOT_LINE_LENGTH),
         60, 60
       );
 
-      this.drawElbowPolyline(aRect.getOutCoordinates(0), this.getOutCoordinates(0), this.groupSVG);
-      this.drawElbowPolyline(aRect.getInCoordinates(0), this.getInCoordinates(0), this.groupSVG);
+      this.drawElbowPolyline(aRect.getOutCoordinates(), this.getOutRelativeCoordinates(), this.groupSVG);
+      this.drawElbowPolyline(aRect.getInCoordinates(), this.getInRelativeCoordinates(), this.groupSVG);
 
       aRect.draw(this.groupSVG);
     }
 
     this.drawInputPoint(this.groupSVG);
     this.drawOutputPoint(this.groupSVG);
-
   }
 
   private drawElbowPolyline(start: Point, end: Point, svg: SVG.G) {
