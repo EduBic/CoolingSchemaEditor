@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { InOut, HangPosition } from './InOut';
-import { log } from 'util';
+import { Input } from '@angular/core';
 
 export class Utils {
 
@@ -28,14 +28,8 @@ export class Utils {
       const mx = Math.min(startPoint.x, endPoint.x) + Math.abs(startPoint.x - endPoint.x) / 2;
 
       return [
-        {
-          x: mx,
-          y: m1y
-        },
-        {
-          x: mx,
-          y: m2y
-        }
+        new Point(mx, m1y),
+        new Point(mx, m2y)
       ];
     }
 
@@ -46,14 +40,9 @@ export class Utils {
       const m2x = endPoint.x;
       const my = Math.min(startPoint.y, endPoint.y) + Math.abs(startPoint.y - endPoint.y) / 2;
 
-      return [{
-          x: m1x,
-          y: my
-        },
-        {
-          x: m2x,
-          y: my
-        }
+      return [
+        new Point(m1x, my),
+        new Point(m2x, my)
       ];
     }
   }
@@ -182,21 +171,19 @@ export class Utils {
     const distanceY = 5;
     const distanceX = 5;
 
-    // Top -> Top
+    log(outPos + ' -> ');
     switch (outPos) {
       case HangPosition.Top:
-        log('Top ->');
         Utils.drawLine(svg, Utils.getOutTopPoints(outPoint, inPoint, inPos, distanceX, distanceY));
         break;
       case HangPosition.Right:
-        log('Right ->');
         Utils.drawLine(svg, Utils.getOutRightPoints(outPoint, inPoint, inPos, distanceX, distanceY));
         break;
       case HangPosition.Bottom:
-        log('Bottom ->');
         Utils.drawLine(svg, Utils.getOutBottomPoints(outPoint, inPoint, inPos, distanceX, distanceY));
         break;
       case HangPosition.Left:
+        Utils.drawLine(svg, Utils.getOutLeftPoints(outPoint, inPoint, inPos, distanceX, distanceY));
         break;
     }
   }
@@ -232,7 +219,7 @@ export class Utils {
 
         } else if (inPoint.isBottomLeftOf(outPoint)) {
 
-          const halfX = Math.min(outPoint.x, inPoint.x) + Math.abs(outPoint.x - inPoint.x) / 2;
+          const halfX = Utils.getHalfX(outPoint, inPoint);
 
           const m1 = new Point(outPoint.x, outPoint.y - distanceY);
           const m2 = new Point(halfX, m1.y);
@@ -302,7 +289,7 @@ export class Utils {
       case HangPosition.Top: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isTopLeftOf(outPoint)) {
 
-          const halfX = Math.min(outPoint.x, inPoint.x) + Math.abs(outPoint.x - inPoint.x) / 2;
+          const halfX = Utils.getHalfX(outPoint, inPoint);
 
           const m1 = new Point(outPoint.x, outPoint.y + distanceY);
           const m4 = new Point(inPoint.x, inPoint.y - distanceY);
@@ -312,7 +299,7 @@ export class Utils {
 
         } else if (inPoint.isBottomRightOf(outPoint) || inPoint.isBottomLeftOf(outPoint)) {
 
-          const halfY = Math.min(outPoint.y, inPoint.y) + Math.abs(outPoint.y - inPoint.y) / 2;
+          const halfY = Utils.getHalfY(outPoint, inPoint);
 
           const m1 = new Point(outPoint.x, halfY);
           const m2 = new Point(inPoint.x, halfY);
@@ -336,7 +323,7 @@ export class Utils {
 
         } else if (inPoint.isTopLeftOf(outPoint)) {
 
-          const halfX = Math.min(outPoint.x, inPoint.x) + Math.abs(outPoint.x - inPoint.x) / 2;
+          const halfX = Utils.getHalfX(outPoint, inPoint);
 
           const m1 = new Point(outPoint.x, outPoint.y + distanceY);
           const m2 = new Point(halfX, m1.y);
@@ -392,21 +379,230 @@ export class Utils {
 
     switch (inPos) {
       case HangPosition.Top: {
+        if (inPoint.isTopRightOf(outPoint)) {
+          // G shape
+          const halfX = Utils.getHalfX(outPoint, inPoint);
+
+          const m1 = new Point(halfX, outPoint.y);
+          const m3 = new Point(inPoint.x, inPoint.y - distanceY);
+          const m2 = new Point(halfX, m3.y);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isBottomRightOf(outPoint)) {
+          // L shape
+          const m1 = new Point(inPoint.x, outPoint.y);
+          points.push(m1);
+
+        } else if (inPoint.isBottomLeftOf(outPoint)) {
+          // G shape
+          const halfY = Utils.getHalfY(outPoint, inPoint);
+
+          const m1 = new Point(outPoint.x + distanceX, outPoint.y);
+          const m2 = new Point(m1.x, halfY);
+          const m3 = new Point(inPoint.x, halfY);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isTopLeftOf(outPoint)) {
+          // C shape
+          const m1 = new Point(outPoint.x + distanceX, outPoint.y);
+          const m3 = new Point(inPoint.x, inPoint.y - distanceY);
+          const m2 = new Point(m1.x, m3.y);
+          points.push(m1, m2, m3);
+        }
         break;
       }
       case HangPosition.Right: {
+        if (inPoint.isTopRightOf(outPoint) ||
+            inPoint.isBottomRightOf(outPoint) ||
+            inPoint.isBottomLeftOf(outPoint) ||
+            inPoint.isTopLeftOf(outPoint)) {
+          // U shape
+          const m1 = new Point(Math.max(outPoint.x, inPoint.x) + distanceX, outPoint.y);
+          const m2 = new Point(m1.x, inPoint.y);
+          points.push(m1, m2);
+        }
         break;
       }
       case HangPosition.Bottom: {
+        if (inPoint.isTopRightOf(outPoint)) {
+          // L shape
+          const m1 = new Point(outPoint.x, inPoint.y);
+          points.push(m1);
+
+        } else if (inPoint.isBottomRightOf(outPoint)) {
+          // G shape
+          const halfX = Utils.getHalfX(outPoint, inPoint);
+
+          const m1 = new Point(halfX, outPoint.y);
+          const m3 = new Point(inPoint.x, inPoint.y + distanceY);
+          const m2 = new Point(halfX, m3.y);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isBottomLeftOf(outPoint)) {
+          // C shape
+          const m1 = new Point(outPoint.x + distanceX, outPoint.y);
+          const m3 = new Point(inPoint.x, inPoint.y + distanceY);
+          const m2 = new Point(m1.x, m3.y);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isTopLeftOf(outPoint)) {
+          // G shape
+          const halfY = Utils.getHalfY(outPoint, inPoint);
+
+          const m1 = new Point(outPoint.x + distanceX, outPoint.y);
+          const m2 = new Point(m1.x, halfY);
+          const m3 = new Point(inPoint.x, halfY);
+          points.push(m1, m2, m3);
+        }
         break;
       }
       case HangPosition.Left: {
+        if (inPoint.isTopRightOf(outPoint) || inPoint.isBottomRightOf(outPoint)) {
+          // Z shape
+          const halfX = Utils.getHalfX(outPoint, inPoint);
+
+          const m1 = new Point(halfX, outPoint.x);
+          const m2 = new Point(halfX, inPoint.x);
+          points.push(m1, m2);
+
+        } else if (inPoint.isBottomLeftOf(outPoint) || inPoint.isTopLeftOf(outPoint)) {
+          // S shape
+          const halfY = Utils.getHalfY(outPoint, inPoint);
+
+          const m1 = new Point(outPoint.x + distanceX, outPoint.y);
+          const m4 = new Point(inPoint.x - distanceX, inPoint.y);
+          const m2 = new Point(m1.x, halfY);
+          const m3 = new Point(m4.x, halfY);
+          points.push(m1, m2, m3, m4);
+        }
         break;
       }
     }
 
     points.push(inPoint);
     return points;
+  }
+
+  private static getOutLeftPoints(outPoint: Point, inPoint: Point, inPos: HangPosition, distanceX: number, distanceY: number): Point[] {
+    const points: Point[] = [];
+    points.push(outPoint);
+
+    console.log(inPos);
+
+    switch (inPos) {
+      case HangPosition.Top: {
+        if (inPoint.isTopRightOf(outPoint)) {
+          // C shape
+
+          const m1 = new Point(outPoint.x - distanceX, outPoint.y);
+          const m2 = new Point(m1.x, Math.min(outPoint.y, inPoint.y) - distanceY);
+          const m3 = new Point(inPoint.x, m2.y);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isBottomRightOf(outPoint)) {
+          // G shape horizontal
+          const halfY = Utils.getHalfY(outPoint, inPoint);
+
+          const m1 = new Point(outPoint.x - distanceX, outPoint.y);
+          const m2 = new Point(m1.x, halfY);
+          const m3 = new Point(inPoint.x, halfY);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isBottomLeftOf(outPoint)) {
+          // L shape
+          const m1 = new Point(outPoint.x, inPoint.y);
+          points.push(m1);
+
+        } else if (inPoint.isTopLeftOf(outPoint)) {
+          // G shape vertical
+          const halfX = Utils.getHalfX(outPoint, inPoint);
+
+          const m1 = new Point(halfX, outPoint.y);
+          const m2 = new Point(halfX, inPoint.y - distanceY);
+          const m3 = new Point(inPoint.x, m2.y);
+          points.push(m1, m2, m3);
+        }
+        break;
+      }
+      case HangPosition.Right: {
+        if (inPoint.isTopRightOf(outPoint) || inPoint.isBottomRightOf(outPoint)) {
+          // S shape horizontal
+          const halfY = Utils.getHalfY(outPoint, inPoint);
+
+          const m1 = new Point(outPoint.x - distanceX, outPoint.y);
+          const m4 = new Point(inPoint.x + distanceX, inPoint.y);
+          const m2 = new Point(m1.x, halfY);
+          const m3 = new Point(m4.x, halfY);
+          points.push(m1, m2, m3, m4);
+
+        } else if (inPoint.isBottomLeftOf(outPoint) || inPoint.isTopLeftOf(outPoint)) {
+          // Z shape
+          const halfX = Utils.getHalfX(outPoint, inPoint);
+
+          const m1 = new Point(halfX, outPoint.y);
+          const m2 = new Point(halfX, inPoint.y);
+          points.push(m1, m2);
+
+        }
+        break;
+      }
+      case HangPosition.Bottom: {
+        if (inPoint.isTopRightOf(outPoint)) {
+          // G shape horizontal
+          const halfY = Utils.getHalfY(outPoint, inPoint);
+
+          const m1 = new Point(outPoint.x - distanceX, outPoint.y);
+          const m2 = new Point(m1.x, halfY);
+          const m3 = new Point(inPoint.x, halfY);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isBottomRightOf(outPoint)) {
+          // C shape
+          const m1 = new Point(outPoint.x - distanceX, inPoint.y);
+          const m2 = new Point(m1.x, inPoint.y + distanceY);
+          const m3 = new Point(inPoint.x, m2.y);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isBottomLeftOf(outPoint)) {
+          // G shape vertical
+          const halfX = Utils.getHalfX(outPoint, inPoint);
+
+          const m1 = new Point(halfX, outPoint.y);
+          const m2 = new Point(halfX, inPoint.y + distanceY);
+          const m3 = new Point(inPoint.x, m2.y);
+          points.push(m1, m2, m3);
+
+        } else if (inPoint.isTopLeftOf(outPoint)) {
+          // L shape
+          const m1 = new Point(outPoint.x, inPoint.y);
+          points.push(m1);
+        }
+        break;
+      }
+      case HangPosition.Left: {
+        if (inPoint.isTopRightOf(outPoint) ||
+            inPoint.isBottomRightOf(outPoint) ||
+            inPoint.isBottomLeftOf(outPoint) ||
+            inPoint.isTopLeftOf(outPoint)) {
+          // U shape
+          const m1 = new Point(Math.min(outPoint.x, inPoint.x) - distanceX, outPoint.y);
+          const m2 = new Point(m1.x, inPoint.y);
+          points.push(m1, m2);
+        }
+        break;
+      }
+    }
+
+    points.push(inPoint);
+    return points;
+  }
+
+  private static getHalfY(outPoint: Point, inPoint: Point) {
+    return Math.min(outPoint.y, inPoint.y) + Math.abs(outPoint.y - inPoint.y) / 2;
+  }
+
+  private static getHalfX(outPoint: Point, inPoint: Point) {
+    return Math.min(outPoint.x, inPoint.x) + Math.abs(outPoint.x - inPoint.x) / 2;
   }
 
   private static drawLine(svg: SVG.G, points: Point[]) {
