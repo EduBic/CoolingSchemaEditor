@@ -4,6 +4,7 @@ import { MultiRectEx } from './MultiRectEx';
 import { ButterflyEx } from './ButterflyEx';
 import { Utils } from './Utils';
 import { Point } from './Point';
+import { BigRectEx } from './BigRecEx';
 
 export class SystemElement extends SchemaElement {
 
@@ -30,46 +31,25 @@ export class SystemElement extends SchemaElement {
     );
     but.draw(this.system);
 
-    this.drawDirectPolyline(multiRect.getAbsoluteOutCoordinates(0), but.getInCoordinates(0), this.system);
-    this.drawDirectPolyline(but.getOutCoordinates(0), multiRect.getAbsoluteInCoordinates(0), this.system);
+    const cond = new BigRectEx(
+      {x: 80, y: 10},
+      200, 60, 0.1, false
+    );
+    cond.draw(this.system);
 
-  }
+    const evap = new BigRectEx(
+      {x: 80, y: 400},
+      200, 60, 0.1, true
+    );
+    evap.draw(this.system);
 
-  private drawDirectPolyline(start: Point, end: Point, svg: SVG.G) {
-    let middle: Point;
+    Utils.drawDirectPolyline(multiRect.getAbsoluteOutCoordinates(0), cond.getInCoordinates(2), this.system);
+    Utils.drawDirectPolyline(cond.getOutCoordinates(2), but.getInCoordinates(0), this.system);
 
-    if (start.y < end.y && start.x >= end.x) {
-      // middle point is left top
-      middle = new Point(Math.min(start.x, end.x), Math.min(start.y, end.y));
-    } else if (start.y < end.y && start.x < end.x) {
-      // middle point is left bottom
-      middle = new Point(Math.min(start.x, end.x), Math.max(start.y, end.y));
-    } else if (start.y >= end.y && start.x >= end.x) {
-      // middle point is right top
-      middle = new Point(Math.max(start.x, end.x), Math.min(start.y, end.y));
-    } else if (start.y >= end.y && start.x < end.x) {
-      // middle point is right bottom
-      middle = new Point(Math.max(start.x, end.x), Math.max(start.y, end.y));
-    }
+    Utils.drawSingleElbowPolyline(but.getInOut(0), evap.getInOut(1), this.system);
+    // Utils.drawSingleElbowPolyline(evap.getInOut(2), multiRect.getInOut(0), this.system);
+    // Utils.drawDirectPolyline(multiRect.getAbsoluteOutCoordinates(0), but.getInCoordinates(0), this.system);
+    // Utils.drawDirectPolyline(but.getOutCoordinates(0), multiRect.getAbsoluteInCoordinates(0), this.system);
 
-    svg.polyline([
-      start.x, start.y,
-      middle.x, middle.y,
-      end.x, end.y
-    ]).attr('fill', 'none')
-    .attr('stroke', 'blue');
-  }
-
-  private drawElbowPolyline(start: Point, end: Point, svg: SVG.G) {
-    // important to maintaine the start and end point
-    const points = Utils.computeElbow(start, end);
-
-    svg.polyline([
-      start.x, start.y,
-      points[0].x, points[0].y,
-      points[1].x, points[1].y,
-      end.x, end.y
-    ]).attr('fill', 'none')
-      .attr('stroke', 'blue');
   }
 }

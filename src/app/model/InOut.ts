@@ -1,42 +1,50 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
 
+export enum HangPosition {
+  Top = 'Top',
+  Right = 'Right',
+  Bottom = 'Bottom',
+  Left = 'Left'
+}
+
 export class InOut {
   private static IN_OUT_SIZE = 6;
 
-  inCoordinate: Point;
-  outCoordinate: Point;
+  readonly inCoordinate: Point;
+  readonly inPosition: HangPosition;
+
+  readonly outCoordinate: Point;
+  readonly outPosition: HangPosition;
 
   inElem: SVG.Element;
   outElem: SVG.Element;
 
-  constructor(inX: number, inY: number, outX: number, outY: number) {
+  constructor(inX: number, inY: number, outX: number, outY: number,
+    inPos: HangPosition, outPos: HangPosition) {
     this.inCoordinate = new Point(inX, inY);
+    this.inPosition = inPos;
     this.outCoordinate = new Point(outX, outY);
+    this.outPosition = outPos;
   }
 
-  // constructor(totWidth: number, totHeight: number, originX: number = 0, originY: number = 0) {
-  //   this.inCoordinate = new Point(
-  //     totWidth / 2 + originX, totHeight + originY
-  //   );
-
-  //   this.outCoordinate = new Point(
-  //     totWidth / 2 + originX, originY
-  //   );
-  // }
-
-  public static createAutoInOut(totWidth: number, totHeight: number,
-      originX = 0, originY = 0, invert = false): InOut {
-      if (invert) {
+  public static createAutoTopInBottomOut(totWidth: number, totHeight: number,
+      inPos: HangPosition, outPos: HangPosition,
+      originX = 0, originY = 0): InOut {
+      if (inPos === HangPosition.Top && outPos === HangPosition.Bottom) {
         return new InOut(
           totWidth / 2 + originX, originY,
           totWidth / 2 + originX, totHeight + originY,
+          inPos, outPos
+        );
+      } else if (inPos === HangPosition.Bottom && outPos === HangPosition.Top) {
+        return new InOut(
+          totWidth / 2 + originX, totHeight + originY,  // input
+          totWidth / 2 + originX, originY,              // output
+          inPos, outPos
         );
       } else {
-        return new InOut(
-          totWidth / 2 + originX, totHeight + originY,
-          totWidth / 2 + originX, originY
-        );
+        console.log('Error: cannot create InOut automatically', inPos, outPos);
       }
   }
 
@@ -61,8 +69,4 @@ export class InOut {
     }
   }
 
-  // constructor(_in: Point, _out: Point) {
-  //   this.inCoordinate = _in;
-  //   this.outCoordinate = _out;
-  // }
 }

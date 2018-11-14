@@ -14,10 +14,12 @@ export abstract class SchemaElement {
   abstract draw(host: SVG.G): void;
 
   public getInCoordinates(index: number): Point {
+    // console.log('From getInCoordinate', this.inOutList);
     return this.inOutList[index].inCoordinate;
   }
 
   public getOutCoordinates(index: number): Point {
+    // console.log('From getOutCoordinate', this.inOutList);
     return this.inOutList[index].outCoordinate;
   }
 
@@ -33,6 +35,11 @@ export abstract class SchemaElement {
       this.inOutList[index].inCoordinate.x + this.origin.x,
       this.inOutList[index].inCoordinate.y + this.origin.y
     );
+  }
+
+  public getInOut(index: number): InOut {
+    console.log('InOut', this.inOutList);
+    return this.inOutList[index];
   }
 
   public drawInputPoint(host: SVG.G) {

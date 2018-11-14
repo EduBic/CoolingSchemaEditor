@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { Rect } from './Rect';
-import { InOut } from './InOut';
+import { InOut, HangPosition } from './InOut';
 import { Utils } from './Utils';
 import { SchemaElement } from './SchemaElement';
 
@@ -18,9 +18,10 @@ export class MultiRectEx extends SchemaElement {
 
 
   constructor(origin: Point, totalRects: number, widthRect: number, heigthRect: number, margin: number = 5) {
-    super(origin, InOut.createAutoInOut(
+    super(origin, InOut.createAutoTopInBottomOut(
       (totalRects * widthRect + (totalRects - 1) * margin),
-      heigthRect + MultiRectEx.TOT_LINE_LENGTH * 2
+      heigthRect + MultiRectEx.TOT_LINE_LENGTH * 2,
+      HangPosition.Bottom, HangPosition.Top
     ));
     this.totalRects = totalRects;
     this.width = widthRect;

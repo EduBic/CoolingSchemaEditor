@@ -33,21 +33,6 @@ export class RectComponent implements OnInit {
     const bottomRight = { x: this.width, y: this.height };
     const bottomLeft = { x: 0, y: this.height };
 
-    this.inOuts.push(
-      new InOut(
-        Math.abs(topleft.x - topRight.x) / 2, topleft.y,
-        Math.abs(topleft.x - topRight.x) / 2, topleft.y
-      ),
-      new InOut(
-        bottomLeft.x , bottomLeft.y,
-        bottomLeft.x, bottomLeft.y
-      ),
-      new InOut(
-        bottomRight.x , bottomRight.y,
-        bottomRight.x, bottomRight.y
-      )
-    );
-
   }
 
   ngOnInit() {
