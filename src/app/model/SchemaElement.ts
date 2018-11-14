@@ -2,6 +2,10 @@ import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { InOut, HangPosition } from './InOut';
 
+
+/**
+ * Base class that represent the basic Graphic element drawed inside an SVG.
+ */
 export abstract class SchemaElement {
   protected readonly origin: Point;
   protected readonly inOutList: InOut[] = [];
@@ -21,7 +25,7 @@ export abstract class SchemaElement {
   }
 
   public getOutCoordinates(index?: number): Point {
-    console.log('From getOutCoordinate', this.inOutList);
+    // console.log('From getOutCoordinate', this.inOutList);
     if (index) {
       return this.inOutList[index].outCoordinate;
     }

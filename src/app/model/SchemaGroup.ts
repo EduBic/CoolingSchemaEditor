@@ -1,7 +1,33 @@
+import * as SVG from 'svg.js';
 import { SchemaElement } from './SchemaElement';
 import { Point } from './Point';
 
+/**
+ * SchemaGroup define the base class for SchemaElement that contains other
+ * SchemaElement and has a relative origin respected by all children
+ * SchemaElment. Extend this class when you need a complex SchemaElement.
+ */
 export abstract class SchemaGroup extends SchemaElement {
+
+  protected children: SchemaElement[] = [];
+
+  public addChild(child: SchemaElement): SchemaGroup {
+    this.children.push(child);
+    return this;
+  }
+
+  public addChildren(children: SchemaElement[]): SchemaGroup {
+    children.forEach(newChild => {
+      this.children.push(newChild);
+    });
+    return this;
+  }
+
+  public drawChildren(svg: SVG.G) {
+    this.children.forEach(child => {
+      child.draw(svg);
+    });
+  }
 
   public getOutCoordinates(index?: number): Point {
     if (index) {
@@ -18,7 +44,6 @@ export abstract class SchemaGroup extends SchemaElement {
   }
 
   public getInCoordinates(index?: number): Point {
-    console.log('Call override');
     if (index) {
       return new Point(
         this.inOutList[index].inCoordinate.x + this.origin.x,
@@ -40,7 +65,7 @@ export abstract class SchemaGroup extends SchemaElement {
   }
 
   public getOutRelativeCoordinates(index?: number): Point {
-    console.log('From getOutCoordinate', this.inOutList);
+    // console.log('From getOutCoordinate', this.inOutList);
     if (index) {
       return this.inOutList[index].outCoordinate;
     }

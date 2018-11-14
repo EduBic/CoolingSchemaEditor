@@ -4,7 +4,7 @@ import { HangPosition } from './InOut';
 
 export class LineDrawer {
 
-  public static drawLine(outPoint: Point, outPos: HangPosition, inPoint: Point, inPos: HangPosition, svg: SVG.G) {
+  public static createLinePoints(outPoint: Point, outPos: HangPosition, inPoint: Point, inPos: HangPosition): Point[] {
     const log = console.log;
 
     const distanceY = 5;
@@ -13,17 +13,13 @@ export class LineDrawer {
     log(outPos + ' -> ');
     switch (outPos) {
       case HangPosition.Top:
-        LineDrawer.drawPolyline(svg, LineDrawer.getOutTopPoints(outPoint, inPoint, inPos, distanceX, distanceY));
-        break;
+        return LineDrawer.getOutTopPoints(outPoint, inPoint, inPos, distanceX, distanceY);
       case HangPosition.Right:
-        LineDrawer.drawPolyline(svg, LineDrawer.getOutRightPoints(outPoint, inPoint, inPos, distanceX, distanceY));
-        break;
+        return LineDrawer.getOutRightPoints(outPoint, inPoint, inPos, distanceX, distanceY);
       case HangPosition.Bottom:
-        LineDrawer.drawPolyline(svg, LineDrawer.getOutBottomPoints(outPoint, inPoint, inPos, distanceX, distanceY));
-        break;
+        return LineDrawer.getOutBottomPoints(outPoint, inPoint, inPos, distanceX, distanceY);
       case HangPosition.Left:
-        LineDrawer.drawPolyline(svg, LineDrawer.getOutLeftPoints(outPoint, inPoint, inPos, distanceX, distanceY));
-        break;
+        return LineDrawer.getOutLeftPoints(outPoint, inPoint, inPos, distanceX, distanceY);
     }
   }
 
@@ -445,19 +441,6 @@ export class LineDrawer {
 
   private static getHalfX(outPoint: Point, inPoint: Point) {
     return Math.min(outPoint.x, inPoint.x) + Math.abs(outPoint.x - inPoint.x) / 2;
-  }
-
-  private static drawPolyline(svg: SVG.G, points: Point[]) {
-    const nums: number[] = [];
-
-    points.forEach(p => {
-      nums.push(p.x);
-      nums.push(p.y);
-    });
-
-    svg.polyline(nums)
-      .attr('fill', 'none')
-      .attr('stroke', 'salmon');
   }
 
 

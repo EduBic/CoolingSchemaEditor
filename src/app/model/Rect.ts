@@ -8,7 +8,6 @@ import {
   Point
 } from './Point';
 import { InOut, HangPosition } from './InOut';
-import { Utils } from './Utils';
 
 export class Rect extends SchemaElement {
 

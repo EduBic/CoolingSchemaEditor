@@ -1,70 +1,105 @@
 import * as SVG from 'svg.js';
-import { SchemaElement } from './SchemaElement';
-import { MultiRectEx } from './MultiRectEx';
-import { ButterflyEx } from './ButterflyEx';
-import { Utils } from './Utils';
-import { Point } from './Point';
-import { BigRectEx } from './BigRecEx';
-import { LineDrawer } from './LineDrawer';
+import {
+  SchemaElement
+} from './SchemaElement';
+import {
+  MultiRectEx
+} from './MultiRectEx';
+import {
+  ButterflyEx
+} from './ButterflyEx';
+import {
+  Utils
+} from './Utils';
+import {
+  Point
+} from './Point';
+import {
+  BigRectEx
+} from './BigRecEx';
+import {
+  LineDrawer
+} from './LineDrawer';
+import { SchemaGroup } from './SchemaGroup';
 
-export class SystemElement extends SchemaElement {
+export class SystemElement extends SchemaGroup {
 
-  system: SVG.G;
+  private system: SVG.G;
+
+  // private children: SchemaElement[] = [];
+
+  private condenser: BigRectEx;
+  private compressors: MultiRectEx[] = [];
+  private expansionValves: ButterflyEx[] = [];
+  private evaporator: BigRectEx;
 
   constructor(origin: Point) {
     super(origin);
+
+    this.compressors.push(
+      new MultiRectEx(new Point(320, 100), 3, 60, 60, 6), // Right
+      new MultiRectEx(new Point(120, 100), 3, 60, 60, 6)  // Left
+    );
+
+    this.expansionValves.push(
+      new ButterflyEx(new Point(540, 160), 30, 60), // Right
+      new ButterflyEx(new Point(60, 160), 30, 60)   // Left
+    );
+
+    this.condenser = new BigRectEx(
+      new Point(80, 10),
+      200, 60, 0.1, false
+    );
+
+    this.evaporator = new BigRectEx(
+      new Point(80, 400),
+      200, 60, 0.1, true
+    );
+
+    this.addChildren(this.compressors)
+      .addChildren(this.expansionValves)
+      .addChild(this.condenser)
+      .addChild(this.evaporator);
   }
 
   draw(host: SVG.G): void {
 
     this.system = host.group();
+    // console.log(cond);
 
-    const multiRect = new MultiRectEx(
-      new Point(120, 100),
-      3, 60, 60, 6
-    );
+    const circuits = Math.min(this.compressors.length, this.expansionValves.length);
 
-    multiRect.draw(this.system);
+    for (let i = 0; i < circuits; i++) {
+      this.drawPolyline(
+        LineDrawer.createLinePoints(this.compressors[i].getOutCoordinates(), this.compressors[i].getOutHangPosition(),
+          this.condenser.getInCoordinates(i + 1), this.condenser.getInHangPosition(i + 1)));
 
-    const but = new ButterflyEx(
-      new Point(60, 160),
-      30, 60
-    );
-    but.draw(this.system);
+      this.drawPolyline(
+        LineDrawer.createLinePoints(this.condenser.getOutCoordinates(i + 1), this.condenser.getOutHangPosition(i + 1),
+        this.expansionValves[i].getInCoordinates(), this.expansionValves[i].getInHangPosition()));
 
-    const cond = new BigRectEx(
-      new Point(80, 10),
-      200, 60, 0.1, false
-    );
-    cond.draw(this.system);
+      this.drawPolyline(
+        LineDrawer.createLinePoints(this.expansionValves[i].getOutCoordinates(), this.expansionValves[i].getOutHangPosition(),
+          this.evaporator.getInCoordinates(i + 1), this.evaporator.getInHangPosition(i + 1)));
 
-    const evap = new BigRectEx(
-      new Point(80, 400),
-      200, 60, 0.1, true
-    );
-    evap.draw(this.system);
+      this.drawPolyline(
+        LineDrawer.createLinePoints(this.evaporator.getOutCoordinates(i + 1), this.evaporator.getOutHangPosition(i + 1),
+          this.compressors[i].getInCoordinates(), this.compressors[i].getInHangPosition()));
+    }
 
-    console.log(cond);
+    this.drawChildren(this.system);
+  }
 
+  private drawPolyline(points: Point[]) {
+    const nums: number[] = [];
 
-    LineDrawer.drawLine(multiRect.getOutCoordinates(0), multiRect.getOutHangPosition(0),
-                        cond.getInCoordinates(2), cond.getInHangPosition(2), this.system);
+    points.forEach(p => {
+      nums.push(p.x);
+      nums.push(p.y);
+    });
 
-    // LineDrawer.drawLine(cond.getOutCoordinates(2), cond.getOutHangPosition(2),
-    //                     but.getInCoordinates(), but.getInHangPosition(), this.system);
-
-    // LineDrawer.drawLine(but.getOutCoordinates(), but.getOutHangPosition(),
-    //                     evap.getInCoordinates(2), evap.getInHangPosition(2), this.system);
-
-    // LineDrawer.drawLine(evap.getOutCoordinates(1), evap.getOutHangPosition(1),
-    //                       multiRect.getAbsoluteInCoordinates(), multiRect.getInHangPosition(), this.system);
-
-    // LineDrawer.drawDirectPolyline(cond.getOutCoordinates(2), but.getInCoordinates(0), this.system);
-
-    // LineDrawer.drawSingleElbowPolyline(but.getInOut(0), evap.getInOut(1), this.system);
-    // Utils.drawSingleElbowPolyline(evap.getInOut(2), multiRect.getInOut(0), this.system);
-    // Utils.drawDirectPolyline(multiRect.getAbsoluteOutCoordinates(0), but.getInCoordinates(0), this.system);
-    // Utils.drawDirectPolyline(but.getOutCoordinates(0), multiRect.getAbsoluteInCoordinates(0), this.system);
-
+    this.system.polyline(nums)
+      .attr('fill', 'none')
+      .attr('stroke', '#0077be');
   }
 }
