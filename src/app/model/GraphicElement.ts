@@ -1,23 +1,32 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { InOut } from './InOut';
-import { HookPosition } from './HookPosition';
 import { HookPoint } from './HookPoint';
 
 
 /**
  * Base class that represent the basic Graphic element drawed inside an SVG.
  */
-export abstract class SchemaElement {
+export abstract class GraphicElement {
   protected readonly origin: Point;
-  protected readonly inOutList: InOut[] = [];
+  protected inOutList: InOut[];
 
-  constructor(origin: Point, ...inOut: InOut[]) {
+  protected svgElement: SVG.Shape;
+
+  constructor(origin: Point, ...inOuts: InOut[]) {
     this.origin = origin;
-    this.inOutList = inOut;
+    this.inOutList = inOuts;
   }
 
-  abstract draw(host: SVG.G): void;
+  public abstract draw(host: SVG.G): void;
+
+  /**
+   * Set new Hooks and delete the previous ones.
+   * @param inOuts: the new Hook for the GraphicElement
+   */
+  public setHook(...inOuts: InOut[]): void {
+    this.inOutList = inOuts;
+  }
 
   public getInCoordinates(index: number = 0): Point {
     return this.inOutList[index].getInCoordinate();
@@ -46,6 +55,10 @@ export abstract class SchemaElement {
     });
   }
 
+  public getHook(index: number = 0): InOut {
+    return this.inOutList[index];
+  }
+
   public getInHook(index: number = 0): HookPoint {
     return this.inOutList[index].getInHook();
   }
@@ -53,4 +66,8 @@ export abstract class SchemaElement {
   public getOutHook(index: number = 0): HookPoint {
     return this.inOutList[index].getOutHook();
   }
+
+  public abstract getWidth(): number;
+  public abstract getHeight(): number;
+
 }

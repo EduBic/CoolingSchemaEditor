@@ -4,15 +4,15 @@ import { Rect } from './Rect';
 import { InOut } from './InOut';
 import { HookPosition } from './HookPosition';
 import { Utils } from './Utils';
-import { SchemaGroup } from './SchemaGroup';
+import { GraphicGroup } from './GraphicGroup';
 
-export class MultiRectEx extends SchemaGroup {
+export class MultiRectEx extends GraphicGroup {
   private static TOT_LINE_LENGTH = 80;
 
   private totalRects: number;
 
-  private width: number;
-  private heigth: number;
+  private widthRect: number;
+  private heigthRect: number;
   private margin: number;
 
   private groupSVG: SVG.G;
@@ -26,8 +26,8 @@ export class MultiRectEx extends SchemaGroup {
       origin.x, origin.y
     ));
     this.totalRects = totalRects;
-    this.width = widthRect;
-    this.heigth = heigthRect;
+    this.widthRect = widthRect;
+    this.heigthRect = heigthRect;
     this.margin = margin;
   }
 
@@ -41,7 +41,7 @@ export class MultiRectEx extends SchemaGroup {
       //   .move((this.width + this.margin) * i, 0);
 
       const aRect = new Rect(
-        new Point((this.width + this.margin) * i, MultiRectEx.TOT_LINE_LENGTH),
+        new Point((this.widthRect + this.margin) * i, MultiRectEx.TOT_LINE_LENGTH),
         60, 60
       );
 
@@ -68,5 +68,12 @@ export class MultiRectEx extends SchemaGroup {
       .attr('stroke', 'black');
   }
 
+  public getWidth(): number {
+    return (this.totalRects * this.widthRect + (this.totalRects - 1) * this.margin);
+  }
+
+  public getHeight(): number {
+    return this.heigthRect + MultiRectEx.TOT_LINE_LENGTH * 2;
+  }
 
 }

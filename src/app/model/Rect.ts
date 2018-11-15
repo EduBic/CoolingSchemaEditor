@@ -1,8 +1,8 @@
 import * as SVG from 'svg.js';
 
 import {
-  SchemaElement
-} from './SchemaElement';
+  GraphicElement
+} from './GraphicElement';
 
 import {
   Point
@@ -10,7 +10,7 @@ import {
 import { InOut } from './InOut';
 import { HookPosition } from './HookPosition';
 
-export class Rect extends SchemaElement {
+export class Rect extends GraphicElement {
 
   private width: number;
   private height: number;
@@ -38,6 +38,14 @@ export class Rect extends SchemaElement {
     this.svgRect.on('mouseleave', (e) => {
       this.removePoints();
     });
+  }
+
+  public getWidth(): number {
+    return this.width;
+  }
+
+  public getHeight(): number {
+    return this.height;
   }
 
 }

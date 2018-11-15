@@ -1,12 +1,12 @@
 import * as SVG from 'svg.js';
-import { SchemaElement } from './SchemaElement';
+import { GraphicElement } from './GraphicElement';
 import { Point } from './Point';
 import { InOut } from './InOut';
 import { HookPosition } from './HookPosition';
 
-export class ButterflyEx extends SchemaElement {
+export class Butterfly extends GraphicElement {
   private width: number;
-  private heigth: number;
+  private height: number;
 
   private shape: SVG.Polygon;
 
@@ -17,15 +17,15 @@ export class ButterflyEx extends SchemaElement {
         origin.x, origin.y)
     );
     this.width = width;
-    this.heigth = height;
+    this.height = height;
   }
 
   draw(host: SVG.G): void {
     this.shape = host.polygon([
       this.origin.x, this.origin.y,
       this.origin.x + this.width, this.origin.y,
-      this.origin.x, this.origin.y + this.heigth,
-      this.origin.x + this.width, this.origin.y + this.heigth
+      this.origin.x, this.origin.y + this.height,
+      this.origin.x + this.width, this.origin.y + this.height
     ])
       // .move(this.origin.x, this.origin.y)
       .addClass('butterfly');
@@ -38,6 +38,14 @@ export class ButterflyEx extends SchemaElement {
     this.shape.on('mouseleave', (e) => {
       this.removePoints();
     });
+  }
+
+  public getWidth(): number {
+    return this.width;
+  }
+
+  public getHeight(): number {
+    return this.height;
   }
 
 }

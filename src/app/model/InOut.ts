@@ -41,25 +41,13 @@ export class InOut {
       }
   }
 
-  public static createAuto(totWidth: number, totHeight: number,
-    inPos: HookPosition, outPos: HookPosition,
-    originX = 0, originY = 0): InOut {
-    if (inPos === HookPosition.Top && outPos === HookPosition.Bottom) {
-      return new InOut(
-        totWidth / 2 + originX, originY,
-        totWidth / 2 + originX, totHeight + originY,
-        inPos, outPos
-      );
-    } else if (inPos === HookPosition.Bottom && outPos === HookPosition.Top) {
-      return new InOut(
-        totWidth / 2 + originX, totHeight + originY,  // input
-        totWidth / 2 + originX, originY,              // output
-        inPos, outPos
-      );
-    } else {
-      console.log('Error: cannot create InOut automatically', inPos, outPos);
-    }
-}
+  public static createAutoTopInBottomOut2(totWidth: number, totHeight: number, origin: Point) {
+    return new InOut(
+      totWidth / 2 + origin.x, origin.y,
+      totWidth / 2 + origin.x, totHeight + origin.y,
+      HookPosition.Top, HookPosition.Bottom
+    );
+  }
 
   public drawInputPoint(host: SVG.G, relativeOrigin: Point = new Point(0, 0)) {
     this.inElem = host.rect(InOut.IN_OUT_SIZE, InOut.IN_OUT_SIZE)

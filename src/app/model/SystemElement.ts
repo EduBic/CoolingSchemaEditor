@@ -1,37 +1,31 @@
 import * as SVG from 'svg.js';
 import {
-  SchemaElement
-} from './SchemaElement';
-import {
   MultiRectEx
 } from './MultiRectEx';
 import {
-  ButterflyEx
-} from './ButterflyEx';
-import {
-  Utils
-} from './Utils';
+  Butterfly
+} from './Butterfly';
 import {
   Point
 } from './Point';
 import {
-  BigRectEx
-} from './BigRecEx';
+  BigRect
+} from './BigRect';
 import {
   LineDrawer
 } from './LineDrawer';
-import { SchemaGroup } from './SchemaGroup';
+import { GraphicGroup } from './GraphicGroup';
+import { InOut } from './InOut';
+import { HookPosition } from './HookPosition';
 
-export class SystemElement extends SchemaGroup {
-
-  private system: SVG.G;
+export class SystemElement extends GraphicGroup {
 
   // private children: SchemaElement[] = [];
 
-  private condenser: BigRectEx;
+  private condenser: BigRect;
   private compressors: MultiRectEx[] = [];
-  private expansionValves: ButterflyEx[] = [];
-  private evaporator: BigRectEx;
+  private expansionValves: Butterfly[] = [];
+  private evaporator: BigRect;
 
   constructor(origin: Point) {
     super(origin);
@@ -42,16 +36,16 @@ export class SystemElement extends SchemaGroup {
     );
 
     this.expansionValves.push(
-      new ButterflyEx(new Point(540, 160), 30, 60), // Right
-      new ButterflyEx(new Point(60, 160), 30, 60)   // Left
+      new Butterfly(new Point(540, 160), 30, 60), // Right
+      new Butterfly(new Point(60, 160), 30, 60)   // Left
     );
 
-    this.condenser = new BigRectEx(
+    this.condenser = new BigRect(
       new Point(80, 10),
       200, 60, 0.1, false
     );
 
-    this.evaporator = new BigRectEx(
+    this.evaporator = new BigRect(
       new Point(80, 400),
       200, 60, 0.1, true
     );
@@ -60,39 +54,51 @@ export class SystemElement extends SchemaGroup {
       .addChildren(this.expansionValves)
       .addChild(this.condenser)
       .addChild(this.evaporator);
+
+    // init my InOut
+    const condIn = this.condenser.getInHook(0);
+    const condOut = this.condenser.getOutHook(0);
+
+    const evapIn = this.evaporator.getInHook(0);
+    const evapOut = this.evaporator.getOutHook(0);
+
+    const distY = 10;
+
+    this.setHook(
+      new InOut(
+        condIn.coord.x, condIn.coord.y - distY,
+        condOut.coord.x, condOut.coord.y - distY,
+        HookPosition.Top, HookPosition.Top),
+      new InOut(
+        evapIn.coord.x, evapIn.coord.y + distY,
+        evapOut.coord.x, evapOut.coord.y + distY,
+        HookPosition.Bottom, HookPosition.Bottom)
+    );
+
   }
 
-  draw(host: SVG.G): void {
-
-    this.system = host.group();
-    // console.log(cond);
-
+  protected drawConnectChildrenTo() {
+    // console.log('connect condenser with my inOUT Top');
+    // console.log('connect evaporator with my inOUT Bottom');
     const circuits = Math.min(this.compressors.length, this.expansionValves.length);
 
     for (let i = 0; i < circuits; i++) {
 
-      this.drawPolyline(LineDrawer.createLinePoints(this.compressors[i].getOutHook(), this.condenser.getInHook(i + 1)));
+      super.drawPolyline(LineDrawer.createLinePoints(this.compressors[i].getOutHook(), this.condenser.getInHook(i + 1)));
 
-      this.drawPolyline(LineDrawer.createLinePoints(this.condenser.getOutHook(i + 1), this.expansionValves[i].getInHook()));
+      super.drawPolyline(LineDrawer.createLinePoints(this.condenser.getOutHook(i + 1), this.expansionValves[i].getInHook()));
 
-      this.drawPolyline(LineDrawer.createLinePoints(this.expansionValves[i].getOutHook(), this.evaporator.getInHook(i + 1)));
+      super.drawPolyline(LineDrawer.createLinePoints(this.expansionValves[i].getOutHook(), this.evaporator.getInHook(i + 1)));
 
-      this.drawPolyline(LineDrawer.createLinePoints(this.evaporator.getOutHook(i + 1), this.compressors[i].getInHook()));
+      super.drawPolyline(LineDrawer.createLinePoints(this.evaporator.getOutHook(i + 1), this.compressors[i].getInHook()));
     }
-
-    this.drawChildren(this.system);
   }
 
-  private drawPolyline(points: Point[]) {
-    const nums: number[] = [];
+  public getWidth(): number {
+    return 0;
+  }
 
-    points.forEach(p => {
-      nums.push(p.x);
-      nums.push(p.y);
-    });
-
-    this.system.polyline(nums)
-      .attr('fill', 'none')
-      .attr('stroke', '#0077be');
+  public getHeight(): number {
+    return 0;
   }
 }

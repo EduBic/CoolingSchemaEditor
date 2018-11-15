@@ -1,10 +1,10 @@
 import * as SVG from 'svg.js';
-import { SchemaElement } from './SchemaElement';
+import { GraphicElement } from './GraphicElement';
 import { Point } from './Point';
 import { InOut } from './InOut';
 import { HookPosition } from './HookPosition';
 
-export class BigRectEx extends SchemaElement {
+export class BigRect extends GraphicElement {
 
   private width: number;
   private height: number;
@@ -13,9 +13,9 @@ export class BigRectEx extends SchemaElement {
 
   constructor(origin: Point, width: number, height: number, percent: number = 0.1, invert: boolean) {
     super(origin,
-      BigRectEx.externalInOut(origin, width, height, percent, invert),
-      BigRectEx.rightInOut(origin, width, height, percent, invert),
-      BigRectEx.leftInOut(origin, width, height, percent, invert)
+      BigRect.externalInOut(origin, width, height, percent, invert),
+      BigRect.rightInOut(origin, width, height, percent, invert),
+      BigRect.leftInOut(origin, width, height, percent, invert)
     );
     this.width = width;
     this.height = height;
@@ -88,6 +88,13 @@ export class BigRectEx extends SchemaElement {
     this.shape.on('mouseleave', (e) => {
       this.removePoints();
     });
+  }
+
+  public getWidth(): number {
+    return this.width;
+  }
+  public getHeight(): number {
+    throw this.height;
   }
 
 }

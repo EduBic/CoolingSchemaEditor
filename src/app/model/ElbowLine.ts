@@ -1,5 +1,4 @@
 import * as SVG from 'svg.js';
-import { SchemaElement } from './SchemaElement';
 import { Point } from './Point';
 import { HookPoint } from './HookPoint';
 import { LineDrawer } from './LineDrawer';
