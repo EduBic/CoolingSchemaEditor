@@ -45,9 +45,7 @@ export class SystemElement extends GraphicGroup {
 
     this.compressors.push(
       new ParallelElements(new Point(320, 120), aCircle, 3, 5),
-      new ParallelElements(new Point(120, 120), aCircle, 3, 5),
-      // new MultiRectEx(new Point(320, 100), 3, 60, 60, 6), // Right
-      // new MultiRectEx(new Point(120, 100), 3, 60, 60, 6)  // Left
+      new ParallelElements(new Point(120, 120), aCircle, 3, 5)
     );
 
     this.expansionValves.push(
@@ -111,6 +109,19 @@ export class SystemElement extends GraphicGroup {
 
       super.drawPolyline(LineDrawer.createLinePoints(this.evaporator.getOutHook(i + 1), this.compressors[i].getInHook(0)));
     }
+
+    super.drawPolyline(
+      LineDrawer.createLinePoints(this.evaporator.getOutHook(0), this.getOutHook(1))
+    );
+    super.drawPolyline(
+      LineDrawer.createLinePoints(this.getInHook(1), this.evaporator.getInHook(0))
+    );
+    super.drawPolyline(
+      LineDrawer.createLinePoints(this.condenser.getOutHook(0), this.getInHook(0))
+    );
+    super.drawPolyline(
+      LineDrawer.createLinePoints(this.getOutHook(0), this.condenser.getInHook(0))
+    );
   }
 
 }
