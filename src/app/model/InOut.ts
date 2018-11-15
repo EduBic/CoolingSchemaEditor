@@ -41,11 +41,22 @@ export class InOut {
       }
   }
 
-  public static createAutoTopInBottomOut2(totWidth: number, totHeight: number, origin: Point) {
+  /**
+   * Method for building InOut pair for GraphicGroup elements
+   */
+  public static createInFromBottomOutFromTop(totWidth: number, totHeight: number, origin: Point) {
     return new InOut(
       totWidth / 2 + origin.x, origin.y,
       totWidth / 2 + origin.x, totHeight + origin.y,
-      HookPosition.Top, HookPosition.Bottom
+      HookPosition.Bottom, HookPosition.Top
+    );
+  }
+
+  public static createAutoBottomInTopOut(totWidth: number, totHeight: number, origin: Point) {
+    return new InOut(
+      totWidth / 2 + origin.x, totHeight + origin.y,
+      totWidth / 2 + origin.x, origin.y,
+      HookPosition.Bottom, HookPosition.Top
     );
   }
 

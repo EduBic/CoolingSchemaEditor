@@ -1,14 +1,13 @@
 import * as SVG from 'svg.js';
-import { MultiRectEx } from './MultiRectEx';
 import { SystemElement } from './SystemElement';
 import { Point } from './Point';
+import { Circle } from './Circle';
+import { ParallelElements } from './ParallelElements';
 
 
 export class Editor {
 
   main: SVG.G;
-
-  multiRect: MultiRectEx;
 
   constructor(svgId: string) {
     this.main = SVG.get(svgId) as SVG.G;
@@ -17,6 +16,14 @@ export class Editor {
   draw() {
     const sys = new SystemElement(new Point(0, 0));
     sys.draw(this.main);
+
+    const aCircle = new Circle(new Point(0, 0), 30);
+    const parallel = new ParallelElements(new Point(320, 100), aCircle, 3);
+
+    // console.log('Parallel hook', parallel.getHook());
+
+    // parallel.draw(this.main);
+
   }
 
 

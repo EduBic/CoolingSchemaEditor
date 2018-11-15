@@ -1,22 +1,22 @@
 import * as SVG from 'svg.js';
-import { GraphicElement } from './GraphicElement';
+import { GraphicSingleElement } from './GraphicSingleElement';
 import { ParallelizerElem } from './ParallelElements';
 import { Point } from './Point';
 import { InOut } from './InOut';
 
-export class Circle extends GraphicElement implements ParallelizerElem {
+export class Circle extends GraphicSingleElement implements  ParallelizerElem  {
 
   private radius: number;
 
   constructor(origin: Point, radius: number) {
-    super(origin, InOut.createAutoTopInBottomOut2(
+    super(origin, InOut.createAutoBottomInTopOut(
       radius * 2, radius * 2, origin
     ));
 
     this.radius = radius;
   }
 
-  getCopy(origin: Point): GraphicElement {
+  getCopy(origin: Point): GraphicSingleElement {
     return new Circle(origin, this.radius);
   }
 
@@ -37,11 +37,11 @@ export class Circle extends GraphicElement implements ParallelizerElem {
 
   }
 
-  public getWidth(): number {
+  public getElemWidth(): number {
     return this.radius * 2;
   }
-  public getHeight(): number {
-    throw this.radius * 2;
+  public getElemHeight(): number {
+    return this.radius * 2;
   }
 
 }

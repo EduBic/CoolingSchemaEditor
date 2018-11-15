@@ -6,7 +6,6 @@ export class LineDrawer {
 
   private static readonly DEBUG = false;
 
-
   public static createLinePoints(_out: HookPoint, _in: HookPoint): Point[] {
 
     const outPoint: Point = _out.coord,
@@ -83,8 +82,10 @@ export class LineDrawer {
       case HookPosition.Bottom: {
         if (inPoint.isTopRightOf(outPoint) || inPoint.isTopLeftOf(outPoint)) {
 
-          const m1 = new Point(outPoint.x, outPoint.y - distanceY);
-          const m2 = new Point(inPoint.x, m1.y);
+          const halfY = LineDrawer.getHalfY(outPoint, inPoint);
+
+          const m1 = new Point(outPoint.x, halfY);
+          const m2 = new Point(inPoint.x, halfY);
 
           points.push(m1, m2);
 

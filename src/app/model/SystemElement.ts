@@ -1,7 +1,3 @@
-import * as SVG from 'svg.js';
-import {
-  MultiRectEx
-} from './MultiRectEx';
 import {
   Butterfly
 } from './Butterfly';
@@ -15,24 +11,42 @@ import {
   LineDrawer
 } from './LineDrawer';
 import { GraphicGroup } from './GraphicGroup';
-import { InOut } from './InOut';
 import { HookPosition } from './HookPosition';
+import { Circle } from './Circle';
+import { ParallelElements } from './ParallelElements';
+import { LinkPair } from './Link';
 
 export class SystemElement extends GraphicGroup {
 
-  // private children: SchemaElement[] = [];
+  private static readonly DIST_LINK = 5;
 
   private condenser: BigRect;
-  private compressors: MultiRectEx[] = [];
+  private compressors: GraphicGroup[] = [];
   private expansionValves: Butterfly[] = [];
   private evaporator: BigRect;
 
-  constructor(origin: Point) {
-    super(origin);
+  constructor(origin: Point, width: number = 500, height: number = 500) {
+    super(origin,
+      width, height,
+      LinkPair.createLink(
+        new Point(width / 4, 0), HookPosition.Top,
+        new Point(width * 3 / 4, 0), HookPosition.Top
+      ),
+      LinkPair.createLink(
+        new Point(width / 4, height), HookPosition.Bottom,
+        new Point(width * 3 / 4, height), HookPosition.Bottom
+      )
+    );
+
+    // TODO: construct Children based to width and height of parent group
+
+    const aCircle = new Circle(new Point(0, 0), 30);
 
     this.compressors.push(
-      new MultiRectEx(new Point(320, 100), 3, 60, 60, 6), // Right
-      new MultiRectEx(new Point(120, 100), 3, 60, 60, 6)  // Left
+      new ParallelElements(new Point(320, 100), aCircle, 3, 5),
+      new ParallelElements(new Point(120, 100), aCircle, 3, 5),
+      // new MultiRectEx(new Point(320, 100), 3, 60, 60, 6), // Right
+      // new MultiRectEx(new Point(120, 100), 3, 60, 60, 6)  // Left
     );
 
     this.expansionValves.push(
@@ -62,21 +76,25 @@ export class SystemElement extends GraphicGroup {
     const evapIn = this.evaporator.getInHook(0);
     const evapOut = this.evaporator.getOutHook(0);
 
-    const distY = 10;
-
-    this.setHook(
-      new InOut(
-        condIn.coord.x, condIn.coord.y - distY,
-        condOut.coord.x, condOut.coord.y - distY,
-        HookPosition.Top, HookPosition.Top),
-      new InOut(
-        evapIn.coord.x, evapIn.coord.y + distY,
-        evapOut.coord.x, evapOut.coord.y + distY,
-        HookPosition.Bottom, HookPosition.Bottom)
+    // TODO: remove the update of hook from children
+    this.setLink(
+      LinkPair.createLink(
+        new Point(condIn.coord.x, condIn.coord.y - SystemElement.DIST_LINK),
+        HookPosition.Top,
+        new Point(condOut.coord.x, condOut.coord.y - SystemElement.DIST_LINK),
+        HookPosition.Top
+      ),
+      LinkPair.createLink(
+        new Point(evapIn.coord.x, evapIn.coord.y + SystemElement.DIST_LINK),
+        HookPosition.Bottom,
+        new Point(evapOut.coord.x, evapOut.coord.y + SystemElement.DIST_LINK),
+        HookPosition.Bottom
+      )
     );
 
   }
 
+  // Template method
   protected drawConnectChildrenTo() {
     // console.log('connect condenser with my inOUT Top');
     // console.log('connect evaporator with my inOUT Bottom');
@@ -94,11 +112,4 @@ export class SystemElement extends GraphicGroup {
     }
   }
 
-  public getWidth(): number {
-    return 0;
-  }
-
-  public getHeight(): number {
-    return 0;
-  }
 }
