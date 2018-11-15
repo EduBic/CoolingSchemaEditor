@@ -1,8 +1,8 @@
 import * as SVG from 'svg.js';
 
 import {
-  GraphicElement
-} from './GraphicElement';
+  GraphicSingleElement
+} from './GraphicSingleElement';
 
 import {
   Point
@@ -10,7 +10,7 @@ import {
 import { InOut } from './InOut';
 import { HookPosition } from './HookPosition';
 
-export class Rect extends GraphicElement {
+export class Rect extends GraphicSingleElement {
 
   private width: number;
   private height: number;

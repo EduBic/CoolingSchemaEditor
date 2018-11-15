@@ -3,6 +3,7 @@ import { SystemElement } from './SystemElement';
 import { Point } from './Point';
 import { Circle } from './Circle';
 import { ParallelElements } from './ParallelElements';
+import { TestGroup } from './TestGroup';
 
 
 export class Editor {
@@ -23,6 +24,10 @@ export class Editor {
     // console.log('Parallel hook', parallel.getHook());
 
     // parallel.draw(this.main);
+
+    // TEST
+    // const testGroup = new TestGroup();
+    // testGroup.draw(this.main);
 
   }
 

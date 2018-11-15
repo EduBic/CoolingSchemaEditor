@@ -18,7 +18,7 @@ import { LinkPair } from './Link';
 
 export class SystemElement extends GraphicGroup {
 
-  private static readonly DIST_LINK = 5;
+  private static readonly DIST_LINK = 10;
 
   private condenser: BigRect;
   private compressors: GraphicGroup[] = [];
@@ -28,23 +28,24 @@ export class SystemElement extends GraphicGroup {
   constructor(origin: Point, width: number = 500, height: number = 500) {
     super(origin,
       width, height,
-      LinkPair.createLink(
-        new Point(width / 4, 0), HookPosition.Top,
-        new Point(width * 3 / 4, 0), HookPosition.Top
+      LinkPair.createLinkPair(
+        // TODO: SystemElement.DIST_LINK distance doesn't consider the height and with of group
+        new Point(width / 4, - SystemElement.DIST_LINK), HookPosition.Top,
+        new Point(width * 3 / 4, - SystemElement.DIST_LINK), HookPosition.Top
       ),
-      LinkPair.createLink(
-        new Point(width / 4, height), HookPosition.Bottom,
-        new Point(width * 3 / 4, height), HookPosition.Bottom
+      LinkPair.createLinkPair(
+        new Point(width / 4, height + SystemElement.DIST_LINK), HookPosition.Bottom,
+        new Point(width * 3 / 4, height + SystemElement.DIST_LINK), HookPosition.Bottom
       )
     );
 
     // TODO: construct Children based to width and height of parent group
 
-    const aCircle = new Circle(new Point(0, 0), 30);
+    const aCircle = new Circle(new Point(0, 0), 25);
 
     this.compressors.push(
-      new ParallelElements(new Point(320, 100), aCircle, 3, 5),
-      new ParallelElements(new Point(120, 100), aCircle, 3, 5),
+      new ParallelElements(new Point(320, 120), aCircle, 3, 5),
+      new ParallelElements(new Point(120, 120), aCircle, 3, 5),
       // new MultiRectEx(new Point(320, 100), 3, 60, 60, 6), // Right
       // new MultiRectEx(new Point(120, 100), 3, 60, 60, 6)  // Left
     );
@@ -55,12 +56,12 @@ export class SystemElement extends GraphicGroup {
     );
 
     this.condenser = new BigRect(
-      new Point(80, 10),
+      new Point(200, 10),
       200, 60, 0.1, false
     );
 
     this.evaporator = new BigRect(
-      new Point(80, 400),
+      new Point(200, 400),
       200, 60, 0.1, true
     );
 
@@ -78,13 +79,13 @@ export class SystemElement extends GraphicGroup {
 
     // TODO: remove the update of hook from children
     this.setLink(
-      LinkPair.createLink(
+      LinkPair.createLinkPair(
         new Point(condIn.coord.x, condIn.coord.y - SystemElement.DIST_LINK),
         HookPosition.Top,
         new Point(condOut.coord.x, condOut.coord.y - SystemElement.DIST_LINK),
         HookPosition.Top
       ),
-      LinkPair.createLink(
+      LinkPair.createLinkPair(
         new Point(evapIn.coord.x, evapIn.coord.y + SystemElement.DIST_LINK),
         HookPosition.Bottom,
         new Point(evapOut.coord.x, evapOut.coord.y + SystemElement.DIST_LINK),
@@ -102,13 +103,13 @@ export class SystemElement extends GraphicGroup {
 
     for (let i = 0; i < circuits; i++) {
 
-      super.drawPolyline(LineDrawer.createLinePoints(this.compressors[i].getOutHook(), this.condenser.getInHook(i + 1)));
+      super.drawPolyline(LineDrawer.createLinePoints(this.compressors[i].getOutHook(0), this.condenser.getInHook(i + 1)));
 
-      super.drawPolyline(LineDrawer.createLinePoints(this.condenser.getOutHook(i + 1), this.expansionValves[i].getInHook()));
+      super.drawPolyline(LineDrawer.createLinePoints(this.condenser.getOutHook(i + 1), this.expansionValves[i].getInHook(0)));
 
-      super.drawPolyline(LineDrawer.createLinePoints(this.expansionValves[i].getOutHook(), this.evaporator.getInHook(i + 1)));
+      super.drawPolyline(LineDrawer.createLinePoints(this.expansionValves[i].getOutHook(0), this.evaporator.getInHook(i + 1)));
 
-      super.drawPolyline(LineDrawer.createLinePoints(this.evaporator.getOutHook(i + 1), this.compressors[i].getInHook()));
+      super.drawPolyline(LineDrawer.createLinePoints(this.evaporator.getOutHook(i + 1), this.compressors[i].getInHook(0)));
     }
   }
 

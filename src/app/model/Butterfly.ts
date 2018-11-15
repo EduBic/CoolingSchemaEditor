@@ -1,10 +1,10 @@
 import * as SVG from 'svg.js';
-import { GraphicElement } from './GraphicElement';
+import { GraphicSingleElement } from './GraphicSingleElement';
 import { Point } from './Point';
 import { InOut } from './InOut';
 import { HookPosition } from './HookPosition';
 
-export class Butterfly extends GraphicElement {
+export class Butterfly extends GraphicSingleElement {
   private width: number;
   private height: number;
 

@@ -1,19 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { HookPosition } from './HookPosition';
-import { HookPoint } from './HookPoint';
-
-export class LinkHook {
-  readonly coord: Point;
-  readonly postFromInt: HookPosition;  // connect to children
-  readonly posFromExt: HookPosition;  // connect to external element
-
-  constructor(coord: Point, intPos: HookPosition, extPos: HookPosition) {
-    this.coord = coord;
-    this.postFromInt = intPos;
-    this.posFromExt = extPos;
-  }
-}
+import { LinkHook } from './LinkHook';
 
 export class LinkPair {
   private readonly entry: LinkHook;
@@ -26,26 +14,27 @@ export class LinkPair {
 
   /**
    * Create a link pair that for abilitate the connection from a GraphicGroup
-   * with other GraphicElement.
-   * @param entryPoint coordinate of link that enter in the GraphicGroup.
-   * @param entryPosition position of link with respect of GraphicGroup seen as
+   * with other GraphicElement. N. B. Use absolute coordinate.
+   * @param entryAbsPoint coordinate of link that enter in the GraphicGroup.
+   * @param entryPositionFromExt position of link with respect of GraphicGroup seen as
    * a black box.
-   * @param exitPoint coordinate of link that exit from the GraphicGroup.
-   * @param exitPosition position of link with respect of GraphicGroup seen as
+   * @param exitAbsPoint coordinate of link that exit from the GraphicGroup.
+   * @param exitPositionFromExt position of link with respect of GraphicGroup seen as
    * a black box.
    */
-  public static createLink(entryPoint: Point, entryPosition: HookPosition,
-    exitPoint: Point, exitPosition: HookPosition) {
+  public static createLinkPair(
+    entryAbsPoint: Point, entryPositionFromExt: HookPosition,
+    exitAbsPoint: Point, exitPositionFromExt: HookPosition) {
 
-      const entryExtPos = entryPosition;
-      const entryIntPos = LinkPair.getOppositePosition(entryPosition);
+      const entryExtPos = entryPositionFromExt;
+      const entryIntPos = LinkPair.getOppositePosition(entryPositionFromExt);
 
-      const exitExtPos = exitPosition;
-      const exitIntPos = LinkPair.getOppositePosition(exitPosition);
+      const exitExtPos = exitPositionFromExt;
+      const exitIntPos = LinkPair.getOppositePosition(exitPositionFromExt);
 
       return new LinkPair(
-        new LinkHook(entryPoint, entryIntPos, entryExtPos),
-        new LinkHook(exitPoint, exitIntPos, exitExtPos)
+        new LinkHook(entryAbsPoint, entryIntPos, entryExtPos),
+        new LinkHook(exitAbsPoint, exitIntPos, exitExtPos)
     );
   }
 
@@ -76,13 +65,13 @@ export class LinkPair {
 
   public draw(svg: SVG.G, origin: Point) {
     // Equilater Triangle parameters
-    const side = 4;
-    const angle = 60;
+    const side = 10;
+    const angle = Math.PI / 3;  // 60 DEG
     const halfSide = side / 2;
 
-    const bottomH = halfSide * Math.tan(angle);
-    const totalH = halfSide * Math.tan(angle / 2);
-    const upH = totalH - bottomH;
+    const h = halfSide * Math.tan(angle / 2);
+    const totHeight = halfSide * Math.tan(angle);
+    const H = totHeight - h;
 
     // Triangle points
     let exitPoints: number[];
@@ -98,78 +87,77 @@ export class LinkPair {
       this.entry.coord.y - origin.y
     );
 
-    if (this.fromInternalToExternalTop()) {
-      exitPoints = this.upTriangle(exitRelativeCoord, upH, bottomH, halfSide);
-      entryPoints = this.downTriangle(entryRelativeCoord, upH, bottomH, halfSide);
+    console.log('exit from external: ', this.exit.posFromExt);
 
-    } else if (this.fromInternalToExternalBottom()) {
-      exitPoints = this.downTriangle(exitRelativeCoord, upH, bottomH, halfSide);
-      entryPoints = this.upTriangle(entryRelativeCoord, upH, bottomH, halfSide);
+    if (this.exit.posFromExt === HookPosition.Top) {
+      exitPoints = this.upTriangle(exitRelativeCoord, H, h, halfSide);
 
-    } else if (this.fromInternalToExternalRight()) {
-      exitPoints =  this.rightTriangle(exitRelativeCoord, upH, bottomH, halfSide);
-      entryPoints = this.leftTriangle(entryRelativeCoord, upH, bottomH, halfSide);
+    } else if (this.exit.posFromExt === HookPosition.Bottom) {
+      exitPoints = this.downTriangle(exitRelativeCoord, H, h, halfSide);
 
-    } else if (this.fromInternalToExternalLeft()) {
-      exitPoints = this.leftTriangle(exitRelativeCoord, upH, bottomH, halfSide);
-      entryPoints = this.rightTriangle(entryRelativeCoord, upH, bottomH, halfSide);
+    } else if (this.exit.posFromExt === HookPosition.Right) {
+      exitPoints =  this.rightTriangle(exitRelativeCoord, H, h, halfSide);
+
+    } else if (this.exit.posFromExt === HookPosition.Left) {
+      exitPoints = this.leftTriangle(exitRelativeCoord, H, h, halfSide);
     }
 
-    svg.polygon(exitPoints).fill({color: 'orange'});
-    svg.polygon(entryPoints).fill({color: 'orange'});
+
+    console.log('entry from external: ', this.entry.posFromExt);
+
+    switch (this.entry.posFromExt) {
+      case HookPosition.Top:
+        entryPoints = this.downTriangle(entryRelativeCoord, H, h, halfSide);
+        break;
+      case HookPosition.Bottom:
+        entryPoints = this.upTriangle(entryRelativeCoord, H, h, halfSide);
+        break;
+      case HookPosition.Right:
+        entryPoints = this.leftTriangle(entryRelativeCoord, H, h, halfSide);
+        break;
+      case HookPosition.Left:
+        entryPoints = this.rightTriangle(entryRelativeCoord, H, h, halfSide);
+        break;
+    }
+
+    svg.polygon(entryPoints).fill({color: 'gold'});
+    svg.polygon(exitPoints).fill({color: 'limegreen'});
   }
 
-  private upTriangle(hookRelCoord: Point, upH: number, bottomH: number, halfSide: number): number[] {
+  private upTriangle(hookRelCoord: Point, H: number, h: number, halfSide: number): number[] {
     // Points from top to right to left
     return [
-      hookRelCoord.x, hookRelCoord.y - upH,
-      hookRelCoord.x + halfSide, hookRelCoord.y + bottomH,
-      hookRelCoord.x - halfSide, hookRelCoord.y + bottomH
+      hookRelCoord.x, hookRelCoord.y - H,
+      hookRelCoord.x + halfSide, hookRelCoord.y + h,
+      hookRelCoord.x - halfSide, hookRelCoord.y + h
     ];
   }
 
-  private downTriangle(hookRelCoord: Point, upH: number, bottomH: number, halfSide: number): number[] {
+  private downTriangle(hookRelCoord: Point, H: number, h: number, halfSide: number): number[] {
     // From right to bottom to left
     return [
-      hookRelCoord.x + halfSide, hookRelCoord.y - bottomH,
-      hookRelCoord.x, hookRelCoord.y + upH,
-      hookRelCoord.x - halfSide, hookRelCoord.y - bottomH
+      hookRelCoord.x + halfSide, hookRelCoord.y - h,
+      hookRelCoord.x, hookRelCoord.y + H,
+      hookRelCoord.x - halfSide, hookRelCoord.y - h
     ];
   }
 
-  private rightTriangle(hookRelCoord: Point, upH: number, bottomH: number, halfSide: number): number[] {
+  private rightTriangle(hookRelCoord: Point, H: number, h: number, halfSide: number): number[] {
     // From top to right to bottom
     return [
-      hookRelCoord.x - bottomH, hookRelCoord.y - halfSide,
-      hookRelCoord.x + upH, hookRelCoord.y,
-      hookRelCoord.x - bottomH, hookRelCoord.y + halfSide
+      hookRelCoord.x - h, hookRelCoord.y - halfSide,
+      hookRelCoord.x + H, hookRelCoord.y,
+      hookRelCoord.x - h, hookRelCoord.y + halfSide
     ];
   }
 
-  private leftTriangle(hookRelCoord: Point, upH: number, bottomH: number, halfSide: number): number[] {
+  private leftTriangle(hookRelCoord: Point, H: number, h: number, halfSide: number): number[] {
     // From top to bottom to left
     return [
-      hookRelCoord.x + bottomH, hookRelCoord.y - halfSide,
-      hookRelCoord.x + bottomH, hookRelCoord.y + halfSide,
-      hookRelCoord.x - upH, hookRelCoord.y
+      hookRelCoord.x + h, hookRelCoord.y - halfSide,
+      hookRelCoord.x + h, hookRelCoord.y + halfSide,
+      hookRelCoord.x - H, hookRelCoord.y
     ];
-  }
-
-
-  private fromInternalToExternalTop(): boolean {
-    return this.exit.posFromExt === HookPosition.Top;
-  }
-
-  private fromInternalToExternalBottom(): boolean {
-    return this.exit.posFromExt === HookPosition.Bottom;
-  }
-
-  private fromInternalToExternalRight(): boolean {
-    return this.exit.posFromExt === HookPosition.Right;
-  }
-
-  private fromInternalToExternalLeft(): boolean {
-    return this.exit.posFromExt === HookPosition.Left;
   }
 
 }

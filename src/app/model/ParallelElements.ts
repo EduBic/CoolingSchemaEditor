@@ -26,9 +26,9 @@ export class ParallelElements extends GraphicGroup {
 
     super(origin,
       totWidth, totHeight,
-      LinkPair.createLink(
-        new Point(totWidth / 2, 0), HookPosition.Top,
-        new Point(totWidth / 2, totHeight), HookPosition.Bottom
+      LinkPair.createLinkPair(
+        new Point(totWidth / 2 + origin.x, totHeight + origin.y), HookPosition.Bottom,
+        new Point(totWidth / 2 + origin.x, origin.y), HookPosition.Top
       )
     );
 

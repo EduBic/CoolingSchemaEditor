@@ -1,9 +1,9 @@
 import * as SVG from 'svg.js';
-import { GraphicSingleElement } from './GraphicSingleElement';
 import { Point } from './Point';
 import { LineDrawer } from './LineDrawer';
 import { HookPoint } from './HookPoint';
-import { LinkPair, LinkHook } from './Link';
+import { LinkPair } from './Link';
+import { LinkHook } from './LinkHook';
 import { GraphicElement } from './GraphicElement';
 
 /**
@@ -58,10 +58,10 @@ export abstract class GraphicGroup extends GraphicElement {
     this.children.forEach(child => {
 
       this.drawPolyline(LineDrawer.createLinePoints(
-          child.getOutHook(), this.getRelativeIntExitLinkHook()));
+          child.getOutHook(0), this.getRelativeIntExitLinkHook()));
 
       this.drawPolyline(LineDrawer.createLinePoints(
-        this.getRelativeIntEntryHook(), child.getInHook()));
+        this.getRelativeIntEntryHook(), child.getInHook(0)));
     });
   }
 
@@ -95,7 +95,7 @@ export abstract class GraphicGroup extends GraphicElement {
   private getRelativeIntHookFrom(hook: LinkHook): HookPoint {
     return new HookPoint(
       new Point(hook.coord.x - this.origin.x, hook.coord.y - this.origin.y),
-      hook.fromIntPos
+      hook.posFromInt
     );
   }
 
@@ -118,22 +118,6 @@ export abstract class GraphicGroup extends GraphicElement {
     return this.children.length;
   }
 
-  // protected getInRelativeCoordinates(index: number = 0): Point {
-  //   // console.log('From getInRelativeCoordinate', this.inOutList[index]);
-  //   return new Point(
-  //     this.groupLinkPairs[index].getInCoordinate().x - this.origin.x,
-  //     this.groupLinkPairs[index].getInCoordinate().y - this.origin.y
-  //   );
-  // }
-
-  // protected getOutRelativeCoordinates(index: number = 0): Point {
-  //   // console.log('From getOutRelativeCoordinate', this.inOutList[index]);
-  //   return new Point(
-  //     this.groupLinkPairs[index].getOutCoordinate().x - this.origin.x,
-  //     this.groupLinkPairs[index].getOutCoordinate().y - this.origin.y
-  //   );
-  // }
-
   protected setWidthAndHeightGroup(width: number, height: number) {
     this.widthGroup = width;
     this.heightGroup = height;
@@ -153,18 +137,18 @@ export abstract class GraphicGroup extends GraphicElement {
     this.groupLinkPairs = links;
   }
 
-  public getInHook(index: number = 0): HookPoint {
+  public getInHook(index: number): HookPoint {
     return this.getAbsoluteExtHookFrom(this.groupLinkPairs[index].getEntryLinkHook());
   }
 
-  public getOutHook(index: number = 0): HookPoint {
+  public getOutHook(index: number): HookPoint {
     return this.getAbsoluteExtHookFrom(this.groupLinkPairs[index].getExitLinkHook());
   }
 
   private getAbsoluteExtHookFrom(hook: LinkHook): HookPoint {
     return new HookPoint(
       new Point(hook.coord.x, hook.coord.y),
-      hook.fromExtPos
+      hook.posFromExt
     );
   }
 

@@ -49,11 +49,11 @@ export abstract class GraphicSingleElement extends GraphicElement {
     return this.inOutList[index];
   }
 
-  public getInHook(index: number = 0): HookPoint {
+  public getInHook(index: number): HookPoint {
     return this.inOutList[index].getInHook();
   }
 
-  public getOutHook(index: number = 0): HookPoint {
+  public getOutHook(index: number): HookPoint {
     return this.inOutList[index].getOutHook();
   }
 
