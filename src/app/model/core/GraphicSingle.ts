@@ -8,7 +8,7 @@ import { GraphicElement } from './GraphicElement';
 /**
  * Base class that represent the basic Graphic element drawed inside an SVG.
  */
-export abstract class GraphicSingleElement extends GraphicElement {
+export abstract class GraphicSingle extends GraphicElement {
   protected inOutList: InOut[];
 
   protected svgElement: SVG.Shape;

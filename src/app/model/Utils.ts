@@ -1,8 +1,7 @@
 import * as SVG from 'svg.js';
-import { Point } from './Point';
-import { InOut } from './InOut';
-import { HookPosition } from './HookPosition';
-import { Input } from '@angular/core';
+import { Point } from './core/Point';
+import { InOut } from './core/InOut';
+import { HookPosition } from './core/HookPosition';
 
 export class Utils {
 

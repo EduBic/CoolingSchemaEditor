@@ -1,8 +1,8 @@
 import * as SVG from 'svg.js';
 import { SystemElement } from './SystemElement';
-import { Point } from './Point';
-import { Circle } from './Circle';
-import { ParallelElements } from './ParallelElements';
+import { Point } from './core/Point';
+import { Circle } from './primitive/Circle';
+import { ParallelElements } from './layout/ParallelElements';
 import { TestGroup } from './TestGroup';
 
 

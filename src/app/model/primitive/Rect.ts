@@ -1,16 +1,16 @@
 import * as SVG from 'svg.js';
 
 import {
-  GraphicSingleElement
-} from './GraphicSingleElement';
+  GraphicSingle
+} from '../core/GraphicSingle';
 
 import {
   Point
-} from './Point';
-import { InOut } from './InOut';
-import { HookPosition } from './HookPosition';
+} from '../core/Point';
+import { InOut } from '../core/InOut';
+import { HookPosition } from '../core/HookPosition';
 
-export class Rect extends GraphicSingleElement {
+export class Rect extends GraphicSingle {
 
   private width: number;
   private height: number;

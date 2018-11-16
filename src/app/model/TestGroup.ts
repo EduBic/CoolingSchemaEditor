@@ -1,9 +1,9 @@
 import * as SVG from 'svg.js';
-import { GraphicGroup } from './GraphicGroup';
-import { Point } from './Point';
-import { Rect } from './Rect';
-import { LinkPair } from './Link';
-import { HookPosition } from './HookPosition';
+import { GraphicGroup } from './core/GraphicGroup';
+import { Point } from './core/Point';
+import { Rect } from './primitive/Rect';
+import { LinkPair } from './core/Link';
+import { HookPosition } from './core/HookPosition';
 
 export class TestGroup extends GraphicGroup {
 

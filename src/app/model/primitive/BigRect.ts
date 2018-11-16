@@ -1,10 +1,10 @@
 import * as SVG from 'svg.js';
-import { GraphicSingleElement } from './GraphicSingleElement';
-import { Point } from './Point';
-import { InOut } from './InOut';
-import { HookPosition } from './HookPosition';
+import { GraphicSingle } from './core/GraphicSingle';
+import { Point } from './core/Point';
+import { InOut } from './core/InOut';
+import { HookPosition } from './core/HookPosition';
 
-export class BigRect extends GraphicSingleElement {
+export class BigRect extends GraphicSingle {
 
   private width: number;
   private height: number;

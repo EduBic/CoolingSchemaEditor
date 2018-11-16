@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { InOut } from '../model/InOut';
+import { InOut } from '../model/core/InOut';
 
 @Component({
   // tslint:disable-next-line:component-selector

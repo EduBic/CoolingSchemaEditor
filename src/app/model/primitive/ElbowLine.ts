@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
-import { Point } from './Point';
-import { HookPoint } from './HookPoint';
-import { LineDrawer } from './LineDrawer';
+import { Point } from '../core/Point';
+import { HookPoint } from '../core/HookPoint';
+import { LineDrawer } from '../core/LineDrawer';
 
 export class ElbowLine {
 

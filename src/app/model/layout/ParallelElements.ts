@@ -1,13 +1,13 @@
-import { GraphicGroup } from './GraphicGroup';
-import { GraphicSingleElement } from './GraphicSingleElement';
-import { Point } from './Point';
-import { LinkPair } from './Link';
-import { HookPosition } from './HookPosition';
+import { GraphicGroup } from '../core/GraphicGroup';
+import { GraphicSingle } from '../core/GraphicSingle';
+import { Point } from '../core/Point';
+import { LinkPair } from '../core/Link';
+import { HookPosition } from '../core/HookPosition';
 
 export interface ParallelizerElem {
   getElemWidth(): number;
   getElemHeight(): number;
-  getCopy(origin: Point): GraphicSingleElement;
+  getCopy(origin: Point): GraphicSingle;
 }
 
 export class ParallelElements extends GraphicGroup {

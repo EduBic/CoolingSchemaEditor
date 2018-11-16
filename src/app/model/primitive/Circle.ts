@@ -1,10 +1,10 @@
 import * as SVG from 'svg.js';
-import { GraphicSingleElement } from './GraphicSingleElement';
-import { ParallelizerElem } from './ParallelElements';
-import { Point } from './Point';
-import { InOut } from './InOut';
+import { GraphicSingle } from '../core/GraphicSingle';
+import { ParallelizerElem } from '../layout/ParallelElements';
+import { Point } from '../core/Point';
+import { InOut } from '../core/InOut';
 
-export class Circle extends GraphicSingleElement implements  ParallelizerElem  {
+export class Circle extends GraphicSingle implements  ParallelizerElem  {
 
   private radius: number;
 
@@ -16,7 +16,7 @@ export class Circle extends GraphicSingleElement implements  ParallelizerElem  {
     this.radius = radius;
   }
 
-  getCopy(origin: Point): GraphicSingleElement {
+  getCopy(origin: Point): GraphicSingle {
     return new Circle(origin, this.radius);
   }
 
