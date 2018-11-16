@@ -7,10 +7,11 @@ import { Circle } from './primitive/Circle';
 import { ParallelElements } from './layout/ParallelElements';
 import { LinkPair } from './core/Link';
 import { ConnectorLine } from './primitive/ConnectorLine';
+import { Direction } from './core/InOut';
 
 export class SystemElement extends GraphicGroup {
 
-  private static readonly DIST_LINK = 10;
+  private static readonly DIST_LINK = 30;
 
   private condenser: BigRect;
   private compressors: GraphicGroup[] = [];
@@ -33,7 +34,7 @@ export class SystemElement extends GraphicGroup {
 
     // TODO: construct Children based to width and height of parent group
 
-    const aCircle = new Circle(new Point(0, 0), 25);
+    const aCircle = new Circle(new Point(0, 0), 25, Direction.BottomToTop);
 
     this.compressors.push(
       new ParallelElements(new Point(320, 120), aCircle, 3, 5),
@@ -41,8 +42,8 @@ export class SystemElement extends GraphicGroup {
     );
 
     this.expansionValves.push(
-      new Butterfly(new Point(540, 160), 30, 50), // Right
-      new Butterfly(new Point(60, 160), 30, 50)   // Left
+      new Butterfly(new Point(540, 160), 30, 50, Direction.BottomToTop), // Right
+      new Butterfly(new Point(60, 160), 30, 50, Direction.BottomToTop)   // Left
     );
 
     this.condenser = new BigRect(

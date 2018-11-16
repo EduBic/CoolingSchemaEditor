@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { InOut } from './InOut';
+import { InOut, Direction } from './InOut';
 import { HookPoint } from './HookPoint';
 import { GraphicElement } from './GraphicElement';
 
@@ -8,12 +8,14 @@ import { GraphicElement } from './GraphicElement';
  * Base class that represent the basic Graphic element drawed inside an SVG.
  */
 export abstract class GraphicSingle extends GraphicElement {
-  protected inOutList: InOut[];
+  private inOutList: InOut[];
+  private direction: Direction;
 
   protected svgElement: SVG.Shape;
 
-  constructor(origin: Point, ...inOuts: InOut[]) {
+  constructor(origin: Point, direction: Direction, ...inOuts: InOut[]) {
     super(origin);
+    this.direction = this.direction;
     this.inOutList = inOuts;
   }
 
@@ -60,6 +62,14 @@ export abstract class GraphicSingle extends GraphicElement {
       return this.inOutList[index].getOutHook();
     }
     return this.inOutList[0].getOutHook();
+  }
+
+  protected getDirection(): Direction {
+    return this.direction;
+  }
+
+  protected isVertical(): boolean {
+    return this.direction === Direction.TopToBottom || this.direction === Direction.BottomToTop;
   }
 
 }

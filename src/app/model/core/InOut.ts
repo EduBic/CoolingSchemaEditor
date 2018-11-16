@@ -7,7 +7,8 @@ export enum Direction {
   TopToBottom = 'TopToBottom',
   BottomToTop = 'BottomToTop',
   LeftToRight = 'LeftToRight',
-  RightToLeft = 'RightToLeft'
+  RightToLeft = 'RightToLeft',
+  None = 'NoDirection'
 }
 
 export class InOut {

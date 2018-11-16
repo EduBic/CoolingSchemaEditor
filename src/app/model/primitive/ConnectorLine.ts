@@ -3,13 +3,13 @@ import { Point } from '../core/Point';
 import { HookPoint } from '../core/HookPoint';
 import { LineDrawer } from '../core/LineDrawer';
 import { GraphicSingle } from '../core/GraphicSingle';
-import { InOut } from '../core/InOut';
+import { InOut, Direction } from '../core/InOut';
 import { GraphicElement } from '../core/GraphicElement';
 
 export class ConnectorLine extends GraphicSingle {
 
   constructor(start: HookPoint, end: HookPoint) {
-    super(new Point(0, 0), InOut.createFromHooks(start, end));
+    super(new Point(0, 0), Direction.None, InOut.createFromHooks(start, end));
     this.points = LineDrawer.createLinePoints(start, end);
   }
 

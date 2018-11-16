@@ -2,22 +2,20 @@ import * as SVG from 'svg.js';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { ParallelizerElem } from '../layout/ParallelElements';
 import { Point } from '../core/Point';
-import { InOut } from '../core/InOut';
+import { InOut, Direction } from '../core/InOut';
 
 export class Circle extends GraphicSingle implements  ParallelizerElem  {
 
   private radius: number;
 
-  constructor(origin: Point, radius: number) {
-    super(origin, InOut.createAutoBottomInTopOut(
-      radius * 2, radius * 2, origin
-    ));
+  constructor(origin: Point, radius: number, direction: Direction) {
+    super(origin, direction, InOut.createSimpleInOut(radius * 2, radius * 2, direction, origin));
 
     this.radius = radius;
   }
 
   getCopy(origin: Point): GraphicSingle {
-    return new Circle(origin, this.radius);
+    return new Circle(origin, this.radius, super.getDirection());
   }
 
   draw(host: SVG.G): void {

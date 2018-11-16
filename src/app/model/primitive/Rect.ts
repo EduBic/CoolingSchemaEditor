@@ -17,10 +17,8 @@ export class Rect extends GraphicSingle implements ParallelizerElem {
 
   private svgRect: SVG.Rect;
 
-  constructor(origin: Point, width: number, height: number) {
-    super(origin,
-      InOut.createSimpleInOut(width, height, Direction.BottomToTop, origin)
-    );
+  constructor(origin: Point, width: number, height: number, direction: Direction) {
+    super(origin, direction, InOut.createSimpleInOut(width, height, direction, origin));
     this.width = width;
     this.height = height;
   }
@@ -48,7 +46,7 @@ export class Rect extends GraphicSingle implements ParallelizerElem {
   }
 
   public getCopy(origin: Point): GraphicSingle {
-    return new Rect(origin, this.width, this.height);
+    return new Rect(origin, this.width, this.height, super.getDirection());
   }
 
 }

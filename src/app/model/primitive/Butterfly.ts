@@ -2,39 +2,21 @@ import * as SVG from 'svg.js';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { Point } from '../core/Point';
 import { InOut, Direction } from '../core/InOut';
-import { HookPosition } from '../core/HookPosition';
 
 export class Butterfly extends GraphicSingle {
   private width: number;
   private height: number;
 
-  private vertical: boolean;
-
   private shape: SVG.Polygon;
 
-  constructor(origin: Point, width: number, height: number, vertical = true) {
-    if (vertical) {
-      // vertical
-      super(origin,
-        InOut.createSimpleInOut(width, height,
-          Direction.TopToBottom, origin)
-      );
-      this.width = width;
-      this.height = height;
-    } else {
-      // horizontal
-      super(origin,
-        InOut.createSimpleInOut(width, height, Direction.LeftToRight, origin)
-      );
-      this.width = width;
-      this.height = height;
-    }
-
-    this.vertical = vertical;
+  constructor(origin: Point, width: number, height: number, direction: Direction) {
+    super(origin, direction, InOut.createSimpleInOut(width, height, direction, origin));
+    this.width = width;
+    this.height = height;
   }
 
   draw(host: SVG.G): void {
-    if (this.vertical) {
+    if (this.isVertical()) {
       this.shape = host.polygon([
         this.origin.x, this.origin.y,
         this.origin.x + this.width, this.origin.y,
