@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { Point } from '../core/Point';
-import { InOut, Direction } from '../core/InOut';
+import { HookPair, Direction } from '../core/HookPair';
 
 export class Butterfly extends GraphicSingle {
   private width: number;
@@ -10,7 +10,7 @@ export class Butterfly extends GraphicSingle {
   private shape: SVG.Polygon;
 
   constructor(origin: Point, width: number, height: number, direction: Direction) {
-    super(origin, direction, InOut.createSimpleInOut(width, height, direction, origin));
+    super(origin, direction, HookPair.createSimpleInOut(width, height, direction, origin));
     this.width = width;
     this.height = height;
   }

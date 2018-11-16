@@ -22,4 +22,11 @@ export class Point {
   public isTopLeftOf(point: Point): boolean {
     return this.x <= point.x && this.y <= point.y;
   }
+
+  public isIntoSegment(segStart: Point, segEnd: Point): boolean {
+    return this.x >= Math.min(segStart.x, segEnd.x) &&
+            this.x <= Math.max(segStart.x, segEnd.x) &&
+            this.y >= Math.min(segStart.y, segEnd.y) &&
+            this.y <= Math.max(segStart.y, segEnd.y);
+  }
 }

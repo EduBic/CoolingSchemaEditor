@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 import { Point } from './core/Point';
-import { InOut } from './core/InOut';
+import { HookPair } from './core/HookPair';
 import { HookPosition } from './core/HookPosition';
 
 export class Utils {
@@ -72,7 +72,7 @@ export class Utils {
     .attr('stroke', 'blue');
   }
 
-  public static drawSingleElbowPolyline(_out: InOut, _in: InOut, svg: SVG.G) {
+  public static drawSingleElbowPolyline(_out: HookPair, _in: HookPair, svg: SVG.G) {
     // N.B. the flow is: out -> in
     const log = console.log;
     const inPoint = _in.getInCoordinate();

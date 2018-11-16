@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { InOut, Direction } from './InOut';
+import { HookPair, Direction } from './HookPair';
 import { HookPoint } from './HookPoint';
 import { GraphicElement } from './GraphicElement';
 
@@ -8,60 +8,60 @@ import { GraphicElement } from './GraphicElement';
  * Base class that represent the basic Graphic element drawed inside an SVG.
  */
 export abstract class GraphicSingle extends GraphicElement {
-  private inOutList: InOut[];
+  private hookPairs: HookPair[];
   private direction: Direction;
 
   protected svgElement: SVG.Shape;
 
-  constructor(origin: Point, direction: Direction, ...inOuts: InOut[]) {
+  constructor(origin: Point, direction: Direction, ...inOuts: HookPair[]) {
     super(origin);
     this.direction = this.direction;
-    this.inOutList = inOuts;
+    this.hookPairs = inOuts;
   }
 
   public getInCoordinates(index: number = 0): Point {
-    return this.inOutList[index].getInCoordinate();
+    return this.hookPairs[index].getInCoordinate();
   }
 
   public getOutCoordinates(index: number = 0): Point {
     // console.log('From getOutCoordinate', this.inOutList);
-    return this.inOutList[index].getOutCoordinate();
+    return this.hookPairs[index].getOutCoordinate();
   }
 
   public drawInputPoint(host: SVG.G) {
-    this.inOutList.forEach(inOut => {
+    this.hookPairs.forEach(inOut => {
       inOut.drawInputPoint(host);
     });
   }
 
   public drawOutputPoint(host: SVG.G) {
-    this.inOutList.forEach(inOut => {
+    this.hookPairs.forEach(inOut => {
       inOut.drawOutputPoint(host);
     });
   }
 
   public removePoints() {
-    this.inOutList.forEach(inOut => {
+    this.hookPairs.forEach(inOut => {
       inOut.removePoints();
     });
   }
 
-  public getHook(index: number = 0): InOut {
-    return this.inOutList[index];
+  public getHook(index: number = 0): HookPair {
+    return this.hookPairs[index];
   }
 
   public getInHook(index?: number): HookPoint {
     if (index) {
-      return this.inOutList[index].getInHook();
+      return this.hookPairs[index].getInHook();
     }
-    return this.inOutList[0].getInHook();
+    return this.hookPairs[0].getInHook();
   }
 
   public getOutHook(index?: number): HookPoint {
     if (index) {
-      return this.inOutList[index].getOutHook();
+      return this.hookPairs[index].getOutHook();
     }
-    return this.inOutList[0].getOutHook();
+    return this.hookPairs[0].getOutHook();
   }
 
   protected getDirection(): Direction {

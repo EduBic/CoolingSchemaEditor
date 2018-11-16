@@ -3,18 +3,19 @@ import { Point } from '../core/Point';
 import { HookPoint } from '../core/HookPoint';
 import { LineDrawer } from '../core/LineDrawer';
 import { GraphicSingle } from '../core/GraphicSingle';
-import { InOut, Direction } from '../core/InOut';
+import { HookPair, Direction } from '../core/HookPair';
 import { GraphicElement } from '../core/GraphicElement';
 import { HookPosition } from '../core/HookPosition';
 
 export class ConnectorLine extends GraphicSingle {
 
   private points: Point[] = [];
+  private intersections: Point[] = [];
 
   constructor(start: HookPoint, end: HookPoint) {
     super(new Point(0, 0),
       ConnectorLine.getDirection(start.position, end.position),
-      InOut.createFromHooks(start, end)
+      HookPair.createFromHooks(start, end)
     );
     this.points = LineDrawer.createLinePoints(start, end);
   }
@@ -46,6 +47,12 @@ export class ConnectorLine extends GraphicSingle {
       .attr('fill', 'none')
       .attr('class', 'connector-line');
 
+      // this.intersections.forEach((intersection: Point) => {
+      //   this.svgElement.polyline(
+      //       intersection
+      //     )
+      // })
+
     this.svgElement.on('mouseover', (e) => {
       this.drawInputPoint(host);
       this.drawOutputPoint(host);
@@ -65,6 +72,87 @@ export class ConnectorLine extends GraphicSingle {
     });
 
     return res;
+  }
+
+  public connectWith(element: GraphicElement) {
+    const intersection = this.findIntersections(element.getOutHook())[0];
+    this.intersections.push(intersection);
+  }
+
+  public findIntersections(outPoint: HookPoint): Point[] {
+
+    const segments = this.takeSegment();
+    const intersectionsFound: Point[] = [];
+
+    // Search FIRST intersection with lines
+    segments.forEach((segment: Point[]) => {
+
+      let intersection: Point;
+
+      if (this.lineIsHorizontal(segment)) {
+        intersection = new Point(segment[0].x, outPoint.coord.y);
+      } else if (this.lineIsVertical(segment)) {
+        intersection = new Point(outPoint.coord.x, segment[0].y);
+      }
+
+      if (intersection.isIntoSegment(segment[0], segment[1])) {
+        intersectionsFound.push(intersection);
+      }
+    });
+
+    return intersectionsFound;
+  }
+
+  private takeSegment(): Point[][] {
+    const lines: Point[][] = [];
+
+    // take segment between the points
+    const max = this.points.length % 2 === 0 ? this.points.length : this.points.length - 1;
+    for (let i = 0; i < max - 1; i++) {
+      lines.push([ this.points[i], this.points[i + 1] ]);
+    }
+
+    return lines;
+  }
+
+  private lineIsHorizontal(twoPoints: Point[]): boolean {
+    if (twoPoints.length > 2) {
+      console.log('Max points is 2!');
+    }
+    return twoPoints[0].x === twoPoints[1].x;
+  }
+
+  private lineIsVertical(twoPoints: Point[]): boolean {
+    if (twoPoints.length > 2) {
+      console.log('Max points is 2!');
+    }
+    return twoPoints[0].y === twoPoints[1].y;
+  }
+
+
+  private computeIntersection(outPoint: Point, segStart: Point, segEnd: Point): Point {
+
+    // intersection with horizontal
+    if (segEnd.y - segStart.y === 0) {
+      console.log('No intersection with horizontal line');
+    } else {
+      const interX = (outPoint.y - segStart.y) / (segEnd.y - segStart.y) * (segEnd.x - segStart.x) + segStart.x;
+      const interY = outPoint.y;
+
+      return new Point(interX, interY);
+    }
+
+    // intersection with vertical
+    if (segEnd.x - segStart.y === 0) {
+      console.log('No intersection with vertical line');
+    } else {
+      const interX = outPoint.x;
+      const interY = (outPoint.x - segStart.x) / (segEnd.x - segStart.x) * (segEnd.y - segStart.y) + segStart.y;
+
+      return new Point(interX, interY);
+    }
+
+    return null;
   }
 
 }

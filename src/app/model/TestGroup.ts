@@ -4,6 +4,7 @@ import { Point } from './core/Point';
 import { Rect } from './primitive/Rect';
 import { LinkPair } from './core/Link';
 import { HookPosition } from './core/HookPosition';
+import { Direction } from './core/HookPair';
 
 export class TestGroup extends GraphicGroup {
 
@@ -12,7 +13,7 @@ export class TestGroup extends GraphicGroup {
 
     const myOrigin = new Point(100, 100);
 
-    const aRect = new Rect(new Point(20, 10), 30, 30);
+    const aRect = new Rect(new Point(20, 10), 30, 30, Direction.BottomToTop);
     this.addChild(aRect);
 
     const entry = new Point(myOrigin.x + 25, myOrigin.y + 50);

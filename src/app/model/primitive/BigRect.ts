@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { Point } from '../core/Point';
-import { InOut } from '../core/InOut';
+import { HookPair, Direction } from '../core/HookPair';
 import { HookPosition } from '../core/HookPosition';
 
 export class BigRect extends GraphicSingle {
@@ -13,6 +13,7 @@ export class BigRect extends GraphicSingle {
 
   constructor(origin: Point, width: number, height: number, percent: number = 0.1, invert: boolean) {
     super(origin,
+      Direction.None,
       BigRect.externalInOut(origin, width, height, percent, invert),
       BigRect.rightInOut(origin, width, height, percent, invert),
       BigRect.leftInOut(origin, width, height, percent, invert)
@@ -21,7 +22,7 @@ export class BigRect extends GraphicSingle {
     this.height = height;
   }
 
-  private static externalInOut(origin, width, height, percent, invert: boolean): InOut {
+  private static externalInOut(origin, width, height, percent, invert: boolean): HookPair {
     let _in;
     let _out;
 
@@ -33,13 +34,13 @@ export class BigRect extends GraphicSingle {
       _out = new Point(origin.x + width * percent, origin.y);
     }
 
-    return new InOut(_in.x, _in.y, _out.x, _out.y,
+    return new HookPair(_in.x, _in.y, _out.x, _out.y,
       invert ? HookPosition.Bottom : HookPosition.Top,
       invert ? HookPosition.Bottom : HookPosition.Top
     );
   }
 
-  private static leftInOut(origin, width, height, percent, invert: boolean): InOut {
+  private static leftInOut(origin, width, height, percent, invert: boolean): HookPair {
     let _in;
     let _out;
 
@@ -51,13 +52,13 @@ export class BigRect extends GraphicSingle {
       _out = new Point(origin.x, origin.y + height / 2);
     }
 
-    return new InOut(_in.x, _in.y, _out.x, _out.y,
+    return new HookPair(_in.x, _in.y, _out.x, _out.y,
       invert ? HookPosition.Left : HookPosition.Bottom,
       invert ? HookPosition.Top : HookPosition.Left
     );
   }
 
-  private static rightInOut(origin, width, height, percent, invert: boolean): InOut {
+  private static rightInOut(origin, width, height, percent, invert: boolean): HookPair {
     let _in;
     let _out;
 
@@ -69,7 +70,7 @@ export class BigRect extends GraphicSingle {
       _out = new Point(origin.x + width, origin.y + height / 2);
     }
 
-    return new InOut(_in.x, _in.y, _out.x, _out.y,
+    return new HookPair(_in.x, _in.y, _out.x, _out.y,
       invert ? HookPosition.Right : HookPosition.Bottom,
       invert ? HookPosition.Top : HookPosition.Right
     );

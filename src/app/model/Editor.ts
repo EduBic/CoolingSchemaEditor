@@ -7,7 +7,7 @@ import { ParallelElements } from './layout/ParallelElements';
 import { Rect } from './primitive/Rect';
 import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
-import { Direction } from './core/InOut';
+import { Direction } from './core/HookPair';
 
 
 export class Editor {
@@ -43,6 +43,14 @@ export class Editor {
 
     const line = new ConnectorLine(rect.getOutHook(), butt.getInHook());
     line.draw(this.main);
+
+    const inter = line.findIntersections(circle.getOutHook())[0];
+    console.log(inter);
+
+
+    this.main.circle(5)
+      .move(inter.x - 2.5, inter.y - 2.5)
+      .attr('fill', '#f44242');
 
     this.main.transform({
       scale: 1
