@@ -18,7 +18,7 @@ export class LineDrawer {
 
     if (LineDrawer.DEBUG) {
       console.log('Connect OUT:', outPoint, ' with IN: ', inPoint);
-      console.log(outPos + ' -> ');
+      console.log(outPos + ' -> ' + inPos);
     }
     switch (outPos) {
       case HookPosition.Top:
@@ -36,10 +36,6 @@ export class LineDrawer {
 
     const points: Point[] = [];
     points.push(outPoint);
-
-    if (LineDrawer.DEBUG) {
-      console.log(inPos);
-    }
 
     switch (inPos) {
       case HookPosition.Top: {
@@ -132,7 +128,6 @@ export class LineDrawer {
     points.push(outPoint);
 
     if (LineDrawer.DEBUG) {
-      console.log(inPos);
       // console.log('Points Out/In', outPoint, inPoint);
     }
 
@@ -228,7 +223,6 @@ export class LineDrawer {
     points.push(outPoint);
 
     if (LineDrawer.DEBUG) {
-      console.log(inPos);
     }
 
     switch (inPos) {
@@ -342,9 +336,8 @@ export class LineDrawer {
     points.push(outPoint);
 
     if (LineDrawer.DEBUG) {
-      console.log(inPos);
+      // console.log('Points Out/In', outPoint, inPoint);
     }
-    // console.log('Points Out/In', outPoint, inPoint);
 
     switch (inPos) {
       case HookPosition.Top: {

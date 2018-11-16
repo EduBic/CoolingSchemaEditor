@@ -1,3 +1,6 @@
+import { HookPosition } from './HookPosition';
+import { HookPoint } from './HookPoint';
+
 export class Point {
   public readonly x: number;
   public readonly y: number;
@@ -29,4 +32,5 @@ export class Point {
             this.y >= Math.min(segStart.y, segEnd.y) &&
             this.y <= Math.max(segStart.y, segEnd.y);
   }
+
 }

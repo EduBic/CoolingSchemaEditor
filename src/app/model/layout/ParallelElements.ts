@@ -1,7 +1,7 @@
 import { GraphicGroup } from '../core/GraphicGroup';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { Point } from '../core/Point';
-import { LinkPair } from '../core/Link';
+import { LinkPair } from '../core/LinkPair';
 import { HookPosition } from '../core/HookPosition';
 
 export interface ParallelizerElem {

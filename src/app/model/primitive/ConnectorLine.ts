@@ -10,7 +10,6 @@ import { HookPosition } from '../core/HookPosition';
 export class ConnectorLine extends GraphicSingle {
 
   private points: Point[] = [];
-  private intersections: Point[] = [];
 
   constructor(start: HookPoint, end: HookPoint) {
     super(new Point(0, 0),
@@ -32,12 +31,12 @@ export class ConnectorLine extends GraphicSingle {
     }
   }
 
-  public static connect(thisElement: GraphicElement, thisIndex: number,
-    otherElement, otherIndex: number): ConnectorLine {
+  public static connect(firstElement: GraphicElement, firstIndex: number,
+    secondElement, secondIndex: number): ConnectorLine {
 
     return new ConnectorLine(
-      thisElement.getOutHook(thisIndex),
-      otherElement.getInHook(otherIndex)
+      firstElement.getOutHook(firstIndex),
+      secondElement.getInHook(secondIndex)
     );
   }
 
@@ -47,11 +46,11 @@ export class ConnectorLine extends GraphicSingle {
       .attr('fill', 'none')
       .attr('class', 'connector-line');
 
-      // this.intersections.forEach((intersection: Point) => {
-      //   this.svgElement.polyline(
-      //       intersection
-      //     )
-      // })
+    // this.intersections.forEach((intersection: Point) => {
+    //   host.polyline(
+    //       intersection.x, intersection.y
+    //     )
+    // })
 
     this.svgElement.on('mouseover', (e) => {
       this.drawInputPoint(host);
@@ -74,12 +73,27 @@ export class ConnectorLine extends GraphicSingle {
     return res;
   }
 
-  public connectWith(element: GraphicElement) {
-    const intersection = this.findIntersections(element.getOutHook())[0];
-    this.intersections.push(intersection);
+  public connectWithOutputOf(element: GraphicElement): ConnectorLine {
+    const outHookElem = element.getOutHook();
+    const intersection = this.findIntersections(outHookElem)[0];
+
+    return new ConnectorLine(
+      new HookPoint(outHookElem.coord, outHookElem.position),
+      new HookPoint(intersection, outHookElem.getOppositePosition())
+    );
   }
 
-  public findIntersections(outPoint: HookPoint): Point[] {
+  public connectWithInputOf(element: GraphicElement): ConnectorLine {
+    const inHookElem = element.getInHook();
+    const intersection = this.findIntersections(inHookElem)[0];
+
+    return new ConnectorLine(
+      new HookPoint(intersection, inHookElem.getOppositePosition()),
+      new HookPoint(inHookElem.coord, inHookElem.position)
+    );
+  }
+
+  private findIntersections(outPoint: HookPoint): Point[] {
 
     const segments = this.takeSegment();
     const intersectionsFound: Point[] = [];

@@ -17,6 +17,7 @@ export class Butterfly extends GraphicSingle {
 
   draw(host: SVG.G): void {
     if (this.isVertical()) {
+      // console.log('vertical');
       this.shape = host.polygon([
         this.origin.x, this.origin.y,
         this.origin.x + this.width, this.origin.y,
@@ -24,6 +25,7 @@ export class Butterfly extends GraphicSingle {
         this.origin.x + this.width, this.origin.y + this.height
       ]);
     } else {
+      // console.log('horizontal');
       this.shape = host.polygon([
         this.origin.x, this.origin.y,
         this.origin.x, this.origin.y + this.height,

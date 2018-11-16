@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { HookPoint } from './HookPoint';
-import { LinkPair } from './Link';
+import { LinkPair } from './LinkPair';
 import { LinkHook } from './LinkHook';
 import { GraphicElement } from './GraphicElement';
 import { ConnectorLine } from '../primitive/ConnectorLine';
@@ -130,7 +130,7 @@ export abstract class GraphicGroup extends GraphicElement {
 
   public addChildren(children: GraphicElement[]): GraphicGroup {
     children.forEach(newChild => {
-      this.children.push(newChild);
+      this.addChild(newChild);
     });
     return this;
   }

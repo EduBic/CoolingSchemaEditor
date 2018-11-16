@@ -15,7 +15,7 @@ export abstract class GraphicSingle extends GraphicElement {
 
   constructor(origin: Point, direction: Direction, ...inOuts: HookPair[]) {
     super(origin);
-    this.direction = this.direction;
+    this.direction = direction;
     this.hookPairs = inOuts;
   }
 

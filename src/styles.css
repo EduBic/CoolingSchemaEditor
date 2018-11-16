@@ -21,5 +21,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .connector-line {
+  stroke-width: 3px;
   stroke: #0077be;
 }
