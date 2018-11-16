@@ -5,7 +5,7 @@ import { GraphicGroup } from './core/GraphicGroup';
 import { HookPosition } from './core/HookPosition';
 import { Circle } from './primitive/Circle';
 import { ParallelElements } from './layout/ParallelElements';
-import { LinkPair } from './core/Link';
+import { LinkPair } from './core/LinkPair';
 import { ConnectorLine } from './primitive/ConnectorLine';
 import { Direction } from './core/HookPair';
 
@@ -42,8 +42,8 @@ export class SystemElement extends GraphicGroup {
     );
 
     this.expansionValves.push(
-      new Butterfly(new Point(540, 160), 30, 50, Direction.BottomToTop), // Right
-      new Butterfly(new Point(60, 160), 30, 50, Direction.BottomToTop)   // Left
+      new Butterfly(new Point(540, 160), 30, 50, Direction.TopToBottom), // Right
+      new Butterfly(new Point(60, 160), 30, 50, Direction.TopToBottom)   // Left
     );
 
     this.condenser = new BigRect(

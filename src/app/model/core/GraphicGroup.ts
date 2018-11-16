@@ -68,7 +68,9 @@ export abstract class GraphicGroup extends GraphicElement {
   }
 
   /**
-   * Sandbox method for generate automatically ConnectorLines
+   * Sandbox method for generate automatically ConnectorLines for simple
+   * GraphicGroup. Override it or define a new method if your GraphicGroup is
+   * complex. Remeber to call it in the constructor subclass.
    */
   protected generateConnections() {
     // console.log('Draw standard Connection with children');
@@ -90,23 +92,23 @@ export abstract class GraphicGroup extends GraphicElement {
   public connectElementToGroup(indexGroup: number, element: GraphicElement, indexElem = 0): ConnectorLine[] {
     const res: ConnectorLine[] = [];
     res.push(
-      new ConnectorLine(element.getOutHook(indexElem), this.getOutHook(indexGroup))
+      new ConnectorLine(element.getOutHook(indexElem), this.getRelativeIntExitLinkHook(indexGroup))
     );
     res.push(
-      new ConnectorLine(this.getInHook(indexGroup), element.getInHook(indexElem))
+      new ConnectorLine(this.getRelativeIntEntryHook(indexGroup), element.getInHook(indexElem))
     );
 
     return res;
   }
 
-  // Hooks
+  // Internal Hooks
 
-  private getRelativeIntExitLinkHook(): HookPoint {
-    return this.getRelativeIntHookFrom(this.groupLinkPairs[0].getExitLinkHook());
+  private getRelativeIntExitLinkHook(index = 0): HookPoint {
+    return this.getRelativeIntHookFrom(this.groupLinkPairs[index].getExitLinkHook());
   }
 
-  private getRelativeIntEntryHook(): HookPoint {
-    return this.getRelativeIntHookFrom(this.groupLinkPairs[0].getEntryLinkHook());
+  private getRelativeIntEntryHook(index = 0): HookPoint {
+    return this.getRelativeIntHookFrom(this.groupLinkPairs[index].getEntryLinkHook());
   }
 
   private getRelativeIntHookFrom(hook: LinkHook): HookPoint {
@@ -135,14 +137,9 @@ export abstract class GraphicGroup extends GraphicElement {
     return this;
   }
 
-  public getChildrenSize(): number {
-    return this.children.length;
-  }
-
   private addConn(conn: GraphicElement) {
     this.connections.push(conn);
   }
-
 
 
   protected setWidthAndHeightGroup(width: number, height: number) {
@@ -154,10 +151,18 @@ export abstract class GraphicGroup extends GraphicElement {
    * Set new Links and delete the previous ones.
    * @param inOuts: the new links for the GraphicGroup
    */
-  public setLink(...links: LinkPair[]): void {
+  protected setLink(...links: LinkPair[]): void {
     this.groupLinkPairs = links;
   }
 
+  // External Hooks
+
+  /**
+   * Get Input Hook of GraphicGroup view as a black box. Use this method only
+   * for operation with external GraphicElements, not for children.
+   * @param index index of Link of the GraphicGroup. If no index is set,
+   * 0 is taken as index.
+   */
   public getInHook(index?: number): HookPoint {
     let link;
     if (index) {
@@ -168,6 +173,12 @@ export abstract class GraphicGroup extends GraphicElement {
     return this.getAbsoluteExtHookFrom(link);
   }
 
+   /**
+   * Get Output Hook of GraphicGroup view as a black box. Use this method only
+   * for operation with external GraphicElements, not for children.
+   * @param index index of Link of the GraphicGroup. If no index is set,
+   * 0 is taken as index.
+   */
   public getOutHook(index?: number): HookPoint {
     let link;
     if (index) {
