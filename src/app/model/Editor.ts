@@ -21,7 +21,7 @@ export class Editor {
 
   draw() {
     const sys = new SystemElement(new Point(0, 0));
-    sys.draw(this.main);
+    // sys.draw(this.main);
 
     // Parallel
     // const aCircle = new Circle(new Point(0, 0), 30);
@@ -33,8 +33,8 @@ export class Editor {
     // const testGroup = new TestGroup();
     // testGroup.draw(this.main);
 
-    // const test = new TestMiniCycle();
-    // test.draw(this.main);
+    const test = new TestMiniCycle();
+    test.draw(this.main);
 
     // TEST Lines
     // const rect = new Rect(new Point(100, 150), 40, 40, Direction.LeftToRight);

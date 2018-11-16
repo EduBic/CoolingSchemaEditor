@@ -24,3 +24,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   stroke-width: 3px;
   stroke: #0077be;
 }
+
+.intersection-point {
+  stroke: crimson;
+  fill: transparent;
+  stroke-width: 2px;
+}

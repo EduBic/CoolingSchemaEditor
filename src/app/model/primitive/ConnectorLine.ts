@@ -11,6 +11,9 @@ export class ConnectorLine extends GraphicSingle {
 
   private points: Point[] = [];
 
+  private intersections: Point[] = [];  // Mainly for debug
+  private svgIntersections: SVG.Path[] = [];
+
   constructor(start: HookPoint, end: HookPoint) {
     super(new Point(0, 0),
       ConnectorLine.getDirection(start.position, end.position),
@@ -46,19 +49,16 @@ export class ConnectorLine extends GraphicSingle {
       .attr('fill', 'none')
       .attr('class', 'connector-line');
 
-    // this.intersections.forEach((intersection: Point) => {
-    //   host.polyline(
-    //       intersection.x, intersection.y
-    //     )
-    // })
 
     this.svgElement.on('mouseover', (e) => {
       this.drawInputPoint(host);
       this.drawOutputPoint(host);
+      this.drawIntersections(host);
     });
 
     this.svgElement.on('mouseleave', (e) => {
       this.removePoints();
+      this.removeIntersectionShapes();
     });
   }
 
@@ -73,9 +73,41 @@ export class ConnectorLine extends GraphicSingle {
     return res;
   }
 
+  private getCrossShapePoints(intersection: Point): Point[] {
+    const res: Point[] = [];
+    const size = 5;
+
+    res.push(new Point(intersection.x - size, intersection.y - size));
+    res.push(new Point(intersection.x + size, intersection.y + size));
+    res.push(new Point(intersection.x - size, intersection.y + size));
+    res.push(new Point(intersection.x + size, intersection.y - size));
+
+    return res;
+  }
+
+  private drawIntersections(host: SVG.G) {
+    this.intersections.forEach((intersection: Point) => {
+      const ps = this.getCrossShapePoints(intersection);
+
+      this.svgIntersections.push(
+        host.path(
+          'M' + ' ' + ps[0].x + ' ' + ps[0].y + ' ' + ps[1].x + ' ' + ps[1].y + ' ' +
+          'M' + ' ' + ps[2].x + ' ' + ps[2].y + ' ' + ps[3].x + ' ' + ps[3].y
+        ).addClass('intersection-point')
+      );
+    });
+  }
+
+  private removeIntersectionShapes() {
+    this.svgIntersections.forEach((svgIntersection: SVG.Path) => {
+      svgIntersection.remove();
+    });
+  }
+
   public connectWithOutputOf(element: GraphicElement): ConnectorLine {
     const outHookElem = element.getOutHook();
     const intersection = this.findIntersections(outHookElem)[0];
+    this.intersections.push(intersection);
 
     return new ConnectorLine(
       new HookPoint(outHookElem.coord, outHookElem.position),
@@ -86,6 +118,7 @@ export class ConnectorLine extends GraphicSingle {
   public connectWithInputOf(element: GraphicElement): ConnectorLine {
     const inHookElem = element.getInHook();
     const intersection = this.findIntersections(inHookElem)[0];
+    this.intersections.push(intersection);
 
     return new ConnectorLine(
       new HookPoint(intersection, inHookElem.getOppositePosition()),
