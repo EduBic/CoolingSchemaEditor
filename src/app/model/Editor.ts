@@ -35,11 +35,11 @@ export class Editor {
     // TEST Lines
     const rect = new Rect(new Point(100, 150), 40, 40, Direction.LeftToRight);
     const butt = new Butterfly(new Point(300, 100), 50, 25, Direction.LeftToRight);
-    const circle = new Circle(new Point(160, 250), 30, Direction.BottomToTop);
+    const circle = new Circle(new Point(180, 250), 20, Direction.BottomToTop);
 
     rect.draw(this.main);
     butt.draw(this.main);
-    // circle.draw(this.main);
+    circle.draw(this.main);
 
     const line = new ConnectorLine(rect.getOutHook(), butt.getInHook());
     line.draw(this.main);

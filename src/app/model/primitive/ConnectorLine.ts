@@ -5,15 +5,31 @@ import { LineDrawer } from '../core/LineDrawer';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { InOut, Direction } from '../core/InOut';
 import { GraphicElement } from '../core/GraphicElement';
+import { HookPosition } from '../core/HookPosition';
 
 export class ConnectorLine extends GraphicSingle {
 
+  private points: Point[] = [];
+
   constructor(start: HookPoint, end: HookPoint) {
-    super(new Point(0, 0), Direction.None, InOut.createFromHooks(start, end));
+    super(new Point(0, 0),
+      ConnectorLine.getDirection(start.position, end.position),
+      InOut.createFromHooks(start, end)
+    );
     this.points = LineDrawer.createLinePoints(start, end);
   }
 
-  private points: Point[] = [];
+  private static getDirection(start: HookPosition, end: HookPosition): Direction {
+    if (start === HookPosition.Top && end === HookPosition.Bottom) {
+      return Direction.TopToBottom;
+    } else if (start === HookPosition.Bottom && end === HookPosition.Top) {
+      return Direction.BottomToTop;
+    } else if (start === HookPosition.Right && end === HookPosition.Left) {
+      return Direction.RightToLeft;
+    } else if (start === HookPosition.Left && end === HookPosition.Right) {
+      return Direction.LeftToRight;
+    }
+  }
 
   public static connect(thisElement: GraphicElement, thisIndex: number,
     otherElement, otherIndex: number): ConnectorLine {

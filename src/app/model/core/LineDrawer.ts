@@ -4,7 +4,7 @@ import { HookPoint } from './HookPoint';
 
 export class LineDrawer {
 
-  private static readonly DEBUG = true;
+  private static readonly DEBUG = false;
 
   public static createLinePoints(_out: HookPoint, _in: HookPoint): Point[] {
 
