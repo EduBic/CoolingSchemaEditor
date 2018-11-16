@@ -51,6 +51,8 @@ export class ParallelElements extends GraphicGroup {
 
       this.addChild(clone);
     }
+
+    super.generateConnections();
   }
 
 }

@@ -8,7 +8,6 @@ import {
   Point
 } from '../core/Point';
 import { InOut, Direction } from '../core/InOut';
-import { HookPosition } from '../core/HookPosition';
 import { ParallelizerElem } from '../layout/ParallelElements';
 
 export class Rect extends GraphicSingle implements ParallelizerElem {
@@ -31,12 +30,12 @@ export class Rect extends GraphicSingle implements ParallelizerElem {
       .move(this.origin.x, this.origin.y)
       .addClass('rect');
 
-    this.svgRect.on('mouseover', (e) => {
+    this.svgRect.on('mouseover', () => {
       this.drawInputPoint(host);
       this.drawOutputPoint(host);
     });
 
-    this.svgRect.on('mouseleave', (e) => {
+    this.svgRect.on('mouseleave', () => {
       this.removePoints();
     });
   }

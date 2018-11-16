@@ -19,3 +19,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .rect {
   fill: rgba(0, 0, 0, 0.6);
 }
+
+.connector-line {
+  stroke: #0077be;
+}

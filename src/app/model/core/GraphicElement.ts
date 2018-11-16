@@ -11,8 +11,9 @@ export abstract class GraphicElement {
 
   public abstract draw(host: SVG.G): void;
 
-  public abstract getInHook(index: number): HookPoint;
+  public abstract getInHook(index?: number): HookPoint;
 
-  public abstract getOutHook(index: number): HookPoint;
+  public abstract getOutHook(index?: number): HookPoint;
+
 
 }

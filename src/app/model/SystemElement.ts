@@ -1,20 +1,12 @@
-import {
-  Butterfly
-} from './primitive/Butterfly';
-import {
-  Point
-} from './core/Point';
-import {
-  BigRect
-} from './primitive/BigRect';
-import {
-  LineDrawer
-} from './core/LineDrawer';
+import { Butterfly } from './primitive/Butterfly';
+import { Point } from './core/Point';
+import { BigRect } from './primitive/BigRect';
 import { GraphicGroup } from './core/GraphicGroup';
 import { HookPosition } from './core/HookPosition';
 import { Circle } from './primitive/Circle';
 import { ParallelElements } from './layout/ParallelElements';
 import { LinkPair } from './core/Link';
+import { ConnectorLine } from './primitive/ConnectorLine';
 
 export class SystemElement extends GraphicGroup {
 
@@ -75,7 +67,6 @@ export class SystemElement extends GraphicGroup {
     const evapIn = this.evaporator.getInHook(0);
     const evapOut = this.evaporator.getOutHook(0);
 
-    // TODO: remove the update of hook from children
     this.setLink(
       LinkPair.createLinkPair(
         new Point(condIn.coord.x, condIn.coord.y - SystemElement.DIST_LINK),
@@ -91,37 +82,24 @@ export class SystemElement extends GraphicGroup {
       )
     );
 
+    this.generateConnections();
   }
 
-  // Template method
-  protected drawConnectChildrenTo() {
-    // console.log('connect condenser with my inOUT Top');
-    // console.log('connect evaporator with my inOUT Bottom');
+
+  protected generateConnections() {
     const circuits = Math.min(this.compressors.length, this.expansionValves.length);
 
     for (let i = 0; i < circuits; i++) {
 
-      super.drawPolyline(LineDrawer.createLinePoints(this.compressors[i].getOutHook(0), this.condenser.getInHook(i + 1)));
-
-      super.drawPolyline(LineDrawer.createLinePoints(this.condenser.getOutHook(i + 1), this.expansionValves[i].getInHook(0)));
-
-      super.drawPolyline(LineDrawer.createLinePoints(this.expansionValves[i].getOutHook(0), this.evaporator.getInHook(i + 1)));
-
-      super.drawPolyline(LineDrawer.createLinePoints(this.evaporator.getOutHook(i + 1), this.compressors[i].getInHook(0)));
+      this.addChild(ConnectorLine.connect(this.compressors[i], 0, this.condenser, i + 1));
+      this.addChild(ConnectorLine.connect(this.condenser, i + 1, this.expansionValves[i], 0));
+      this.addChild(ConnectorLine.connect(this.expansionValves[i], 0, this.evaporator, i + 1));
+      this.addChild(ConnectorLine.connect(this.evaporator, i + 1, this.compressors[i], 0));
     }
 
-    super.drawPolyline(
-      LineDrawer.createLinePoints(this.evaporator.getOutHook(0), this.getOutHook(1))
-    );
-    super.drawPolyline(
-      LineDrawer.createLinePoints(this.getInHook(1), this.evaporator.getInHook(0))
-    );
-    super.drawPolyline(
-      LineDrawer.createLinePoints(this.condenser.getOutHook(0), this.getInHook(0))
-    );
-    super.drawPolyline(
-      LineDrawer.createLinePoints(this.getOutHook(0), this.condenser.getInHook(0))
-    );
+    this.addChildren(this.connectElementToGroup(1, this.evaporator));
+    this.addChildren(this.connectElementToGroup(0, this.condenser));
   }
+
 
 }

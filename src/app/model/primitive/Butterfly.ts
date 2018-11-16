@@ -40,20 +40,17 @@ export class Butterfly extends GraphicSingle {
         this.origin.x + this.width, this.origin.y,
         this.origin.x, this.origin.y + this.height,
         this.origin.x + this.width, this.origin.y + this.height
-      ])
-        .move(this.origin.x, this.origin.y)
-        .addClass('butterfly');
+      ]);
     } else {
       this.shape = host.polygon([
         this.origin.x, this.origin.y,
         this.origin.x, this.origin.y + this.height,
         this.origin.x + this.width, this.origin.y,
         this.origin.x + this.width, this.origin.y + this.height
-      ])
-        // .move(this.origin.x, this.origin.y)
-        .addClass('butterfly');
+      ]);
     }
 
+    this.shape.addClass('butterfly');
 
 
     this.shape.on('mouseover', (e) => {

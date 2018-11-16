@@ -4,7 +4,6 @@ import { InOut } from './InOut';
 import { HookPoint } from './HookPoint';
 import { GraphicElement } from './GraphicElement';
 
-
 /**
  * Base class that represent the basic Graphic element drawed inside an SVG.
  */
@@ -49,12 +48,18 @@ export abstract class GraphicSingle extends GraphicElement {
     return this.inOutList[index];
   }
 
-  public getInHook(index: number): HookPoint {
-    return this.inOutList[index].getInHook();
+  public getInHook(index?: number): HookPoint {
+    if (index) {
+      return this.inOutList[index].getInHook();
+    }
+    return this.inOutList[0].getInHook();
   }
 
-  public getOutHook(index: number): HookPoint {
-    return this.inOutList[index].getOutHook();
+  public getOutHook(index?: number): HookPoint {
+    if (index) {
+      return this.inOutList[index].getOutHook();
+    }
+    return this.inOutList[0].getOutHook();
   }
 
 }

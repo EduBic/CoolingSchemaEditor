@@ -1,10 +1,10 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { LineDrawer } from './LineDrawer';
 import { HookPoint } from './HookPoint';
 import { LinkPair } from './Link';
 import { LinkHook } from './LinkHook';
 import { GraphicElement } from './GraphicElement';
+import { ConnectorLine } from '../primitive/ConnectorLine';
 
 /**
  * SchemaGroup define the base class for SchemaElement that contains
@@ -17,7 +17,9 @@ export abstract class GraphicGroup extends GraphicElement {
   private groupLinkPairs: LinkPair[] = [];
 
   private children: GraphicElement[] = [];
-  protected svgGroup: SVG.G;
+  private connections: GraphicElement[] = [];
+
+  private svgGroup: SVG.G;
 
   private widthGroup: number;
   private heightGroup: number;
@@ -38,27 +40,20 @@ export abstract class GraphicGroup extends GraphicElement {
     this.svgGroup = host.group()
       .move(this.origin.x, this.origin.y);
 
-    this.drawChildren();
-    this.drawConnectChildrenTo();
+    this.drawConnectionsAndChildren();
     this.drawLinks();
     this.drawDebugRect();
   }
 
-  private drawChildren() {
-    this.children.forEach(child => {
-      child.draw(this.svgGroup);
+  private drawConnectionsAndChildren() {
+    this.connections.forEach(conn => {
+      // console.log('Draw Connection', conn);
+      conn.draw(this.svgGroup);
     });
-  }
 
-  protected drawConnectChildrenTo() {
-    // console.log('Draw standard Connection with children');
     this.children.forEach(child => {
-
-      this.drawPolyline(LineDrawer.createLinePoints(
-          child.getOutHook(0), this.getRelativeIntExitLinkHook()));
-
-      this.drawPolyline(LineDrawer.createLinePoints(
-        this.getRelativeIntEntryHook(), child.getInHook(0)));
+      // console.log('Draw Children', child);
+      child.draw(this.svgGroup);
     });
   }
 
@@ -72,17 +67,36 @@ export abstract class GraphicGroup extends GraphicElement {
     // this.svgGroup.rect();
   }
 
-  protected drawPolyline(points: Point[]) {
-    const nums: number[] = [];
+  /**
+   * Sandbox method for generate automatically ConnectorLines
+   */
+  protected generateConnections() {
+    // console.log('Draw standard Connection with children');
+    this.children.forEach(child => {
 
-    points.forEach(p => {
-      nums.push(p.x);
-      nums.push(p.y);
+      const exitConnLine = new ConnectorLine(
+        child.getOutHook(), this.getRelativeIntExitLinkHook()
+      );
+      this.connections.push(exitConnLine);
+
+      const entryConnLine = new ConnectorLine(
+        this.getRelativeIntEntryHook(), child.getInHook()
+      );
+      this.connections.push(entryConnLine);
+
     });
+  }
 
-    this.svgGroup.polyline(nums)
-      .attr('fill', 'none')
-      .attr('stroke', '#0077be');
+  public connectElementToGroup(indexGroup: number, element: GraphicElement, indexElem = 0): ConnectorLine[] {
+    const res: ConnectorLine[] = [];
+    res.push(
+      new ConnectorLine(element.getOutHook(indexElem), this.getOutHook(indexGroup))
+    );
+    res.push(
+      new ConnectorLine(this.getInHook(indexGroup), element.getInHook(indexElem))
+    );
+
+    return res;
   }
 
   // Hooks
@@ -106,7 +120,11 @@ export abstract class GraphicGroup extends GraphicElement {
   // Children
 
   public addChild(child: GraphicElement): GraphicGroup {
-    this.children.push(child);
+    if (child instanceof ConnectorLine) {
+      this.addConn(child);
+    } else {
+      this.children.push(child);
+    }
     return this;
   }
 
@@ -121,6 +139,12 @@ export abstract class GraphicGroup extends GraphicElement {
     return this.children.length;
   }
 
+  private addConn(conn: GraphicElement) {
+    this.connections.push(conn);
+  }
+
+
+
   protected setWidthAndHeightGroup(width: number, height: number) {
     this.widthGroup = width;
     this.heightGroup = height;
@@ -134,12 +158,24 @@ export abstract class GraphicGroup extends GraphicElement {
     this.groupLinkPairs = links;
   }
 
-  public getInHook(index: number): HookPoint {
-    return this.getAbsoluteExtHookFrom(this.groupLinkPairs[index].getEntryLinkHook());
+  public getInHook(index?: number): HookPoint {
+    let link;
+    if (index) {
+      link = this.groupLinkPairs[index].getEntryLinkHook();
+    } else {
+      link = this.groupLinkPairs[0].getEntryLinkHook();
+    }
+    return this.getAbsoluteExtHookFrom(link);
   }
 
-  public getOutHook(index: number): HookPoint {
-    return this.getAbsoluteExtHookFrom(this.groupLinkPairs[index].getExitLinkHook());
+  public getOutHook(index?: number): HookPoint {
+    let link;
+    if (index) {
+      link = this.groupLinkPairs[index].getExitLinkHook();
+    } else {
+      link = this.groupLinkPairs[0].getExitLinkHook();
+    }
+    return this.getAbsoluteExtHookFrom(link);
   }
 
   private getAbsoluteExtHookFrom(hook: LinkHook): HookPoint {

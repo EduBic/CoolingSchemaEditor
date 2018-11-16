@@ -20,7 +20,6 @@ export class Circle extends GraphicSingle implements  ParallelizerElem  {
     return new Circle(origin, this.radius);
   }
 
-
   draw(host: SVG.G): void {
     this.svgElement = host.circle(this.radius * 2)
       .move(this.origin.x, this.origin.y)
