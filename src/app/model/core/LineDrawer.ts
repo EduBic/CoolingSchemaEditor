@@ -4,7 +4,7 @@ import { HookPoint } from './HookPoint';
 
 export class LineDrawer {
 
-  private static readonly DEBUG = false;
+  private static readonly DEBUG = true;
 
   public static createLinePoints(_out: HookPoint, _in: HookPoint): Point[] {
 
@@ -17,6 +17,7 @@ export class LineDrawer {
     const distanceX = 5;
 
     if (LineDrawer.DEBUG) {
+      console.log('Connect OUT:', outPoint, ' with IN: ', inPoint);
       console.log(outPos + ' -> ');
     }
     switch (outPos) {
@@ -314,8 +315,8 @@ export class LineDrawer {
           // Z shape
           const halfX = LineDrawer.getHalfX(outPoint, inPoint);
 
-          const m1 = new Point(halfX, outPoint.x);
-          const m2 = new Point(halfX, inPoint.x);
+          const m1 = new Point(halfX, outPoint.y);
+          const m2 = new Point(halfX, inPoint.y);
           points.push(m1, m2);
 
         } else if (inPoint.isBottomLeftOf(outPoint) || inPoint.isTopLeftOf(outPoint)) {
