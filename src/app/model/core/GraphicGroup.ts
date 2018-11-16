@@ -38,18 +38,15 @@ export abstract class GraphicGroup extends GraphicElement {
     this.svgGroup = host.group()
       .move(this.origin.x, this.origin.y);
 
-    this.drawChildren(this.svgGroup);
-
+    this.drawChildren();
     this.drawConnectChildrenTo();
-
-    this.drawLinks(this.svgGroup);
-
+    this.drawLinks();
     this.drawDebugRect();
   }
 
-  private drawChildren(svg: SVG.G) {
+  private drawChildren() {
     this.children.forEach(child => {
-      child.draw(svg);
+      child.draw(this.svgGroup);
     });
   }
 
@@ -62,6 +59,12 @@ export abstract class GraphicGroup extends GraphicElement {
 
       this.drawPolyline(LineDrawer.createLinePoints(
         this.getRelativeIntEntryHook(), child.getInHook(0)));
+    });
+  }
+
+  private drawLinks() {
+    this.groupLinkPairs.forEach(linkPair => {
+      linkPair.draw(this.svgGroup, this.origin);
     });
   }
 
@@ -123,12 +126,6 @@ export abstract class GraphicGroup extends GraphicElement {
     this.heightGroup = height;
   }
 
-  public drawLinks(host: SVG.G) {
-    this.groupLinkPairs.forEach(linkPair => {
-      linkPair.draw(host, this.origin);
-    });
-  }
-
   /**
    * Set new Links and delete the previous ones.
    * @param inOuts: the new links for the GraphicGroup
@@ -150,6 +147,15 @@ export abstract class GraphicGroup extends GraphicElement {
       new Point(hook.coord.x, hook.coord.y),
       hook.posFromExt
     );
+  }
+
+
+  public getTotalWidth(): number {
+    return this.widthGroup;
+  }
+
+  public getTotalHeight(): number {
+    return this.heightGroup;
   }
 
 }

@@ -6,7 +6,7 @@ import {
 } from './core/Point';
 import {
   BigRect
-} from './BigRect';
+} from './primitive/BigRect';
 import {
   LineDrawer
 } from './core/LineDrawer';
@@ -49,8 +49,8 @@ export class SystemElement extends GraphicGroup {
     );
 
     this.expansionValves.push(
-      new Butterfly(new Point(540, 160), 30, 60), // Right
-      new Butterfly(new Point(60, 160), 30, 60)   // Left
+      new Butterfly(new Point(540, 160), 30, 50), // Right
+      new Butterfly(new Point(60, 160), 30, 50)   // Left
     );
 
     this.condenser = new BigRect(

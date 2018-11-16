@@ -87,7 +87,7 @@ export class LinkPair {
       this.entry.coord.y - origin.y
     );
 
-    console.log('exit from external: ', this.exit.posFromExt);
+    // console.log('exit from external: ', this.exit.posFromExt);
 
     if (this.exit.posFromExt === HookPosition.Top) {
       exitPoints = this.upTriangle(exitRelativeCoord, H, h, halfSide);
@@ -103,7 +103,7 @@ export class LinkPair {
     }
 
 
-    console.log('entry from external: ', this.entry.posFromExt);
+    // console.log('entry from external: ', this.entry.posFromExt);
 
     switch (this.entry.posFromExt) {
       case HookPosition.Top:

@@ -53,15 +53,4 @@ export class ParallelElements extends GraphicGroup {
     }
   }
 
-  public getWidth(): number {
-    return  this.elementWidth * this.getChildrenSize() + this.margin * (this.getChildrenSize() - 1);
-  }
-
-  public getHeight(): number {
-    return this.elementHeight +
-      ParallelElements.DIST_ELEM_TO_IN +
-      ParallelElements.DIST_ELEM_TO_OUT;
-  }
-
-
 }
