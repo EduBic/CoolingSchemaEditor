@@ -17,9 +17,11 @@ An experiment on how to merge angular features with SVG.
 An Typescript library that build a schema with SVG element.
 
 - Draw Basic Element
-- Base classes support
-- Component pattern library
+- Abstract base classes
+- The library is Component pattern based
 - Draw lines from input/output point of element
+- Descrive complex GraphicElement with multiple GraphicElement using GraphicGroup
+- Input/Output hooks for each Graphic Element
 
 ## Development server
 
