@@ -7,10 +7,11 @@ import {
 import {
   Point
 } from '../core/Point';
-import { InOut } from '../core/InOut';
+import { InOut, Direction } from '../core/InOut';
 import { HookPosition } from '../core/HookPosition';
+import { ParallelizerElem } from '../layout/ParallelElements';
 
-export class Rect extends GraphicSingle {
+export class Rect extends GraphicSingle implements ParallelizerElem {
 
   private width: number;
   private height: number;
@@ -19,7 +20,7 @@ export class Rect extends GraphicSingle {
 
   constructor(origin: Point, width: number, height: number) {
     super(origin,
-      InOut.createAutoTopInBottomOut(width, height, HookPosition.Bottom, HookPosition.Top, origin.x, origin.y)
+      InOut.createSimpleInOut(width, height, Direction.BottomToTop, origin)
     );
     this.width = width;
     this.height = height;
@@ -40,12 +41,15 @@ export class Rect extends GraphicSingle {
     });
   }
 
-  public getWidth(): number {
+  public getElemWidth(): number {
     return this.width;
   }
-
-  public getHeight(): number {
+  public getElemHeight(): number {
     return this.height;
+  }
+
+  public getCopy(origin: Point): GraphicSingle {
+    return new Rect(origin, this.width, this.height);
   }
 
 }

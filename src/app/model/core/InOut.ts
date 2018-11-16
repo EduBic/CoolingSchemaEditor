@@ -3,6 +3,13 @@ import { Point } from './Point';
 import { HookPosition } from './HookPosition';
 import { HookPoint } from './HookPoint';
 
+export enum Direction {
+  TopToBottom = 'TopToBottom',
+  BottomToTop = 'BottomToTop',
+  LeftToRight = 'LeftToRight',
+  RightToLeft = 'RightToLeft'
+}
+
 export class InOut {
   private static readonly IN_OUT_SIZE = 6;
 
@@ -20,24 +27,33 @@ export class InOut {
     this.inHook = new HookPoint(new Point(inX, inY), inPos);
   }
 
-  public static createAutoTopInBottomOut(totWidth: number, totHeight: number,
-      inPos: HookPosition, outPos: HookPosition,
-      originX: number, originY: number): InOut {
+  public static createSimpleInOut(totWidth: number, totHeight: number,
+      direction: Direction, origin: Point): InOut {
 
-      if (inPos === HookPosition.Top && outPos === HookPosition.Bottom) {
+      if (direction === Direction.TopToBottom) {
         return new InOut(
-          totWidth / 2 + originX, originY,
-          totWidth / 2 + originX, totHeight + originY,
-          inPos, outPos
+          totWidth / 2 + origin.x, origin.y,
+          totWidth / 2 + origin.x, totHeight + origin.y,
+          HookPosition.Top, HookPosition.Bottom
         );
-      } else if (inPos === HookPosition.Bottom && outPos === HookPosition.Top) {
+      } else if (direction === Direction.BottomToTop) {
         return new InOut(
-          totWidth / 2 + originX, totHeight + originY,  // input
-          totWidth / 2 + originX, originY,              // output
-          inPos, outPos
+          totWidth / 2 + origin.x, totHeight + origin.y,  // input
+          totWidth / 2 + origin.x, origin.y,              // output
+          HookPosition.Bottom, HookPosition.Top
         );
-      } else {
-        console.log('Error: cannot create InOut automatically', inPos, outPos);
+      } else if (direction === Direction.LeftToRight) {
+        return new InOut(
+          origin.x, origin.y + totHeight / 2,
+          origin.x + totWidth, origin.y + totHeight / 2,
+          HookPosition.Left, HookPosition.Right
+        );
+      } else if (direction === Direction.RightToLeft) {
+        return new InOut(
+          origin.x + totWidth, origin.y + totHeight / 2,    // input
+          origin.x, origin.y + totHeight / 2,               // output
+          HookPosition.Right, HookPosition.Left
+        );
       }
   }
 
@@ -57,6 +73,14 @@ export class InOut {
       totWidth / 2 + origin.x, totHeight + origin.y,
       totWidth / 2 + origin.x, origin.y,
       HookPosition.Bottom, HookPosition.Top
+    );
+  }
+
+  public static createFromHooks(start: HookPoint, end: HookPoint): InOut {
+    return new InOut(
+      start.coord.x, start.coord.y,
+      end.coord.x, end.coord.y,
+      start.position, end.position
     );
   }
 
