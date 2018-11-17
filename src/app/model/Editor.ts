@@ -7,8 +7,14 @@ import { ParallelElements } from './layout/ParallelElements';
 import { Rect } from './primitive/Rect';
 import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
-import { Direction } from './core/HookPair';
+import { Direction } from "./core/Direction";
 import { TestMiniCycle } from './TestMiniCycle';
+import { GDryCooler } from './layout/GDryCooler';
+import { GSideCover } from './layout/GSideCover';
+import { GFan } from './layout/GFan';
+import { GCoil } from './layout/GCoil';
+import { SPump } from './schema/SPump';
+import { SCompressor } from './schema/SCompressor';
 
 
 export class Editor {
@@ -20,45 +26,27 @@ export class Editor {
   }
 
   draw() {
-    const sys = new SystemElement(new Point(0, 0));
-    // sys.draw(this.main);
+    const mainOrigin = new Point(100, 100);
 
-    // Parallel
-    // const aCircle = new Circle(new Point(0, 0), 30);
-    // const parallel = new ParallelElements(new Point(320, 100), aCircle, 3);
+    const p = new SPump({id: 1, name: 'pump', total: 2}, mainOrigin, this.main);
+    p.draw();
 
-    // parallel.draw(this.main);
-
-    // TEST
-    // const testGroup = new TestGroup();
-    // testGroup.draw(this.main);
-
-    const test = new TestMiniCycle();
-    test.draw(this.main);
-
-    // TEST Lines
-    // const rect = new Rect(new Point(100, 150), 40, 40, Direction.LeftToRight);
-    // const butt = new Butterfly(new Point(300, 100), 50, 25, Direction.LeftToRight);
-    // const circle = new Circle(new Point(180, 250), 20, Direction.BottomToTop);
-
-    // rect.draw(this.main);
-    // butt.draw(this.main);
-    // circle.draw(this.main);
-
-    // const line = new ConnectorLine(rect.getOutHook(), butt.getInHook());
-    // line.draw(this.main);
-
-    // const inter = line.findIntersections(circle.getOutHook())[0];
-    // console.log(inter);
-
-
-    // this.main.circle(5)
-    //   .move(inter.x - 2.5, inter.y - 2.5)
-    //   .attr('fill', '#f44242');
+    const c = new SCompressor(null, new Point(30, 30), this.main);
+    c.draw();
 
     this.main.transform({
       scale: 1
     });
+
+  }
+
+  private drawOldLib() {
+    // // const sys = new SystemElement(new Point(0, 0));
+    // // sys.draw(this.main);
+
+    // // const dc = new GraphicDryCooler(new Point(0, 0), );
+    // const sideCover = new GSideCover(mainOrigin, 100, 4);
+    // // sideCover.draw(this.main);
 
   }
 
