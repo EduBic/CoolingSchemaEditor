@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
-import { HookPair } from '../core/HookPair';
+import { Gate } from './Gate';
 
 export abstract class GElement {
 
@@ -10,19 +10,20 @@ export abstract class GElement {
 
   // selectable
   private containerRect: SVG.Rect;
-  private totWidth: number;
-  private totHeight: number;
+  protected readonly totWidth: number;
+  protected readonly totHeight: number;
 
   // Connection
-  private hookPair: HookPair;
+  private gates: Gate[];
 
   // Event
   onClick = (e) => {};
 
-  constructor(origin: Point, svgRef: SVG.G, totWidth: number, totHeight: number, hookPair: HookPair) {
+  constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number, gates: Gate[] = []) {
     this.origin = origin;
-    this.svgGroup = svgRef.group();
-    this.hookPair = hookPair;
+    this.svgGroup = svgParent.group();
+
+    this.gates = gates;
 
     this.totWidth = totWidth;
     this.totHeight = totHeight;
@@ -42,12 +43,16 @@ export abstract class GElement {
         .fill('transparent')
         .stroke('aqua');
 
-      this.hookPair.drawInputPoint(this.svgGroup);
-      this.hookPair.drawOutputPoint(this.svgGroup);
+      this.gates.forEach(gate => {
+        gate.draw(this.svgGroup);
+      });
     });
 
     this.svgGroup.on('mouseleave', (e: MouseEvent) => {
-      this.hookPair.removePoints();
+
+      this.gates.forEach(gate => {
+        gate.remove();
+      });
       this.containerRect.remove();
     });
 

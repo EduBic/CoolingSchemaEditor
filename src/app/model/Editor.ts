@@ -7,7 +7,6 @@ import { ParallelElements } from './layout/ParallelElements';
 import { Rect } from './primitive/Rect';
 import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
-import { Direction } from "./core/Direction";
 import { TestMiniCycle } from './TestMiniCycle';
 import { GDryCooler } from './layout/GDryCooler';
 import { GSideCover } from './layout/GSideCover';
@@ -15,6 +14,9 @@ import { GFan } from './layout/GFan';
 import { GCoil } from './layout/GCoil';
 import { SPump } from './schema/SPump';
 import { SCompressor } from './schema/SCompressor';
+import { GParallelWrapper } from './schema/GParallelWrapper';
+import { GPump } from './schema/GPump';
+import { Direction } from './schema/Direction';
 
 
 export class Editor {
@@ -33,6 +35,10 @@ export class Editor {
 
     const c = new SCompressor(null, new Point(30, 30), this.main);
     c.draw();
+
+    const elem = new GPump(new Point(0,0), this.main, 14, Direction.LeftToRight);
+    const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3, Direction.BottomToTop);
+    parallel.drawAll();
 
     this.main.transform({
       scale: 1

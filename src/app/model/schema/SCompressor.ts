@@ -14,7 +14,7 @@ export class SCompressor {
   private graphic: GCompressor;
 
   constructor(data: DCompressor, origin: Point, svgRef: SVG.G) {
-    this.graphic = new GCompressor(origin, svgRef, 10, Direction.BottomToTop);
+    this.graphic = new GCompressor(origin, svgRef, 10, Direction.RightToLeft);
   }
 
   public draw() {
