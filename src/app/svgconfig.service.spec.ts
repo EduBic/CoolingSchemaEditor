@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SVGConfigService } from './svgconfig.service';
+import { SVGConfigService } from './ang-svg/svgconfig.service';
 
 describe('SVGConfigService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
