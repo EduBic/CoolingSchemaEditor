@@ -72,7 +72,7 @@ export abstract class GraphicGroup extends GraphicElement {
    * GraphicGroup. Override it or define a new method if your GraphicGroup is
    * complex. Remeber to call it in the constructor subclass.
    */
-  protected generateConnections() {
+  protected generateStandardConnections() {
     // console.log('Draw standard Connection with children');
     this.children.forEach(child => {
 

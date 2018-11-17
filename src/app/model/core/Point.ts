@@ -1,5 +1,3 @@
-import { HookPosition } from './HookPosition';
-import { HookPoint } from './HookPoint';
 
 export class Point {
   public readonly x: number;

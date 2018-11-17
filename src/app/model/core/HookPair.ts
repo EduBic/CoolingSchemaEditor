@@ -55,6 +55,9 @@ export class HookPair {
           origin.x, origin.y + totHeight / 2,               // output
           HookPosition.Right, HookPosition.Left
         );
+      } else {
+        console.log('No direction -> Empty HookPair');
+        return new EmptyHookPair();
       }
   }
 
@@ -87,15 +90,15 @@ export class HookPair {
 
   public drawInputPoint(host: SVG.G, relativeOrigin: Point = new Point(0, 0)) {
     this.inElem = host.rect(HookPair.IN_OUT_SIZE, HookPair.IN_OUT_SIZE)
-        .move(this.getInCoordinate().x - relativeOrigin.x - HookPair.IN_OUT_SIZE / 2,
-              this.getInCoordinate().y - relativeOrigin.y - HookPair.IN_OUT_SIZE / 2)
+        .move(this.inHook.coord.x - relativeOrigin.x - HookPair.IN_OUT_SIZE / 2,
+              this.inHook.coord.y - relativeOrigin.y - HookPair.IN_OUT_SIZE / 2)
         .addClass('inputPoint');
   }
 
   public drawOutputPoint(host: SVG.G, relativeOrigin: Point = new Point(0, 0)) {
     this.outElem = host.circle(HookPair.IN_OUT_SIZE)
-      .move(this.getOutCoordinate().x - relativeOrigin.x - HookPair.IN_OUT_SIZE / 2,
-            this.getOutCoordinate().y - relativeOrigin.y - HookPair.IN_OUT_SIZE / 2)
+      .move(this.outHook.coord.x - relativeOrigin.x - HookPair.IN_OUT_SIZE / 2,
+            this.outHook.coord.y - relativeOrigin.y - HookPair.IN_OUT_SIZE / 2)
       .addClass('outputPoint');
   }
 
@@ -108,28 +111,39 @@ export class HookPair {
     }
   }
 
-  public getInCoordinate(): Point {
-    return this.inHook.coord;
-  }
-
-  public getInPosition(): HookPosition {
-    return this.inHook.position;
-  }
-
-  public getOutCoordinate(): Point {
-    return this.outHook.coord;
-  }
-
-  public getOutPosition(): HookPosition {
-    return this.outHook.position;
-  }
-
-  getInHook(): HookPoint {
+  public getInHook(): HookPoint {
     return this.inHook;
   }
 
-  getOutHook(): HookPoint {
+  public getOutHook(): HookPoint {
     return this.outHook;
+  }
+
+}
+
+class EmptyHookPair extends HookPair {
+
+  private static readonly DEBUG = true;
+  private static readonly EMPTY_HOOK_POINT = new Point(0, 0);
+
+  constructor() {
+    super(0, 0, 0, 0, HookPosition.Bottom, HookPosition.Bottom);
+  }
+
+  public drawInputPoint(host: SVG.G, relativeOrigin: Point = new Point(0, 0)) { }
+
+  public drawOutputPoint(host: SVG.G, relativeOrigin: Point = new Point(0, 0)) { }
+
+  public getInHook(): HookPoint {
+    if (EmptyHookPair.DEBUG) { console.log('I\'m a fake HookPoint!'); }
+
+    return new HookPoint(EmptyHookPair.EMPTY_HOOK_POINT, HookPosition.Bottom);
+  }
+
+  public getOutHook(): HookPoint {
+    if (EmptyHookPair.DEBUG) { console.log('I\'m a fake HookPoint!'); }
+
+    return new HookPoint(EmptyHookPair.EMPTY_HOOK_POINT, HookPosition.Bottom);
   }
 
 }

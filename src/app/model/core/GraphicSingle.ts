@@ -19,15 +19,6 @@ export abstract class GraphicSingle extends GraphicElement {
     this.hookPairs = inOuts;
   }
 
-  public getInCoordinates(index: number = 0): Point {
-    return this.hookPairs[index].getInCoordinate();
-  }
-
-  public getOutCoordinates(index: number = 0): Point {
-    // console.log('From getOutCoordinate', this.inOutList);
-    return this.hookPairs[index].getOutCoordinate();
-  }
-
   public drawInputPoint(host: SVG.G) {
     this.hookPairs.forEach(inOut => {
       inOut.drawInputPoint(host);
