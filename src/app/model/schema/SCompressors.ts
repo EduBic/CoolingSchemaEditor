@@ -9,14 +9,27 @@ export class SCompressor {
   private data: DCompressor;
   private graphics: GCompressor[];
 
-  constructor(data: DCompressor, origin: Point, svgRef: SVG.G) {
-    this.graphics.push(
-      new GCompressor(origin, svgRef, 10, Direction.BottomToTop)
-    );
+  constructor(data: DCompressor, origin: Point, svgRef: SVG.G, comprNum: number) {
+
+    const xMargin = 5;
+    const yMargin = 10;
+
+    // info
+    const direction = Direction.BottomToTop;
+    const radius = 10;
+
+    for (let i = 0; i < comprNum; i++) {
+      this.graphics.push(
+        new GCompressor(origin, svgRef, radius, direction),
+      );
+    }
+
   }
 
   public draw() {
-    this.graphic.drawAll();
+    this.graphics.forEach(graphic => {
+      graphic.drawAll();
+    });
   }
 
 }

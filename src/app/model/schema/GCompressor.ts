@@ -17,7 +17,7 @@ export class GCompressor extends GElement {
     this.radius = radius;
   }
 
-  public drawSub() {
+  public drawInternal() {
     this.svgGroup
       .circle(this.radius * 2)
       .attr('fill', 'transparent')

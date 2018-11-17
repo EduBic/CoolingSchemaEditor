@@ -17,6 +17,7 @@ import { SCompressor } from './schema/SCompressor';
 import { GParallelWrapper } from './schema/GParallelWrapper';
 import { GPump } from './schema/GPump';
 import { Direction } from './schema/Direction';
+import { GLine } from './schema/GLine';
 
 
 export class Editor {

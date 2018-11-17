@@ -19,7 +19,7 @@ export class GPump extends GElement implements GParallelElement {
     this.direction = direction;
   }
 
-  protected drawSub() {
+  protected drawInternal() {
     // Draw circle
     this.svgGroup.circle(this.radius * 2)
       .attr('fill', 'transparent')

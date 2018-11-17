@@ -4,6 +4,7 @@ import { Point } from '../core/Point';
 import { Gate } from './Gate';
 import { HookPosition } from '../core/HookPosition';
 import { Direction, UtilDirection } from './Direction';
+import { GLine } from './GLine';
 
 export interface GParallelElement {
   getCopy(newOrigin: Point, svgParent: SVG.G, direction: Direction): GElement;
@@ -21,8 +22,9 @@ export class GParallelWrapper extends GElement {
 
   private margin: number;
 
-  constructor(origin: Point, svgRef: SVG.G, element: GParallelElement, total: number, direction: Direction, margin: number = 5) {
-    super(origin, svgRef,
+
+  constructor(origin: Point, svgParent: SVG.G, element: GParallelElement, total: number, direction: Direction, margin: number = 5) {
+    super(origin, svgParent,
       element.getWidth() * total + margin * (total - 1),  // totWidth
       element.getHeight() + GParallelWrapper.DIST_ELEM_TO_IN + GParallelWrapper.DIST_ELEM_TO_OUT, // TotHeight
       GParallelWrapper.getGates(
@@ -44,11 +46,26 @@ export class GParallelWrapper extends GElement {
       this.children.push(clone);
     }
 
-    // super.generateStandardConnections();
+    // this.createConnections();
+    // TODO move out from here
+
+    // const line = new GLine(origin, svgParent, this.getGate(0), this.children[0].getGate(0), true);
+
+    this.children.forEach(child => {
+      for (let i = 0; i < 2; i++) {
+
+        const line = GLine.connectParentToChildEntries(
+          svgParent, origin, this.getGate(i), child.getAbsoluteGate(i)
+        );
+
+        line.disableGateDraw();
+
+        this.children.push(line);
+      }
+    });
   }
 
   private static getGates(totWidth: number, TotHeight: number, direction: Direction): Gate[] {
-
     const positions = UtilDirection.getPosition(direction);
     return [
       new Gate( new Point(totWidth / 2, TotHeight), positions[0], true),
@@ -56,7 +73,17 @@ export class GParallelWrapper extends GElement {
     ];
   }
 
-  protected drawSub() {
+
+  // private createConnections() {
+  //   const conns: GLine[] = [];
+
+  //   // create connection from child to parent
+  //   this.children.forEach(child => {
+
+  //   });
+  // }
+
+  protected drawInternal() {
     this.children.forEach(child => {
       child.drawAll();
     });

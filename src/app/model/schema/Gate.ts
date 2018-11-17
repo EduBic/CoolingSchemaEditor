@@ -2,12 +2,8 @@ import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
 import { HookPosition } from '../core/HookPosition';
 import { Direction, UtilDirection } from './Direction';
+import { HookPoint } from '../core/HookPoint';
 
-export class EntryGate {
-}
-
-export class ExitGate {
-}
 
 export class Gate {
 
@@ -88,6 +84,18 @@ export class Gate {
 
   public isExit(): boolean {
     return !this.entry;
+  }
+
+  public toInternalHook(): HookPoint {
+    return new HookPoint(this.coord, UtilDirection.getOppositePosition(this.extPos));
+  }
+
+  public toExternalHook(): HookPoint {
+    return new HookPoint(this.coord, this.extPos);
+  }
+
+  public getAbsoluteGate(origin: Point): Gate {
+    return new Gate(new Point(origin.x + this.coord.x, origin.y + this.coord.y), this.extPos, this.entry);
   }
 
 }

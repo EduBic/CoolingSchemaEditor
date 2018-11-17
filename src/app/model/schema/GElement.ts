@@ -1,6 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
 import { Gate } from './Gate';
+import { HookPoint } from '../core/HookPoint';
 
 export abstract class GElement {
 
@@ -12,6 +13,9 @@ export abstract class GElement {
   private containerRect: SVG.Rect;
   protected readonly totWidth: number;
   protected readonly totHeight: number;
+
+  // Configuration
+  private drawGateConf = true;
 
   // Connection
   private gates: Gate[];
@@ -30,18 +34,22 @@ export abstract class GElement {
   }
 
   public drawAll() {
-    this.drawSub();
-    this.drawHookPair();
+    this.drawInternal();
+    if (this.drawGateConf) {
+      this.drawGates();
+    }
+
+    this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
+        .fill('transparent')
+        .stroke('transparent');
 
     this.svgGroup.move(this.origin.x, this.origin.y);
   }
 
-  private drawHookPair() {
+  private drawGates() {
     this.svgGroup.on('mouseenter', (e: MouseEvent) => {
 
-      this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
-        .fill('transparent')
-        .stroke('aqua');
+      this.containerRect.stroke('aqua');
 
       this.gates.forEach(gate => {
         gate.draw(this.svgGroup);
@@ -53,7 +61,8 @@ export abstract class GElement {
       this.gates.forEach(gate => {
         gate.remove();
       });
-      this.containerRect.remove();
+
+      this.containerRect.stroke('transparent');
     });
 
     this.svgGroup.on('click', (e: MouseEvent) => {
@@ -62,6 +71,18 @@ export abstract class GElement {
   }
 
   // Template method
-  protected abstract drawSub();
+  protected abstract drawInternal();
+
+  public disableGateDraw() {
+    this.drawGateConf = false;
+  }
+
+  public getGate(index: number): Gate {
+    return this.gates[index];
+  }
+
+  public getAbsoluteGate(index: number): Gate {
+    return this.gates[index].getAbsoluteGate(this.origin);
+  }
 
 }
