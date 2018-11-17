@@ -9,7 +9,7 @@ import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
 import { TestMiniCycle } from './TestMiniCycle';
 import { GDryCooler } from './layout/GDryCooler';
-import { GSideCover } from './layout/GSideCover';
+import { GSideCover } from './schema/GSideCover';
 import { GFan } from './schema/GFan';
 import { SPump } from './schema/SPump';
 import { SCompressor } from './schema/SCompressor';
@@ -46,7 +46,10 @@ export class Editor {
     // f.drawAll();
 
     const cl = new GCoil(mainOrigin, this.main, 100, 26);
-    cl.drawAll();
+    // cl.drawAll();
+
+    const sc = new GSideCover(mainOrigin, this.main, 100);
+    sc.drawAll();
 
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
     // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);

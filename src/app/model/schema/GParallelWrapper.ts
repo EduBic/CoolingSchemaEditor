@@ -13,12 +13,12 @@ export interface GParallelElement {
   getDirection(): Direction;
 }
 
+// TODO: test support to different total number of element
 export class GParallelWrapper extends GElement {
 
   private static readonly DIST_ELEM_TO_IN = 50;
   private static readonly DIST_ELEM_TO_OUT = 50;
 
-  //
   private children: GElement[] = [];
 
   private margin: number;
