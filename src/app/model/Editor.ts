@@ -10,7 +10,7 @@ import { ConnectorLine } from './primitive/ConnectorLine';
 import { TestMiniCycle } from './TestMiniCycle';
 import { GDryCooler } from './layout/GDryCooler';
 import { GSideCover } from './layout/GSideCover';
-import { GFan } from './layout/GFan';
+import { GFan } from './schema/GFan';
 import { GCoil } from './layout/GCoil';
 import { SPump } from './schema/SPump';
 import { SCompressor } from './schema/SCompressor';
@@ -41,6 +41,10 @@ export class Editor {
 
     const cs = new SParallelCompressor(null, new Point(210, 50), this.main, 3);
     cs.draw();
+
+    const f = new GFan(mainOrigin, this.main, 80, 15);
+    f.drawAll();
+
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
     // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);
     // parallel.drawAll();
