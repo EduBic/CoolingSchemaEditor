@@ -11,7 +11,6 @@ import { TestMiniCycle } from './TestMiniCycle';
 import { GDryCooler } from './layout/GDryCooler';
 import { GSideCover } from './layout/GSideCover';
 import { GFan } from './schema/GFan';
-import { GCoil } from './layout/GCoil';
 import { SPump } from './schema/SPump';
 import { SCompressor } from './schema/SCompressor';
 import { GParallelWrapper } from './schema/GParallelWrapper';
@@ -20,6 +19,7 @@ import { Direction } from './schema/Direction';
 import { GLine } from './schema/GLine';
 import { GCompressor } from './schema/GCompressor';
 import { SParallelCompressor } from './schema/SParallelCompressors';
+import { GCoil } from './schema/GCoil';
 
 
 export class Editor {
@@ -31,7 +31,7 @@ export class Editor {
   }
 
   draw() {
-    const mainOrigin = new Point(100, 100);
+    const mainOrigin = new Point(150, 100);
 
     const p = new SPump({id: 1, name: 'pump', total: 2}, mainOrigin, this.main);
     p.draw();
@@ -43,7 +43,10 @@ export class Editor {
     cs.draw();
 
     const f = new GFan(mainOrigin, this.main, 80, 15);
-    f.drawAll();
+    // f.drawAll();
+
+    const cl = new GCoil(mainOrigin, this.main, 100, 26);
+    cl.drawAll();
 
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
     // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);
