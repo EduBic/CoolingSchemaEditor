@@ -4,7 +4,7 @@ import { Point } from './core/Point';
 import { Rect } from './primitive/Rect';
 import { LinkPair } from './core/LinkPair';
 import { HookPosition } from './core/HookPosition';
-import { Direction } from './core/HookPair';
+import { Direction } from "./core/Direction";
 
 export class TestGroup extends GraphicGroup {
 

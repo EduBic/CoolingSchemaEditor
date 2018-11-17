@@ -1,7 +1,8 @@
 import * as SVG from 'svg.js';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { Point } from '../core/Point';
-import { HookPair, Direction } from '../core/HookPair';
+import { HookPair } from '../core/HookPair';
+import { Direction } from "../core/Direction";
 import { HookPosition } from '../core/HookPosition';
 
 export class BigRect extends GraphicSingle {

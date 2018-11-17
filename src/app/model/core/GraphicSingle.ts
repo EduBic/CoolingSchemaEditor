@@ -1,6 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from './Point';
-import { HookPair, Direction } from './HookPair';
+import { HookPair } from './HookPair';
+import { Direction } from './Direction';
 import { HookPoint } from './HookPoint';
 import { GraphicElement } from './GraphicElement';
 

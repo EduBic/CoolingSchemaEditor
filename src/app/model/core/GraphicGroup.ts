@@ -45,6 +45,19 @@ export abstract class GraphicGroup extends GraphicElement {
     this.drawDebugRect();
   }
 
+  /**
+   * Utility method used by subclasses that doesn't go into detail of inner
+   * component. Use it when you define a GraphicGroup with more SVG element,
+   * but you want define them inside a GraphicElement subclass.
+   * @param host the main svg in which draw new elements.
+   */
+  protected initGroup(host: SVG.G): SVG.G {
+    this.svgGroup = host.group()
+      .move(this.origin.x, this.origin.y);
+
+    return this.svgGroup;
+  }
+
   private drawConnectionsAndChildren() {
     this.connections.forEach(conn => {
       // console.log('Draw Connection', conn);

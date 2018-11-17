@@ -2,7 +2,8 @@ import * as SVG from 'svg.js';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { ParallelizerElem } from '../layout/ParallelElements';
 import { Point } from '../core/Point';
-import { HookPair, Direction } from '../core/HookPair';
+import { HookPair } from '../core/HookPair';
+import { Direction } from "../core/Direction";
 
 export class Circle extends GraphicSingle implements  ParallelizerElem  {
 

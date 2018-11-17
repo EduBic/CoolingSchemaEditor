@@ -3,7 +3,8 @@ import { Point } from '../core/Point';
 import { HookPoint } from '../core/HookPoint';
 import { LineDrawer } from '../core/LineDrawer';
 import { GraphicSingle } from '../core/GraphicSingle';
-import { HookPair, Direction } from '../core/HookPair';
+import { HookPair } from '../core/HookPair';
+import { Direction } from '../core/Direction';
 import { GraphicElement } from '../core/GraphicElement';
 import { HookPosition } from '../core/HookPosition';
 

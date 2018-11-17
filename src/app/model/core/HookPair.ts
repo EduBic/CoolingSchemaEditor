@@ -2,14 +2,7 @@ import * as SVG from 'svg.js';
 import { Point } from './Point';
 import { HookPosition } from './HookPosition';
 import { HookPoint } from './HookPoint';
-
-export enum Direction {
-  TopToBottom = 'TopToBottom',
-  BottomToTop = 'BottomToTop',
-  LeftToRight = 'LeftToRight',
-  RightToLeft = 'RightToLeft',
-  None = 'None'
-}
+import { Direction } from './Direction';
 
 export class HookPair {
   private static readonly IN_OUT_SIZE = 6;
@@ -29,7 +22,7 @@ export class HookPair {
   }
 
   public static createSimpleInOut(totWidth: number, totHeight: number,
-      direction: Direction, origin: Point): HookPair {
+      direction: Direction, origin: Point = new Point(0, 0)): HookPair {
 
       if (direction === Direction.TopToBottom) {
         return new HookPair(
@@ -56,7 +49,7 @@ export class HookPair {
           HookPosition.Right, HookPosition.Left
         );
       } else {
-        console.log('No direction -> Empty HookPair');
+        console.log('No direction -> Create an Empty HookPair');
         return new EmptyHookPair();
       }
   }

@@ -7,7 +7,8 @@ import {
 import {
   Point
 } from '../core/Point';
-import { HookPair, Direction } from '../core/HookPair';
+import { HookPair } from '../core/HookPair';
+import { Direction } from '../core/Direction';
 import { ParallelizerElem } from '../layout/ParallelElements';
 
 export class Rect extends GraphicSingle implements ParallelizerElem {

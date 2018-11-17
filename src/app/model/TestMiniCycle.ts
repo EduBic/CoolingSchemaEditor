@@ -2,7 +2,7 @@ import * as SVG from 'svg.js';
 import { GraphicGroup } from './core/GraphicGroup';
 import { Point } from './core/Point';
 import { Rect } from './primitive/Rect';
-import { Direction } from './core/HookPair';
+import { Direction } from "./core/Direction";
 import { ConnectorLine } from './primitive/ConnectorLine';
 import { Butterfly } from './primitive/Butterfly';
 

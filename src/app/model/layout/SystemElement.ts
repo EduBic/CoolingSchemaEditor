@@ -7,7 +7,7 @@ import { Circle } from '../primitive/Circle';
 import { ParallelElements } from './ParallelElements';
 import { LinkPair } from '../core/LinkPair';
 import { ConnectorLine } from '../primitive/ConnectorLine';
-import { Direction } from '../core/HookPair';
+import { Direction } from "../core/Direction";
 
 export class SystemElement extends GraphicGroup {
 
