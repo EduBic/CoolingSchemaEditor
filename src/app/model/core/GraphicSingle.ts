@@ -19,15 +19,11 @@ export abstract class GraphicSingle extends GraphicElement {
     this.hookPairs = inOuts;
   }
 
-  public drawInputPoint(host: SVG.G) {
-    this.hookPairs.forEach(inOut => {
-      inOut.drawInputPoint(host);
-    });
-  }
 
-  public drawOutputPoint(host: SVG.G) {
+  public drawInOutPoint(host: SVG.G) {
     this.hookPairs.forEach(inOut => {
       inOut.drawOutputPoint(host);
+      inOut.drawInputPoint(host);
     });
   }
 

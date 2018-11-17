@@ -51,8 +51,7 @@ export class ConnectorLine extends GraphicSingle {
 
 
     this.svgElement.on('mouseover', (e) => {
-      this.drawInputPoint(host);
-      this.drawOutputPoint(host);
+      this.drawInOutPoint(host);
       this.drawIntersections(host);
     });
 

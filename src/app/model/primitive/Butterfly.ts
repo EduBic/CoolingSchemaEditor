@@ -38,8 +38,7 @@ export class Butterfly extends GraphicSingle {
 
 
     this.shape.on('mouseover', (e) => {
-      this.drawInputPoint(host);
-      this.drawOutputPoint(host);
+      this.drawInOutPoint(host);
     });
 
     this.shape.on('mouseleave', (e) => {

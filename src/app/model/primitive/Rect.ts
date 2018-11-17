@@ -29,8 +29,7 @@ export class Rect extends GraphicSingle implements ParallelizerElem {
       .addClass('rect');
 
     this.svgRect.on('mouseover', () => {
-      this.drawInputPoint(host);
-      this.drawOutputPoint(host);
+      this.drawInOutPoint(host);
     });
 
     this.svgRect.on('mouseleave', () => {
