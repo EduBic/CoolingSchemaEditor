@@ -18,6 +18,8 @@ import { GParallelWrapper } from './schema/GParallelWrapper';
 import { GPump } from './schema/GPump';
 import { Direction } from './schema/Direction';
 import { GLine } from './schema/GLine';
+import { GCompressor } from './schema/GCompressor';
+import { SParallelCompressor } from './schema/SParallelCompressors';
 
 
 export class Editor {
@@ -37,9 +39,11 @@ export class Editor {
     const c = new SCompressor(null, new Point(30, 30), this.main);
     c.draw();
 
-    const elem = new GPump(new Point(0,0), this.main, 14, Direction.LeftToRight);
-    const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3, Direction.BottomToTop);
-    parallel.drawAll();
+    const cs = new SParallelCompressor(null, new Point(210, 50), this.main, 3);
+    cs.draw();
+    // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
+    // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);
+    // parallel.drawAll();
 
     this.main.transform({
       scale: 1

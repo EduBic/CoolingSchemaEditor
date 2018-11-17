@@ -3,11 +3,12 @@ import { Point } from '../core/Point';
 import { GCompressor } from './GCompressor';
 import { Direction } from './Direction';
 import { DCompressor } from './SCompressor';
+import { GParallelWrapper } from './GParallelWrapper';
 
-export class SCompressor {
+export class SParallelCompressor {
 
   private data: DCompressor;
-  private graphics: GCompressor[];
+  private graphic: GParallelWrapper;
 
   constructor(data: DCompressor, origin: Point, svgRef: SVG.G, comprNum: number) {
 
@@ -18,18 +19,14 @@ export class SCompressor {
     const direction = Direction.BottomToTop;
     const radius = 10;
 
-    for (let i = 0; i < comprNum; i++) {
-      this.graphics.push(
-        new GCompressor(origin, svgRef, radius, direction),
-      );
-    }
+    // Graphic
+    const carbonCopy = new GCompressor(origin, svgRef, radius, direction);
 
+    this.graphic = new GParallelWrapper(origin, svgRef, carbonCopy, comprNum);
   }
 
   public draw() {
-    this.graphics.forEach(graphic => {
-      graphic.drawAll();
-    });
+    this.graphic.drawAll();
   }
 
 }

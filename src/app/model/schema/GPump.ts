@@ -56,5 +56,8 @@ export class GPump extends GElement implements GParallelElement {
     return this.totHeight;
   }
 
+  public getDirection(): Direction {
+    return this.direction;
+  }
 
 }

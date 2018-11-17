@@ -10,6 +10,7 @@ export interface GParallelElement {
   getCopy(newOrigin: Point, svgParent: SVG.G, direction: Direction): GElement;
   getWidth(): number;
   getHeight(): number;
+  getDirection(): Direction;
 }
 
 export class GParallelWrapper extends GElement {
@@ -23,14 +24,15 @@ export class GParallelWrapper extends GElement {
   private margin: number;
 
 
-  constructor(origin: Point, svgParent: SVG.G, element: GParallelElement, total: number, direction: Direction, margin: number = 5) {
+  constructor(origin: Point, svgParent: SVG.G, element: GParallelElement, total: number, margin = 5) {
+
     super(origin, svgParent,
       element.getWidth() * total + margin * (total - 1),  // totWidth
       element.getHeight() + GParallelWrapper.DIST_ELEM_TO_IN + GParallelWrapper.DIST_ELEM_TO_OUT, // TotHeight
       GParallelWrapper.getGates(
         element.getWidth() * total + margin * (total - 1),
         element.getHeight() + GParallelWrapper.DIST_ELEM_TO_IN + GParallelWrapper.DIST_ELEM_TO_OUT,
-        direction
+        element.getDirection()
       )
     );
 
@@ -41,7 +43,7 @@ export class GParallelWrapper extends GElement {
         (element.getWidth() + this.margin) * n,
         GParallelWrapper.DIST_ELEM_TO_IN
       );
-      const clone = element.getCopy(newOrigin, this.svgGroup, direction);
+      const clone = element.getCopy(newOrigin, this.svgGroup, element.getDirection());
 
       this.children.push(clone);
     }
@@ -67,21 +69,23 @@ export class GParallelWrapper extends GElement {
 
   private static getGates(totWidth: number, TotHeight: number, direction: Direction): Gate[] {
     const positions = UtilDirection.getPosition(direction);
-    return [
-      new Gate( new Point(totWidth / 2, TotHeight), positions[0], true),
-      new Gate(new Point(totWidth / 2, 0), positions[1], false)
-    ];
+
+    switch (direction) {
+      case Direction.BottomToTop:
+        return [
+          new Gate(new Point(totWidth / 2, TotHeight), positions[0], true),
+          new Gate(new Point(totWidth / 2, 0), positions[1], false)
+        ];
+      case Direction.TopToBottom:
+        return [
+          new Gate(new Point(totWidth / 2, 0), positions[0], true),
+          new Gate(new Point(totWidth / 2, TotHeight), positions[1], false)
+        ];
+      default:
+        // TODO: expands support to all
+        throw Error('GParallelWrapper support only BottomToTop direction');
+    }
   }
-
-
-  // private createConnections() {
-  //   const conns: GLine[] = [];
-
-  //   // create connection from child to parent
-  //   this.children.forEach(child => {
-
-  //   });
-  // }
 
   protected drawInternal() {
     this.children.forEach(child => {
