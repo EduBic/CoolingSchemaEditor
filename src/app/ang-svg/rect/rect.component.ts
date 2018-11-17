@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HookPair } from '../model/core/HookPair';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -24,7 +23,7 @@ export class RectComponent implements OnInit {
   width = 250;
   height = 50;
 
-  inOuts: HookPair[] = [];
+  inOuts = [];
 
   constructor() {
 

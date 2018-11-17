@@ -6,7 +6,7 @@ import {
   ElementRef
 } from '@angular/core';
 import { SVGConfigService } from '../svgconfig.service';
-import { Utils } from '../model/Utils';
+import { Utils } from '../Utils';
 
 @Component({
   selector: 'app-svg-editor',

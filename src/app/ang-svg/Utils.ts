@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
-import { Point } from './core/Point';
-import { HookPair } from './core/HookPair';
-import { HookPosition } from './core/HookPosition';
+import { Point } from '../model/core/Point';
+import { HookPair } from '../model/core/HookPair';
+import { HookPosition } from '../model/core/HookPosition';
 
 export class Utils {
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import * as SVG from 'svg.js';
 import { SVGConfigService } from '../svgconfig.service';
-import { Utils } from '../model/Utils';
+import { Utils } from '../Utils';
 
 interface Item {
   id: number;

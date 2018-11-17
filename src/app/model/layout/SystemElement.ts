@@ -1,13 +1,13 @@
-import { Butterfly } from './primitive/Butterfly';
-import { Point } from './core/Point';
-import { BigRect } from './primitive/BigRect';
-import { GraphicGroup } from './core/GraphicGroup';
-import { HookPosition } from './core/HookPosition';
-import { Circle } from './primitive/Circle';
-import { ParallelElements } from './layout/ParallelElements';
-import { LinkPair } from './core/LinkPair';
-import { ConnectorLine } from './primitive/ConnectorLine';
-import { Direction } from './core/HookPair';
+import { Butterfly } from '../primitive/Butterfly';
+import { Point } from '../core/Point';
+import { BigRect } from './BigRect';
+import { GraphicGroup } from '../core/GraphicGroup';
+import { HookPosition } from '../core/HookPosition';
+import { Circle } from '../primitive/Circle';
+import { ParallelElements } from './ParallelElements';
+import { LinkPair } from '../core/LinkPair';
+import { ConnectorLine } from '../primitive/ConnectorLine';
+import { Direction } from '../core/HookPair';
 
 export class SystemElement extends GraphicGroup {
 

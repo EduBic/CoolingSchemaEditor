@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 
-import { SystemElement } from './SystemElement';
+import { SystemElement } from './layout/SystemElement';
 import { Point } from './core/Point';
 import { Circle } from './primitive/Circle';
 import { ParallelElements } from './layout/ParallelElements';
