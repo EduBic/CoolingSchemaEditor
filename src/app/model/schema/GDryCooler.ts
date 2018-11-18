@@ -4,10 +4,12 @@ import { Point } from '../core/Point';
 import { GFan } from './GFan';
 import { GCoil } from './GCoil';
 import { GCoilPair } from './GCoilPair';
+import { GSideCover } from './GSideCover';
 
 export class GDryCooler extends GElement {
 
   private fans: GFan[] = [];
+  private sideCover: GSideCover;
   private coilPair: GCoilPair;
 
   constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number) {
@@ -35,20 +37,23 @@ export class GDryCooler extends GElement {
     const bottomHeight = totHeight - fan.getHeight() - topBottomMargin;
     const bottomOriginY = fan.getHeight() + topBottomMargin;
 
-    const sideCoverCoilMargin = 20;
+
+    // Coils data
+    const sideCoverCoilMargin = 30;
+    const totWidthCoil = totWidth * 3 / 4;
+    const totWidthCoilWithMargin = totWidthCoil - sideCoverCoilMargin * 2;
+    const totHeightCoil = totHeight - fan.getHeight() - topBottomMargin;
 
     // Side Cover
-    const widthSideCover = 60;
-    const heightSide = totHeight - fan.getHeight() - topBottomMargin;
+    const widthOneSideCover = (totWidth - totWidthCoil) / 2;
 
+    this.sideCover = new GSideCover(
+      new Point(0, bottomOriginY), this.svgGroup, totWidth, bottomHeight, totWidthCoil
+    );
 
-
-    // Coils
-    const widthSpaceCoil = totWidth - 2 * widthSideCover - sideCoverCoilMargin * 2;
-    const heightSpaceCoil = totHeight - fan.getHeight() - topBottomMargin;
-
+    // Coils elem
     this.coilPair = new GCoilPair(
-      new Point(widthSideCover + sideCoverCoilMargin, bottomOriginY), this.svgGroup, widthSpaceCoil, heightSpaceCoil, 60);
+      new Point(widthOneSideCover + sideCoverCoilMargin, bottomOriginY), this.svgGroup, totWidthCoilWithMargin, totHeightCoil, 60);
 
     console.log(fan.getHeight());
   }
@@ -61,7 +66,7 @@ export class GDryCooler extends GElement {
     });
 
     this.coilPair.drawAll();
-
+    this.sideCover.drawAll();
   }
 
 }

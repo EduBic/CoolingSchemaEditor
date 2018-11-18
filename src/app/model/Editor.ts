@@ -38,7 +38,7 @@ export class Editor {
     // p.draw();
 
     const c = new SCompressor(null, new Point(200, 200), this.main);
-    c.draw();
+    // c.draw();
 
     const cs = new SParallelCompressor(null, new Point(210, 50), this.main, 3);
     // cs.draw();
@@ -52,7 +52,7 @@ export class Editor {
     // const coilPair = new GCoilPair(mainOrigin, this.main, 100, 80, 60);
     // coilPair.drawAll();
 
-    const sc = new GSideCover(mainOrigin, this.main, 100);
+    // const sc = new GSideCover(mainOrigin, this.main, 100);
     // sc.drawAll();
 
     const dc = new GDryCooler(mainOrigin, this.main, 340, 200);
