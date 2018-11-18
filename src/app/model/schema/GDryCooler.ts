@@ -17,7 +17,7 @@ export class GDryCooler extends GElement {
     this.disableSelectRect();
 
     // Fans
-    const fanMarginX = 10
+    const fanMarginX = 10;
     const fanMarginCenterX = 10;
     const fanWidth = (totWidth - 2 * fanMarginX - fanMarginCenterX) / 2;
 

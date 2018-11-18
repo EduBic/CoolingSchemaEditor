@@ -124,7 +124,7 @@ export class GCoil extends GElement {
       console.log('Bottom triangle: (B/H)', baseBotTriangle, heightBotTriangle);
       console.log('Top triangle: (B/H)', baseTopTriangle, heightTopTriangle);
       console.log('Total width: ', baseBotTriangle + baseTopTriangle);
-      console.log('Total height: ', , heightBotTriangle + heightTopTriangle);
+      console.log('Total height: ', heightBotTriangle + heightTopTriangle);
 
     } else {
 
@@ -137,7 +137,7 @@ export class GCoil extends GElement {
       console.log('Bottom triangle: (B/H)', baseBotTriangle, heightBotTriangle);
       console.log('Top triangle: (B/H)', baseTopTriangle, heightTopTriangle);
       console.log('Total width: ', baseBotTriangle + baseTopTriangle);
-      console.log('Total height: ', , heightBotTriangle + heightTopTriangle);
+      console.log('Total height: ', heightBotTriangle + heightTopTriangle);
     }
 
   }

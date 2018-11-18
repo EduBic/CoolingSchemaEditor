@@ -88,7 +88,7 @@ export abstract class GElement {
     this.gateConf = false;
   }
 
-  pblic disableSelectRect() {
+  public disableSelectRect() {
     this.selectRect = false;
   }
 
