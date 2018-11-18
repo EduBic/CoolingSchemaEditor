@@ -14,8 +14,9 @@ export abstract class GElement {
   protected readonly totWidth: number;
   protected readonly totHeight: number;
 
-  // Configuration
-  private drawGateConf = true;
+  // Configuration (on/off)
+  private gateConf = true;
+  private selectRect = true;
 
   // Connection
   private gates: Gate[];
@@ -35,13 +36,15 @@ export abstract class GElement {
 
   public drawAll() {
     this.drawInternal();
-    if (this.drawGateConf) {
+    if (this.gateConf) {
       this.drawGates();
     }
 
-    this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
-        .fill('transparent')
-        .stroke('transparent');
+    if (this.selectRect) {
+      this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
+          .fill('transparent')
+          .stroke('transparent');
+    }
 
     this.svgGroup.move(this.origin.x, this.origin.y);
   }
@@ -49,7 +52,9 @@ export abstract class GElement {
   private drawGates() {
     this.svgGroup.on('mouseenter', (e: MouseEvent) => {
 
-      this.containerRect.stroke('aqua');
+      if (this.selectRect) {
+        this.containerRect.stroke('aqua');
+      }
 
       this.gates.forEach(gate => {
         gate.draw(this.svgGroup);
@@ -62,7 +67,9 @@ export abstract class GElement {
         gate.remove();
       });
 
-      this.containerRect.stroke('transparent');
+      if (this.selectRect) {
+        this.containerRect.stroke('transparent');
+      }
     });
 
     this.svgGroup.on('click', (e: MouseEvent) => {
@@ -73,8 +80,16 @@ export abstract class GElement {
   // Template method
   protected abstract drawInternal();
 
+  /**
+   * Change default behaviour of GElement base class. Call this method inside
+   * the constructor of a class that need this.
+   */
   public disableGateDraw() {
-    this.drawGateConf = false;
+    this.gateConf = false;
+  }
+
+  pblic disableSelectRect() {
+    this.selectRect = false;
   }
 
   public getGate(index: number): Gate {
@@ -83,6 +98,14 @@ export abstract class GElement {
 
   public getAbsoluteGate(index: number): Gate {
     return this.gates[index].getAbsoluteGate(this.origin);
+  }
+
+  public getWidth(): number {
+    return this.totWidth;
+  }
+
+  public getHeight(): number {
+    return this.totHeight;
   }
 
 }

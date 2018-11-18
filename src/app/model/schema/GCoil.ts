@@ -16,6 +16,10 @@ export class GCoil extends GElement {
   private points: number[];
 
   constructor(origin: Point, svgParent: SVG.G, height: number, depth: number, pos: GCoilPos) {
+    // const height = 80;
+    // const depth = 24;
+    GCoil.computeRectangle(height, depth, pos);
+
     if (pos === GCoilPos.Right) {
 
       const baseBotTriangle = Math.abs(depth * Math.sin(GCoil.ANGLE));
@@ -104,6 +108,38 @@ export class GCoil extends GElement {
         HookPosition.Bottom, false
       );
     }
+  }
+
+  // DEBUG only
+  public static computeRectangle(height: number, depth: number, pos: GCoilPos) {
+    console.log('For a correct Coil use the following info');
+
+    if (pos === GCoilPos.Right) {
+      const baseBotTriangle = Math.abs(depth * Math.sin(GCoil.ANGLE));
+      const heightBotTriangle = Math.abs(depth * Math.cos(GCoil.ANGLE));
+
+      const baseTopTriangle = Math.abs(height * Math.sin(Math.PI / 2 - GCoil.ANGLE));
+      const heightTopTriangle = Math.abs(height * Math.cos(Math.PI / 2 - GCoil.ANGLE));
+
+      console.log('Bottom triangle: (B/H)', baseBotTriangle, heightBotTriangle);
+      console.log('Top triangle: (B/H)', baseTopTriangle, heightTopTriangle);
+      console.log('Total width: ', baseBotTriangle + baseTopTriangle);
+      console.log('Total height: ', , heightBotTriangle + heightTopTriangle);
+
+    } else {
+
+      const baseBotTriangle = Math.abs(height * Math.sin(GCoil.ANGLE / 2));
+      const heightBotTriangle = Math.abs(height * Math.cos(GCoil.ANGLE / 2));
+
+      const baseTopTriangle = Math.abs(depth * Math.cos(GCoil.ANGLE / 2));
+      const heightTopTriangle = Math.abs(depth * Math.sin(GCoil.ANGLE / 2));
+
+      console.log('Bottom triangle: (B/H)', baseBotTriangle, heightBotTriangle);
+      console.log('Top triangle: (B/H)', baseTopTriangle, heightTopTriangle);
+      console.log('Total width: ', baseBotTriangle + baseTopTriangle);
+      console.log('Total height: ', , heightBotTriangle + heightTopTriangle);
+    }
+
   }
 
   public drawInternal(): void {

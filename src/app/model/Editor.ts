@@ -8,7 +8,6 @@ import { Rect } from './primitive/Rect';
 import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
 import { TestMiniCycle } from './TestMiniCycle';
-import { GDryCooler } from './layout/GDryCooler';
 import { GSideCover } from './schema/GSideCover';
 import { GFan } from './schema/GFan';
 import { SPump } from './schema/SPump';
@@ -19,7 +18,9 @@ import { Direction } from './schema/Direction';
 import { GLine } from './schema/GLine';
 import { GCompressor } from './schema/GCompressor';
 import { SParallelCompressor } from './schema/SParallelCompressors';
-import { GCoil } from './schema/GCoil';
+import { GCoil, GCoilPos } from './schema/GCoil';
+import { GDryCooler } from './schema/GDryCooler';
+import { GCoilPair } from './schema/GCoilPair';
 
 
 export class Editor {
@@ -34,22 +35,28 @@ export class Editor {
     const mainOrigin = new Point(150, 100);
 
     const p = new SPump({id: 1, name: 'pump', total: 2}, mainOrigin, this.main);
-    p.draw();
+    // p.draw();
 
-    const c = new SCompressor(null, new Point(30, 30), this.main);
+    const c = new SCompressor(null, new Point(200, 200), this.main);
     c.draw();
 
     const cs = new SParallelCompressor(null, new Point(210, 50), this.main, 3);
-    cs.draw();
+    // cs.draw();
 
-    const f = new GFan(mainOrigin, this.main, 80, 15);
+    const f = new GFan(mainOrigin, this.main, 80);
     // f.drawAll();
 
-    const cl = new GCoil(mainOrigin, this.main, 100, 26);
+    // const cl = new GCoil(new Point(50, 50), this.main, 80, 20, GCoilPos.Right);
     // cl.drawAll();
 
+    // const coilPair = new GCoilPair(mainOrigin, this.main, 100, 80, 60);
+    // coilPair.drawAll();
+
     const sc = new GSideCover(mainOrigin, this.main, 100);
-    sc.drawAll();
+    // sc.drawAll();
+
+    const dc = new GDryCooler(mainOrigin, this.main, 340, 200);
+    dc.drawAll();
 
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
     // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);

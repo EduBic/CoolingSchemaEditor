@@ -15,6 +15,11 @@ export class GLine extends GElement {
     this.points = points;
   }
 
+  public static connectElems(svgParent: SVG.G, parentOrigin: Point, exitElem: Gate, entryElem: Gate) {
+    const points = LineDrawer.createLinePoints(exitElem.toExternalHook(), entryElem.toExternalHook());
+    return new GLine(parentOrigin, svgParent, exitElem, entryElem, points);
+  }
+
   public static connectParentToChildEntries(svgParent: SVG.G, parentOrigin: Point, parent: Gate,
     absChild: Gate): GLine {
 

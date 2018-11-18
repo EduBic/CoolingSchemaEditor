@@ -4,17 +4,19 @@ import { GElement } from './GElement';
 
 export class GFan extends GElement {
 
+  private static readonly PROPORTION = 0.18;
+
   private centerRadius: number;
   private bladeWidth: number;
   private marginCircle = 2;
 
   private children: SVG.Shape[] = [];
 
-  constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number) {
-    super(origin, svgParent, totWidth, totHeight);
+  constructor(origin: Point, svgParent: SVG.G, width: number) {
+    super(origin, svgParent, width, width * GFan.PROPORTION);
 
-    this.centerRadius = totHeight / 2 - this.marginCircle;
-    this.bladeWidth = (totWidth - this.centerRadius) / 2;
+    this.centerRadius = (width * GFan.PROPORTION) / 2 - this.marginCircle;
+    this.bladeWidth = (width - this.centerRadius * 2) / 2;
   }
 
 
@@ -36,5 +38,12 @@ export class GFan extends GElement {
     this.children.push(center, rightBlade, leftBlade);
   }
 
+  public getHeight(): number {
+    return this.totHeight;
+  }
+
+  public getWidth(): number {
+    return this.totWidth;
+  }
 
 }
