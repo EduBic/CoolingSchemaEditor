@@ -1,0 +1,12 @@
+<div>
+
+  <div id="list">
+    <div class="list-item" draggable="true"
+      *ngFor="let elem of elements"
+      (dragstart)="dragStart($event, elem)">
+      {{ elem.name }}
+      <img src="../../../favicon.ico" />
+    </div>
+  <div>
+
+</div>

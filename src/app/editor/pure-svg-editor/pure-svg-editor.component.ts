@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 import * as SVG from 'svg.js';
 import { Editor } from '../model/Editor';
+import { DElement } from '../model/schema/DElement';
 
 
 @Component({
@@ -13,11 +14,31 @@ export class PureSvgEditorComponent implements OnInit {
 
   editor: Editor;
 
+  elemDragged: DElement;
+
   constructor() { }
 
   ngOnInit() {
     this.editor = new Editor('editor');
     this.editor.draw();
+  }
+
+  dragElem(elem: DElement) {
+    console.log('dragging:', elem);
+    this.elemDragged = elem;
+  }
+
+  dropElem(event: MouseEvent) {
+    console.log('Svg-comp: from Store-comp', event);
+
+    // this.editor.drop(this.elemDragged);
+
+    this.elemDragged = null;
+  }
+
+  @HostListener('mouseup', ['$event'])
+  mousUP(event) {
+    console.log(event);
   }
 
 }
