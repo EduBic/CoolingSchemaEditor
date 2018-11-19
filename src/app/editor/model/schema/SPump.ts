@@ -18,11 +18,6 @@ export class SPump {
     // build graphic pump
     this.graphic = new GPump(origin, svgRef, 10, Direction.BottomToTop);
 
-    // Interaction management
-    this.graphic.onClick = (e) => {
-      console.log(e);
-    };
-
     this.data = data;
   }
 

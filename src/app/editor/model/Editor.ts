@@ -22,14 +22,26 @@ import { GCoil, GCoilPos } from './schema/GCoil';
 import { GDryCooler } from './schema/GDryCooler';
 import { GCoilPair } from './schema/GCoilPair';
 import { GValve } from './schema/GValve';
+import { SElement } from './schema/SElement';
+import { DElement } from './schema/DElement';
+import { Observable, fromEvent } from 'rxjs';
 
 
 export class Editor {
 
   private main: SVG.G;
 
+  private pointerLeave$: Observable<any>;
+
   constructor(svgId: string) {
     this.main = SVG.get(svgId) as SVG.G;
+    const container = SVG.get('container') as SVG.Doc;
+
+    // this.pointerLeave$ =
+    // fromEvent(container, 'pointerup')
+    //   .subscribe((e) => {
+    //     console.log('Editor svg listener', e);
+    //   });
   }
 
   draw() {
@@ -62,6 +74,7 @@ export class Editor {
     const v = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
     v.drawAll();
     v.click$.subscribe(console.log);
+    // v.gateClick$.subscribe(console.log);
 
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
     // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);
@@ -80,7 +93,16 @@ export class Editor {
     // // const dc = new GraphicDryCooler(new Point(0, 0), );
     // const sideCover = new GSideCover(mainOrigin, 100, 4);
     // // sideCover.draw(this.main);
+  }
 
+  public drop(newData: DElement) {
+    // Over which element?
+    // console.log('change data');
+
+    // get element
+    // let elemDrop: SElement;
+    // Override element Data
+    // elemDrop.setData(newData);
   }
 
 }

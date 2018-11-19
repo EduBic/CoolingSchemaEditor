@@ -1,9 +1,5 @@
 import { GElement } from './GElement';
-
-interface DElement {
-  id: number;
-  name: string;
-}
+import { DElement } from './DElement';
 
 export class SElement {
 

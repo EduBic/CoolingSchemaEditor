@@ -57,7 +57,7 @@ export class Gate {
     ];
   }
 
-  public draw(host: SVG.G) {
+  public draw(host: SVG.G): SVG.Shape {
     if (this.isEntry()) {
       this.svgElem = host.rect(Gate.IN_OUT_SIZE, Gate.IN_OUT_SIZE)
         .move(this.coord.x - Gate.IN_OUT_SIZE / 2,
@@ -69,12 +69,15 @@ export class Gate {
               this.coord.y - Gate.IN_OUT_SIZE / 2)
         .addClass('outputPoint');
     }
+
+    return this.svgElem;
   }
 
-  public remove() {
+  public remove(): SVG.Shape {
     if (this.svgElem) {
       this.svgElem.remove();
     }
+    return this.svgElem;
   }
 
 

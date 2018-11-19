@@ -24,9 +24,7 @@ export abstract class GElement {
 
   // Event stream
   click$: Observable<MouseEvent>;
-
-  // Event
-  onClick = (e) => {};
+  gateClick$: Observable<MouseEvent>;
 
   constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number, gates: Gate[] = []) {
     this.origin = origin;
@@ -40,8 +38,9 @@ export abstract class GElement {
 
   public drawAll() {
     this.drawInternal();
+
     if (this.gateConf) {
-      this.drawGates();
+      this.setInteractions();
     }
 
     if (this.selectRect) {
@@ -55,7 +54,8 @@ export abstract class GElement {
     this.svgGroup.move(this.origin.x, this.origin.y);
   }
 
-  private drawGates() {
+  private setInteractions() {
+
     this.svgGroup.on('mouseenter', (e: MouseEvent) => {
 
       if (this.selectRect) {
@@ -63,7 +63,8 @@ export abstract class GElement {
       }
 
       this.gates.forEach(gate => {
-        gate.draw(this.svgGroup);
+        const graphicGate = gate.draw(this.svgGroup);
+        this.gateClick$ = fromEvent(graphicGate, 'click');
       });
     });
 
@@ -71,15 +72,12 @@ export abstract class GElement {
 
       this.gates.forEach(gate => {
         gate.remove();
+        this.gateClick$ = null;
       });
 
       if (this.selectRect) {
         this.containerRect.stroke('transparent');
       }
-    });
-
-    this.svgGroup.on('click', (e: MouseEvent) => {
-      this.onClick(e);
     });
   }
 
