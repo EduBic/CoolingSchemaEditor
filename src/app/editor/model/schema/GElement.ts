@@ -2,6 +2,7 @@ import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
 import { Gate } from './Gate';
 import { HookPoint } from '../core/HookPoint';
+import { fromEvent, Observable } from 'rxjs';
 
 export abstract class GElement {
 
@@ -20,6 +21,9 @@ export abstract class GElement {
 
   // Connection
   private gates: Gate[];
+
+  // Event stream
+  click$: Observable<MouseEvent>;
 
   // Event
   onClick = (e) => {};
@@ -44,6 +48,8 @@ export abstract class GElement {
       this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
           .fill('transparent')
           .stroke('transparent');
+
+      this.click$ = fromEvent(this.containerRect, 'click');
     }
 
     this.svgGroup.move(this.origin.x, this.origin.y);

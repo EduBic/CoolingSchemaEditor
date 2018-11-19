@@ -21,6 +21,7 @@ import { SParallelCompressor } from './schema/SParallelCompressors';
 import { GCoil, GCoilPos } from './schema/GCoil';
 import { GDryCooler } from './schema/GDryCooler';
 import { GCoilPair } from './schema/GCoilPair';
+import { GValve } from './schema/GValve';
 
 
 export class Editor {
@@ -56,7 +57,11 @@ export class Editor {
     // sc.drawAll();
 
     const dc = new GDryCooler(mainOrigin, this.main, 340, 200);
-    dc.drawAll();
+    // dc.drawAll();
+
+    const v = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
+    v.drawAll();
+    v.click$.subscribe(console.log);
 
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
     // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);

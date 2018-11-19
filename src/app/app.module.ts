@@ -5,20 +5,20 @@ import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { PureSvgEditorComponent } from './pure-svg-editor/pure-svg-editor.component';
 import { AngSvgModule } from './ang-svg/ang-svg.module';
+import { EditorModule } from './editor/editor.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    PureSvgEditorComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
 
-    AngSvgModule
+    AngSvgModule,
+    EditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
