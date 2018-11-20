@@ -24,14 +24,18 @@ import { GCoilPair } from './schema/GCoilPair';
 import { GValve } from './schema/GValve';
 import { SElement } from './schema/SElement';
 import { DElement } from './schema/DElement';
-import { Observable, fromEvent } from 'rxjs';
+
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 
 export class Editor {
 
   private main: SVG.G;
 
-  private pointerLeave$: Observable<any>;
+  private myValve: GValve;
+
+  private dropSub: Subscription;
 
   constructor(svgId: string) {
     this.main = SVG.get(svgId) as SVG.G;
@@ -71,9 +75,9 @@ export class Editor {
     const dc = new GDryCooler(mainOrigin, this.main, 340, 200);
     // dc.drawAll();
 
-    const v = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
-    v.drawAll();
-    v.click$.subscribe(console.log);
+    this.myValve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
+    this.myValve.drawAll();
+    // v.pointerUp$.subscribe(console.log);
     // v.gateClick$.subscribe(console.log);
 
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
@@ -95,14 +99,15 @@ export class Editor {
     // // sideCover.draw(this.main);
   }
 
-  public drop(newData: DElement) {
-    // Over which element?
-    // console.log('change data');
+  public startListenerDrop(newData: DElement) {
+    // for SElement listen 'pointerup' event
+    this.dropSub = this.myValve.pointerUp$.pipe(first()).subscribe((e) => {
+      console.log('myValve change data to', newData);
+    });
+  }
 
-    // get element
-    // let elemDrop: SElement;
-    // Override element Data
-    // elemDrop.setData(newData);
+  public stopListenerDrop() {
+    this.dropSub.unsubscribe();
   }
 
 }

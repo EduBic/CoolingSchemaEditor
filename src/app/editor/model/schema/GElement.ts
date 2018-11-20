@@ -25,6 +25,7 @@ export abstract class GElement {
   // Event stream
   click$: Observable<MouseEvent>;
   gateClick$: Observable<MouseEvent>;
+  pointerUp$: Observable<MouseEvent>;
 
   constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number, gates: Gate[] = []) {
     this.origin = origin;
@@ -50,6 +51,8 @@ export abstract class GElement {
 
       this.click$ = fromEvent(this.containerRect, 'click');
     }
+
+    this.pointerUp$ = fromEvent(this.svgGroup, 'pointerup');
 
     this.svgGroup.move(this.origin.x, this.origin.y);
   }

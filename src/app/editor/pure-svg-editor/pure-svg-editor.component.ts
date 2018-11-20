@@ -24,21 +24,13 @@ export class PureSvgEditorComponent implements OnInit {
   }
 
   dragElem(elem: DElement) {
-    console.log('dragging:', elem);
-    this.elemDragged = elem;
+    // console.log('editor.comp', elem);
+    this.editor.startListenerDrop(elem);
   }
 
   dropElem(event: MouseEvent) {
-    console.log('Svg-comp: from Store-comp', event);
-
-    // this.editor.drop(this.elemDragged);
-
-    this.elemDragged = null;
-  }
-
-  @HostListener('mouseup', ['$event'])
-  mousUP(event) {
-    console.log(event);
+    // console.log('editor.comp - end drag');
+    this.editor.stopListenerDrop();
   }
 
 }
