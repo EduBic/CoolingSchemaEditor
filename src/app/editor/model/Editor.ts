@@ -7,7 +7,6 @@ import { ParallelElements } from './layout/ParallelElements';
 import { Rect } from './primitive/Rect';
 import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
-import { TestMiniCycle } from './TestMiniCycle';
 import { GSideCover } from './schema/GSideCover';
 import { GFan } from './schema/GFan';
 import { SPump } from './schema/SPump';
