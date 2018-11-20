@@ -90,14 +90,6 @@ export class Editor {
 
   }
 
-  private drawOldLib() {
-    // // const sys = new SystemElement(new Point(0, 0));
-    // // sys.draw(this.main);
-
-    // // const dc = new GraphicDryCooler(new Point(0, 0), );
-    // const sideCover = new GSideCover(mainOrigin, 100, 4);
-    // // sideCover.draw(this.main);
-  }
 
   public startListenerDrop(newData: DElement) {
     // for SElement listen 'pointerup' event
