@@ -55,7 +55,7 @@ export class GDryCooler extends GElement {
     this.coilPair = new GCoilPair(
       new Point(widthOneSideCover + sideCoverCoilMargin, bottomOriginY), this.svgGroup, totWidthCoilWithMargin, totHeightCoil, 60);
 
-    console.log(fan.getHeight());
+    // console.log(fan.getHeight());
   }
 
 

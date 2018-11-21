@@ -26,13 +26,17 @@ import { DElement } from './schema/DElement';
 
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { GElement } from './schema/GElement';
 
 
 export class Editor {
 
   private main: SVG.G;
+  private currScale = 1;
+  private currTransX = 0;
+  private currTransY = 0;
 
-  private myValve: GValve;
+  private myValve: SElement;
 
   private dropSub: Subscription;
 
@@ -40,11 +44,6 @@ export class Editor {
     this.main = SVG.get(svgId) as SVG.G;
     const container = SVG.get('container') as SVG.Doc;
 
-    // this.pointerLeave$ =
-    // fromEvent(container, 'pointerup')
-    //   .subscribe((e) => {
-    //     console.log('Editor svg listener', e);
-    //   });
   }
 
   draw() {
@@ -74,31 +73,47 @@ export class Editor {
     const dc = new GDryCooler(mainOrigin, this.main, 340, 200);
     // dc.drawAll();
 
-    this.myValve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
-    this.myValve.drawAll();
+    const valve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
+    this.myValve = new SElement(valve);
+    this.myValve.setData({ id: 42, name: 'super' });
+    this.myValve.draw();
+
+    this.myValve.click$.subscribe((elem: DElement) => {
+      console.log(elem);
+    });
     // v.pointerUp$.subscribe(console.log);
     // v.gateClick$.subscribe(console.log);
 
     // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
     // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);
     // parallel.drawAll();
-
-    this.main.transform({
-      scale: 1
-    });
-
   }
 
 
   public startListenerDrop(newData: DElement) {
     // for SElement listen 'pointerup' event
-    this.dropSub = this.myValve.pointerUp$.pipe(first()).subscribe((e) => {
-      console.log('myValve change data to', newData);
+    // TODO: merge all stream from element inside screen
+    // subscribe and unsubscribe to that stream
+    this.dropSub = this.myValve.getGraphic().pointerUp$.pipe(first()).subscribe((e) => {
+      // console.log('New data on Valve', e, newData);
+      this.myValve.setData(newData);
     });
   }
 
   public stopListenerDrop() {
     this.dropSub.unsubscribe();
+  }
+
+
+  public zoom(percent: number) {
+    this.currScale += percent;
+    this.main.transform({ scale: this.currScale });
+  }
+
+  public pan(dx: number, sx: number) {
+    this.currTransX += dx;
+    this.currTransY += sx;
+    this.main.translate(this.currTransX, this.currTransY);
   }
 
 }

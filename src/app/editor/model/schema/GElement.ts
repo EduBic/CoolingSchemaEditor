@@ -3,6 +3,7 @@ import { Point } from '../core/Point';
 import { Gate } from './Gate';
 import { HookPoint } from '../core/HookPoint';
 import { fromEvent, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export abstract class GElement {
 
@@ -23,7 +24,7 @@ export abstract class GElement {
   private gates: Gate[];
 
   // Event stream
-  click$: Observable<MouseEvent>;
+  click$: Observable<GElement>;
   gateClick$: Observable<MouseEvent>;
   pointerUp$: Observable<MouseEvent>;
 
@@ -50,9 +51,12 @@ export abstract class GElement {
           .stroke('transparent');
 
       this.click$ = fromEvent(this.containerRect, 'click');
+      // .pipe(
+      //   map(_ => this)
+      // );
+      this.pointerUp$ = fromEvent(this.containerRect, 'pointerup');
     }
 
-    this.pointerUp$ = fromEvent(this.svgGroup, 'pointerup');
 
     this.svgGroup.move(this.origin.x, this.origin.y);
   }

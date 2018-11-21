@@ -1,5 +1,7 @@
 import { GElement } from './GElement';
 import { DElement } from './DElement';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export class SElement {
 
@@ -7,20 +9,29 @@ export class SElement {
   private data: DElement;
   private graphic: GElement;
 
+  // Streams
+  click$: Observable<DElement>;
 
 
-  constructor() {
-    // Build graphic element group
+  constructor(graphic: GElement, data?: DElement) {
+    this.graphic = graphic;
+    this.data = data;
+  }
 
-    // set data element from Injection
+  public draw() {
+    this.graphic.drawAll();
+
+    this.click$ = this.graphic.click$.pipe(
+      map(_ => this.data)
+    );
   }
 
   public setData(data: DElement) {
     this.data = data;
   }
 
-  public setGraphic(graphic: GElement) {
-    this.graphic = graphic;
+  public getGraphic(): GElement {
+    return this.graphic;
   }
 
 }
