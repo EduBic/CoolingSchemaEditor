@@ -27,6 +27,10 @@
         (elemDragStart)="dragElem($event)"
         (elemDragEnd)="dropElem($event)">
       </app-store-selection>
+
+      <p>
+        {{ selected | json }}
+      </p>
   </div>
 
 </div>

@@ -119,4 +119,12 @@ export abstract class GElement {
     return this.totHeight;
   }
 
+  public setVoidStyle(on: boolean) {
+    if (on) {
+      this.svgGroup.addClass('selement-no-data');
+    } else {
+      this.svgGroup.removeClass('selement-no-data');
+    }
+  }
+
 }

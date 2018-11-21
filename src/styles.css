@@ -35,3 +35,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   stroke: darkslategray;
   fill: transparent;
 }
+
+.selement-no-data {
+  opacity: .5;
+}

@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 
 import { Editor } from '../model/Editor';
 import { DElement } from '../model/schema/DElement';
+import { SElement } from '../model/schema/SElement';
 
 
 @Component({
@@ -12,14 +13,17 @@ import { DElement } from '../model/schema/DElement';
 export class PureSvgEditorComponent implements OnInit {
 
   editor: Editor;
-
-  elemDragged: DElement;
+  selected: DElement;
 
   constructor() { }
 
   ngOnInit() {
     this.editor = new Editor('editor');
     this.editor.draw();
+
+    this.editor.select$.subscribe((elem) => {
+      this.selected = elem;
+    });
   }
 
   dragElem(elem: DElement) {

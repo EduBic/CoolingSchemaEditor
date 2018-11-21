@@ -24,9 +24,11 @@ import { GValve } from './schema/GValve';
 import { SElement } from './schema/SElement';
 import { DElement } from './schema/DElement';
 
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Subscription, merge as staticMerge, Observable } from 'rxjs';
+import { first, merge } from 'rxjs/operators';
+
 import { GElement } from './schema/GElement';
+import { DryCoolerBuilder } from './schema/DryCoolerFactory';
 
 
 export class Editor {
@@ -36,9 +38,13 @@ export class Editor {
   private currTransX = 0;
   private currTransY = 0;
 
-  private myValve: SElement;
+  private children: SElement[] = [];
 
-  private dropSub: Subscription;
+  private myValve: SElement;
+  private myComprs: SElement;
+  private myDc: SElement[];
+
+  public select$: Observable<DElement>;
 
   constructor(svgId: string) {
     this.main = SVG.get(svgId) as SVG.G;
@@ -49,7 +55,7 @@ export class Editor {
   draw() {
     const mainOrigin = new Point(150, 100);
 
-    const p = new SPump({id: 1, name: 'pump', total: 2}, mainOrigin, this.main);
+    // const p = new SPump({id: 1, name: 'pump', total: 2}, mainOrigin, this.main);
     // p.draw();
 
     const c = new SCompressor(null, new Point(200, 200), this.main);
@@ -70,23 +76,39 @@ export class Editor {
     // const sc = new GSideCover(mainOrigin, this.main, 100);
     // sc.drawAll();
 
-    const dc = new GDryCooler(mainOrigin, this.main, 340, 200);
-    // dc.drawAll();
-
     const valve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
-    this.myValve = new SElement(valve);
-    this.myValve.setData({ id: 42, name: 'super' });
+    this.myValve = new SElement(valve, { id: 42, name: 'super' });
     this.myValve.draw();
 
-    this.myValve.click$.subscribe((elem: DElement) => {
-      console.log(elem);
-    });
-    // v.pointerUp$.subscribe(console.log);
-    // v.gateClick$.subscribe(console.log);
 
-    // const elem = new GCompressor(new Point(0,0), this.main, 14, Direction.LeftToRight);
-    // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elem, 3);
-    // parallel.drawAll();
+    // const elemClone = new GCompressor(new Point(0,0), this.main, 14, Direction.BottomToTop);
+    // const parallel = new GParallelWrapper(new Point(200, 50), this.main, elemClone, 3);
+
+    // this.myComprs = new SElement(parallel, { id: 43, name: 'comprs parallel' });
+    // this.myComprs.draw();
+
+    // this.myComprs.click$.subscribe((elem: DElement) => {
+    //   console.log('click comprs', elem);
+    // });
+
+    this.myDc = DryCoolerBuilder.create(new Point(200, 200), this.main, 200, 150);
+    // this.myDc.forEach(child => {
+    //   child.draw();
+
+    //   child.click$.subscribe((elem: DElement) => {
+    //     console.log(elem);
+    //   });
+
+    // });
+
+    this.children.push(this.myValve);
+    this.children = this.children.concat(this.myDc);
+
+    this.children.forEach(child => {
+      child.draw();
+    });
+
+    this.select$ = staticMerge(...this.children.map(x => x.click$));
   }
 
 
@@ -94,16 +116,50 @@ export class Editor {
     // for SElement listen 'pointerup' event
     // TODO: merge all stream from element inside screen
     // subscribe and unsubscribe to that stream
-    this.dropSub = this.myValve.getGraphic().pointerUp$.pipe(first()).subscribe((e) => {
-      // console.log('New data on Valve', e, newData);
-      this.myValve.setData(newData);
+    // const allObs = [this.myValve.pointerUp$];
+
+    // this.myDc.forEach(child => {
+    //   allObs.push(child.pointerUp$);
+    // });
+
+    this.children.forEach(child => {
+      child.subscribeDrop(newData);
     });
+
+    // this.dropSub = this.myValve.pointerUp$
+    //   .pipe(
+    //     merge(this.myDc[0].pointerUp$)
+    //   )
+    //   .subscribe(
+    //     (e) => { console.log('elem', e); },
+    //     (err) => {console.log('error'); },
+    //     () => {console.log('completed'); }
+    //   );
+
+    // this.dropSub = merge(
+    //   this.myValve.pointerUp$,
+    //   this.myDc[0].pointerUp$
+    // ).subscribe(
+    //   (elem) => { console.log('drop on', elem); elem.setData(newData); }
+    // );
   }
 
   public stopListenerDrop() {
-    this.dropSub.unsubscribe();
+    // this.dropSub.unsubscribe();
+    this.children.forEach(child => {
+      child.unsubscribeDrop();
+    });
   }
 
+  public subSelected(callback) {
+    this.children.forEach(child => {
+      child.click$.subscribe((elem: DElement) => {
+        callback(elem);
+      });
+    });
+  }
+
+  // Manipolate main svg
 
   public zoom(percent: number) {
     this.currScale += percent;
