@@ -1,0 +1,15 @@
+
+.list-item {
+  border: 1px solid black;
+}
+
+.ghost {
+  pointer-events: none;
+  position: absolute;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+
+.disable-ghost {
+  display: none;
+}

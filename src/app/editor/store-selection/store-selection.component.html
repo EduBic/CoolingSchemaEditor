@@ -1,0 +1,12 @@
+<div>
+
+  <div id="list">
+    <div class="list-item"
+      *ngFor="let elem of elements">
+      {{ elem.name }}
+      <img src="../../../favicon.ico" (mousedown)="startDrag($event, elem)"/>
+      <img src="../../../favicon.ico" attr.id="{{ elem.id }}" class="ghost disable-ghost" />
+    </div>
+  <div>
+
+</div>

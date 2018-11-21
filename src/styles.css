@@ -30,3 +30,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   fill: transparent;
   stroke-width: 2px;
 }
+
+.side-cover {
+  stroke: darkslategray;
+  fill: transparent;
+}
+
+.selement-no-data {
+  opacity: .5;
+}
