@@ -2,18 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.5.
 
-## Features
-
-### SVG and HTML+ mixed (Experiment)
-An experiment on how to merge angular features with SVG.
-
-- Draw RectComponent
-- Selection
-- Move Single selection
-- Pan Area
-- Zoom Area
-
-### SVG with SVG.js (Working on)
+## SVG with SVG.js (Working on)
 An Typescript library that build a schema with SVG element.
 
 - Draw Basic Element
@@ -22,6 +11,8 @@ An Typescript library that build a schema with SVG element.
 - Draw lines from input/output point of element
 - Descrive complex GraphicElement with multiple GraphicElement using GraphicGroup
 - Input/Output hooks for each Graphic Element
+
+- New Schema library: compose GraphicElement and DataElement with SchemaElement class
 
 ## Development server
 
