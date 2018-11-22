@@ -1,12 +1,15 @@
 import { GElement } from './GElement';
-import { DElement } from './DElement';
+import { DElement, DType } from './DElement';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Valve } from './Valve';
 
 export class SElement {
 
   // private graphic: DGraphic;
   private data: DElement;
+  private dataType: DType;
+
   private graphic: GElement;
 
   // Streams
@@ -16,8 +19,9 @@ export class SElement {
   private subDrop: Subscription;
 
 
-  constructor(graphic: GElement, data?: DElement) {
+  constructor(graphic: GElement, dataType: DType, data?: DElement) {
     this.graphic = graphic;
+    this.dataType = dataType;
     this.setData(data);
   }
 
@@ -39,13 +43,25 @@ export class SElement {
 
   }
 
-  public setData(data: DElement) {
-    this.data = data;
+  public setData(data: DElement): boolean {
+    console.log(data);
 
-    if (!this.data) {
+    if (data) {
+
+      if (data.getType() === this.dataType) {
+        this.data = data;
+        this.graphic.setVoidStyle(false);
+      } else {
+        console.log('Data obj is not a ' + this.dataType);
+      }
+
+      return true;
+
+    } else {  // data === undefined
+
       this.graphic.setVoidStyle(true);
-    } else {
-      this.graphic.setVoidStyle(false);
+      return false;
+
     }
   }
 

@@ -5,7 +5,7 @@ import { GFan } from './GFan';
 import { GCoilPair } from './GCoilPair';
 import { GSideCover } from './GSideCover';
 import { SElement } from './SElement';
-import { DElement } from './DElement';
+import { DElement, DType } from './DElement';
 
 
 export class DryCoolerBuilder {
@@ -58,10 +58,10 @@ export class DryCoolerBuilder {
 
 
       res.push(
-        new SElement(fan),
-        new SElement(fan2),
-        new SElement(sideCover),
-        new SElement(coilPair)
+        new SElement(fan, DType.Fan),
+        new SElement(fan2, DType.Fan),
+        new SElement(sideCover, DType.SideCover),
+        new SElement(coilPair, DType.Coil)
       );
 
       // console.log(fan.getHeight());

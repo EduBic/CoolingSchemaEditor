@@ -58,6 +58,7 @@ export class Gate {
   }
 
   public draw(host: SVG.G): SVG.Shape {
+
     if (this.isEntry()) {
       this.svgElem = host.rect(Gate.IN_OUT_SIZE, Gate.IN_OUT_SIZE)
         .move(this.coord.x - Gate.IN_OUT_SIZE / 2,

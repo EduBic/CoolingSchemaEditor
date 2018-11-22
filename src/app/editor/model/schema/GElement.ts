@@ -70,6 +70,7 @@ export abstract class GElement {
       }
 
       this.gates.forEach(gate => {
+        gate.remove();
         const graphicGate = gate.draw(this.svgGroup);
         this.gateClick$ = fromEvent(graphicGate, 'click');
       });

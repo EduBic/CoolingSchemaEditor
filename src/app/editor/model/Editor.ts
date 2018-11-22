@@ -22,13 +22,14 @@ import { GDryCooler } from './schema/GDryCooler';
 import { GCoilPair } from './schema/GCoilPair';
 import { GValve } from './schema/GValve';
 import { SElement } from './schema/SElement';
-import { DElement } from './schema/DElement';
+import { DElement, DType } from './schema/DElement';
 
 import { Subscription, merge as staticMerge, Observable } from 'rxjs';
 import { first, merge } from 'rxjs/operators';
 
 import { GElement } from './schema/GElement';
 import { DryCoolerBuilder } from './schema/DryCoolerFactory';
+import { Valve } from './schema/Valve';
 
 
 export class Editor {
@@ -77,7 +78,7 @@ export class Editor {
     // sc.drawAll();
 
     const valve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
-    this.myValve = new SElement(valve, { id: 42, name: 'super' });
+    this.myValve = new SElement(valve, Valve.dtype, new Valve(42, 'super'));
     this.myValve.draw();
 
 
