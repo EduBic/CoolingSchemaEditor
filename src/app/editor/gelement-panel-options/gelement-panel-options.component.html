@@ -1,4 +1,25 @@
-<div style="border: 1px soid black">
+-<div style="border: 1px solid black">
 
+  <!-- <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <input matInput [formControl]="originForm">
+    </mat-form-field>
+  </form> -->
+
+  <div *ngIf="graphicSelected">
+
+    <mat-form-field>
+      <input matInput type="number" placeholder="y" [formControl]="originY">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" placeholder="x" [formControl]="originX">
+    </mat-form-field>
+
+  </div>
+
+  <div *ngIf="!graphicSelected">
+    <p>No selection</p>
+  </div>
 
 </div>

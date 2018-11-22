@@ -4,6 +4,7 @@ import { Editor } from '../model/Editor';
 import { DElement } from '../model/schema/DElement';
 import { SElement } from '../model/schema/SElement';
 import { GElement } from '../model/schema/GElement';
+import { StateSelectionService } from '../state-selection.service';
 
 
 @Component({
@@ -18,18 +19,10 @@ export class PureSvgEditorComponent implements OnInit {
   selectedGraphic: GElement;
   selection: SElement;
 
-  constructor() { }
+  constructor(private selService: StateSelectionService) { }
 
   ngOnInit() {
-    this.editor = new Editor('editor');
-    this.editor.buildChildren();
-    this.editor.draw();
-
-    this.editor.select$.subscribe((elem: SElement) => {
-      this.selectedData = elem.getData();
-      this.selectedGraphic = elem.getGraphic();
-      this.selection = elem;
-    });
+    this.editor = this.selService.initEditor('editor');
   }
 
   dragElem(elem: DElement) {
@@ -42,15 +35,15 @@ export class PureSvgEditorComponent implements OnInit {
     this.editor.stopListenerDrop();
   }
 
-  @HostListener('document:keydown.Q', ['$event'])
-  zoomIn(event: KeyboardEvent) {
-    this.editor.zoom(0.1);
-  }
+  // @HostListener('document:keydown.Q', ['$event'])
+  // zoomIn(event: KeyboardEvent) {
+  //   this.editor.zoom(0.1);
+  // }
 
-  @HostListener('document:keydown.A', ['$event'])
-  zoomOut(event: KeyboardEvent) {
-    this.editor.zoom(-0.1);
-  }
+  // @HostListener('document:keydown.A', ['$event'])
+  // zoomOut(event: KeyboardEvent) {
+  //   this.editor.zoom(-0.1);
+  // }
 
   @HostListener('document:keydown.ArrowLeft', ['$event'])
   goLeft(event: KeyboardEvent) {

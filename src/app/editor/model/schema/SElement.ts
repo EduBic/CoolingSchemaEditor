@@ -33,7 +33,6 @@ export class SElement {
     // exposes graphic streams
     if (this.graphic.click$) {
       this.click$ = this.graphic.click$.pipe(
-        // change 'this.data' to 'this' for emit all info about element
         map(_ => this)
       );
     }

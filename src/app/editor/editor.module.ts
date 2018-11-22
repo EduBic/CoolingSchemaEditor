@@ -4,6 +4,9 @@ import { PureSvgEditorComponent } from './pure-svg-editor/pure-svg-editor.compon
 import { StoreSelectionComponent } from './store-selection/store-selection.component';
 import { DragAndDropService } from './drag-and-drop.service';
 import { GElementPanelOptionsComponent } from './gelement-panel-options/gelement-panel-options.component';
+import { MaterialModule } from '../material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StateSelectionService } from './state-selection.service';
 
 
 @NgModule({
@@ -13,13 +16,16 @@ import { GElementPanelOptionsComponent } from './gelement-panel-options/gelement
     GElementPanelOptionsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    MaterialModule,
   ],
   exports: [
     PureSvgEditorComponent
   ],
   providers: [
-    DragAndDropService
+    DragAndDropService,
+    StateSelectionService
   ]
 })
 export class EditorModule { }

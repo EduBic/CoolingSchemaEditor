@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule } from '@angular/material';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatButtonModule, MatCheckboxModule, MatButtonToggleModule, MatInputModule, MatFormFieldModule } from '@angular/material';
 
 const modules = [
   MatButtonModule,
   MatCheckboxModule,
   MatButtonToggleModule,
-
-  DragDropModule
+  MatFormFieldModule,
+  MatInputModule,
 ];
 
 
