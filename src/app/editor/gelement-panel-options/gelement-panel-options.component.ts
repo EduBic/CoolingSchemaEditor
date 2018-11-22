@@ -19,7 +19,7 @@ export class GElementPanelOptionsComponent implements OnInit {
   constructor(private selService: StateSelectionService) { }
 
   ngOnInit() {
-    this.selService.selection$.subscribe((selection) => {
+    this.selService.selectedElement$.subscribe((selection) => {
       // console.log('GElem panel before/after', this.graphicSelected, selection.getGraphic())
 
       this.graphicSelected = selection.getGraphic();

@@ -29,9 +29,9 @@ import { first, merge, tap } from 'rxjs/operators';
 
 import { GElement } from './schema/GElement';
 import { DryCoolerBuilder } from './schema/DryCoolerBuilder';
-import { Valve } from './schema/Valve';
+import { Valve, ValveActuator } from './schema/data/Valve';
 import { LineDrawer } from './core/LineDrawer';
-import { WaterLine } from './schema/WaterLine';
+import { WaterLine } from './schema/data/WaterLine';
 
 
 export class Editor {
@@ -60,7 +60,7 @@ export class Editor {
     this.myDc = DryCoolerBuilder.create(new Point(200, 200), this.main, 200, 150);
 
     const valve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
-    this.myValve = new SElement(valve, new Valve(42, 'super'));
+    this.myValve = new SElement(valve, new Valve(42, 'super', 10, ValveActuator.OnOff));
 
     // connect some lines
     const line = GLine.connectElems(this.main, new Point(0, 0),

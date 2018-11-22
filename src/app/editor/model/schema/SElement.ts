@@ -2,7 +2,7 @@ import { GElement } from './GElement';
 import { DElement, DType } from './DElement';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Valve } from './Valve';
+import { Valve } from './data/Valve';
 
 export class SElement {
 

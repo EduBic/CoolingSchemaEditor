@@ -13,7 +13,7 @@ export class StateSelectionService {
   private editor: Editor;
 
   private selected: SElement;
-  selection$: Observable<SElement>;
+  selectedElement$: Observable<SElement>;
 
   constructor() { }
 
@@ -24,7 +24,7 @@ export class StateSelectionService {
     this.editor.draw();
 
     // expose stream
-    this.selection$ = this.editor.select$.pipe(
+    this.selectedElement$ = this.editor.select$.pipe(
       tap(this.log),
       // map(selected => selected !== this.selected ? selected : undefined)
     );

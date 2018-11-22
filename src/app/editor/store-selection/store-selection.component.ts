@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, ElementRef } from '@angular/co
 import { DElement } from '../model/schema/DElement';
 import { fromEvent } from 'rxjs';
 import { first, count } from 'rxjs/operators';
-import { Valve } from '../model/schema/Valve';
+import { Valve, ValveActuator } from '../model/schema/data/Valve';
 
 @Component({
   selector: 'app-store-selection',
@@ -12,9 +12,9 @@ import { Valve } from '../model/schema/Valve';
 export class StoreSelectionComponent implements OnInit {
 
   elements: DElement[] = [
-    new Valve(0, 'valve0'),
-    new Valve(1, 'valve1'),
-    new Valve(2, 'valve2')
+    new Valve(0, 'valve0', 10, ValveActuator.OnOff),
+    new Valve(1, 'valve1', 20, ValveActuator.Modular),
+    new Valve(2, 'valve2', 30, ValveActuator.Modular)
   ];
 
   // ghost management

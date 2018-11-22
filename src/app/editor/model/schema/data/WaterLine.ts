@@ -1,4 +1,4 @@
-import { DElement, DType } from './DElement';
+import { DElement, DType } from '../DElement';
 
 export class WaterLine extends DElement {
 

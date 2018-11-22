@@ -7,13 +7,15 @@ import { GElementPanelOptionsComponent } from './gelement-panel-options/gelement
 import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StateSelectionService } from './state-selection.service';
+import { DataElementDetailsComponent } from './data-element-details/data-element-details.component';
 
 
 @NgModule({
   declarations: [
     PureSvgEditorComponent,
     StoreSelectionComponent,
-    GElementPanelOptionsComponent
+    GElementPanelOptionsComponent,
+    DataElementDetailsComponent
   ],
   imports: [
     CommonModule,

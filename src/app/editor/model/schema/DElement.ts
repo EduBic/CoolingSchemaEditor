@@ -12,7 +12,7 @@ export abstract class DElement {
   // id: number;
   // name: string;
 
-  constructor(public id: number, public name: string) {}
+  constructor(public id: number, public name: string, public desc = '') {}
 
   abstract getType(): DType;
 }
