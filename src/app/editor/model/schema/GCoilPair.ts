@@ -15,7 +15,7 @@ export class GCoilPair extends GElement {
   constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number, centerDistance: number) {
     super(origin, svgParent, totWidth, totHeight,
       [
-        new Gate(new Point(totWidth / 2 - 0.1 * totWidth, totHeight), HookPosition.Top, false),   // left output
+        new Gate(new Point(totWidth / 2 - 0.1 * totWidth, totHeight), HookPosition.Bottom, false),   // left output
         new Gate(new Point(totWidth / 2, totHeight), HookPosition.Bottom, true),                  // center input
         new Gate(new Point(totWidth / 2 + 0.1 * totWidth, totHeight), HookPosition.Bottom, false) // right output
       ]

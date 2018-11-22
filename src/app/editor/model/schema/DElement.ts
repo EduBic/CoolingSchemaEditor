@@ -4,6 +4,7 @@ export enum DType {
   Fan = 'Fan',
   SideCover = 'SideCover',
   Coil = 'Coil',
+  WaterLine = 'WaterLine'
 }
 
 

@@ -14,7 +14,7 @@ export class DryCoolerBuilder {
       // super(origin, svgParent, totWidth, totHeight, []);
       const res: SElement[] = [];
 
-      const svgGroup = svgParent.group().move(origin.x, origin.y);
+      const svgGroup = svgParent.group(); // .move(origin.x, origin.y);
 
       // create Fans
       const fanMarginX = 10;
@@ -22,9 +22,10 @@ export class DryCoolerBuilder {
       const fanWidth = (totWidth - 2 * fanMarginX - fanMarginCenterX) / 2;
 
       const fan = new GFan(
-        new Point(fanMarginX, 0), svgGroup, fanWidth);
+        DryCoolerBuilder.getOrigin(origin, new Point(fanMarginX, 0)),
+        svgGroup, fanWidth);
       const fan2 = new GFan(
-        new Point(fanMarginX + fanWidth + fanMarginCenterX, 0),
+        DryCoolerBuilder.getOrigin(origin, new Point(fanMarginX + fanWidth + fanMarginCenterX, 0)),
         svgGroup, fanWidth
       );
 
@@ -46,26 +47,31 @@ export class DryCoolerBuilder {
       const widthOneSideCover = (totWidth - totWidthCoil) / 2;
 
       const sideCover = new GSideCover(
-        new Point(0, bottomOriginY), svgGroup, totWidth, bottomHeight, totWidthCoil
+        DryCoolerBuilder.getOrigin(origin, new Point(0, bottomOriginY)), svgGroup, totWidth, bottomHeight, totWidthCoil
       );
 
       // Coils elem
       const coilPair = new GCoilPair(
-        new Point(widthOneSideCover + sideCoverCoilMargin, bottomOriginY), svgGroup, totWidthCoilWithMargin, totHeightCoil, 60);
+        DryCoolerBuilder.getOrigin(origin, new Point(widthOneSideCover + sideCoverCoilMargin, bottomOriginY)),
+        svgGroup, totWidthCoilWithMargin, totHeightCoil, 60);
 
 
       // Build elements
 
 
       res.push(
-        new SElement(fan, DType.Fan),
-        new SElement(fan2, DType.Fan),
-        new SElement(sideCover, DType.SideCover),
-        new SElement(coilPair, DType.Coil)
+        new SElement(fan),
+        new SElement(fan2),
+        new SElement(sideCover),
+        new SElement(coilPair)
       );
 
       // console.log(fan.getHeight());
       return res;
+  }
+
+  private static getOrigin(groupOrigin: Point, elemOrigin: Point): Point {
+    return new Point(groupOrigin.x + elemOrigin.x, groupOrigin.y + elemOrigin.y);
   }
 
 }

@@ -13,15 +13,17 @@ export class SElement {
   private graphic: GElement;
 
   // Streams
-  click$: Observable<DElement>;
+  click$: Observable<SElement>;
   private pointerUp$: Observable<SElement>;
 
   private subDrop: Subscription;
 
 
-  constructor(graphic: GElement, dataType: DType, data?: DElement) {
+  constructor(graphic: GElement, data?: DElement) {
     this.graphic = graphic;
-    this.dataType = dataType;
+    if (data) {
+      this.dataType = data.getType();
+    }
     this.setData(data);
   }
 
@@ -31,7 +33,8 @@ export class SElement {
     // exposes graphic streams
     if (this.graphic.click$) {
       this.click$ = this.graphic.click$.pipe(
-        map(_ => this.data)
+        // change 'this.data' to 'this' for emit all info about element
+        map(_ => this)
       );
     }
 
@@ -40,12 +43,17 @@ export class SElement {
         map(_ => this)
       );
     }
+  }
 
+  public getGraphic(): GElement {
+    return this.graphic;
+  }
+
+  public getData(): DElement {
+    return this.data;
   }
 
   public setData(data: DElement): boolean {
-    console.log(data);
-
     if (data) {
 
       if (data.getType() === this.dataType) {
@@ -61,7 +69,6 @@ export class SElement {
 
       this.graphic.setVoidStyle(true);
       return false;
-
     }
   }
 
