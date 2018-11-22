@@ -102,4 +102,12 @@ export class Gate {
     return new Gate(new Point(origin.x + this.coord.x, origin.y + this.coord.y), this.extPos, this.entry);
   }
 
+  public show() {
+    this.svgElem.removeClass('hide-elem');
+  }
+
+  public hide() {
+    this.svgElem.addClass('hide-elem');
+  }
+
 }

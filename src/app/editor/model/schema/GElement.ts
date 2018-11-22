@@ -1,9 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
 import { Gate } from './Gate';
-import { HookPoint } from '../core/HookPoint';
 import { fromEvent, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 export abstract class GElement {
 
@@ -24,7 +22,7 @@ export abstract class GElement {
   private gates: Gate[];
 
   // Event stream
-  click$: Observable<GElement>;
+  click$: Observable<MouseEvent>;
   gateClick$: Observable<MouseEvent>;
   pointerUp$: Observable<MouseEvent>;
 
@@ -42,6 +40,12 @@ export abstract class GElement {
     this.drawInternal();
 
     if (this.gateConf) {
+      this.gates.forEach(gate => {
+        gate.draw(this.svgGroup);
+        gate.hide();
+        // this.gateClick$ = fromEvent(graphicGate, 'click');
+      });
+
       this.setInteractions();
     }
 
@@ -51,9 +55,6 @@ export abstract class GElement {
           .stroke('transparent');
 
       this.click$ = fromEvent(this.containerRect, 'click');
-      // .pipe(
-      //   map(_ => this)
-      // );
       this.pointerUp$ = fromEvent(this.containerRect, 'pointerup');
     }
 
@@ -69,19 +70,12 @@ export abstract class GElement {
         this.containerRect.stroke('aqua');
       }
 
-      this.gates.forEach(gate => {
-        gate.remove();
-        const graphicGate = gate.draw(this.svgGroup);
-        this.gateClick$ = fromEvent(graphicGate, 'click');
-      });
+      this.gates.forEach(gate => gate.show());
     });
 
     this.svgGroup.on('mouseleave', (e: MouseEvent) => {
 
-      this.gates.forEach(gate => {
-        gate.remove();
-        this.gateClick$ = null;
-      });
+      this.gates.forEach(gate => gate.hide() );
 
       if (this.selectRect) {
         this.containerRect.stroke('transparent');
@@ -126,6 +120,15 @@ export abstract class GElement {
     } else {
       this.svgGroup.removeClass('selement-no-data');
     }
+  }
+
+  public getOrigin(): Point {
+    return this.origin;
+  }
+
+  public setOrigin(newOrigin: Point) {
+    this.origin = newOrigin;
+    this.svgGroup.move(this.origin.x, this.origin.y);
   }
 
 }
