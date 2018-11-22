@@ -3,6 +3,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Editor } from '../model/Editor';
 import { DElement } from '../model/schema/DElement';
 import { SElement } from '../model/schema/SElement';
+import { GElement } from '../model/schema/GElement';
 
 
 @Component({
@@ -13,16 +14,21 @@ import { SElement } from '../model/schema/SElement';
 export class PureSvgEditorComponent implements OnInit {
 
   editor: Editor;
-  selected: DElement;
+  selectedData: DElement;
+  selectedGraphic: GElement;
+  selection: SElement;
 
   constructor() { }
 
   ngOnInit() {
     this.editor = new Editor('editor');
+    this.editor.buildChildren();
     this.editor.draw();
 
-    this.editor.select$.subscribe((elem) => {
-      this.selected = elem;
+    this.editor.select$.subscribe((elem: SElement) => {
+      this.selectedData = elem.getData();
+      this.selectedGraphic = elem.getGraphic();
+      this.selection = elem;
     });
   }
 

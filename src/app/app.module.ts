@@ -9,7 +9,7 @@ import { EditorModule } from './editor/editor.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
