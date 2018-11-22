@@ -15,9 +15,6 @@ import { StateSelectionService } from '../state-selection.service';
 export class PureSvgEditorComponent implements OnInit {
 
   editor: Editor;
-  selectedData: DElement;
-  selectedGraphic: GElement;
-  selection: SElement;
 
   constructor(private selService: StateSelectionService) { }
 
