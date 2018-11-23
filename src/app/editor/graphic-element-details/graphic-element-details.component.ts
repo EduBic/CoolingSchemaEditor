@@ -1,16 +1,16 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { GElement } from '../model/schema/graphics/GElement';
-import { Point } from '../model/core/Point';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { StateSelectionService } from '../state-selection.service';
+import { GElement } from '../model/schema/graphics/GElement';
 import { Subscription } from 'rxjs';
+import { StateSelectionService } from '../state-selection.service';
+import { Point } from '../model/core/Point';
 
 @Component({
-  selector: 'app-gelement-panel-options',
-  templateUrl: './gelement-panel-options.component.html',
-  styleUrls: ['./gelement-panel-options.component.css']
+  selector: 'app-graphic-element-details',
+  templateUrl: './graphic-element-details.component.html',
+  styleUrls: ['./graphic-element-details.component.css']
 })
-export class GElementPanelOptionsComponent implements OnInit {
+export class GraphicElementDetailsComponent implements OnInit {
 
   graphicSelected: GElement;
 
@@ -20,7 +20,7 @@ export class GElementPanelOptionsComponent implements OnInit {
   subOriginX: Subscription;
   subOriginY: Subscription;
 
-  constructor(private selService: StateSelectionService) { }
+  constructor(private selService: StateSelectionService) {}
 
   ngOnInit() {
     this.selService.selectedGraphic$.subscribe((graphic: GElement) => {
@@ -42,7 +42,9 @@ export class GElementPanelOptionsComponent implements OnInit {
         if (this.isInputValid()) {
           this.graphicSelected.setOrigin(new Point(val, this.originY.value));
         } else {
-          this.originX.setValue(0, {emitEvent: false});
+          this.originX.setValue(0, {
+            emitEvent: false
+          });
         }
       });
 
@@ -50,7 +52,9 @@ export class GElementPanelOptionsComponent implements OnInit {
         if (this.isInputValid()) {
           this.graphicSelected.setOrigin(new Point(this.originX.value, val));
         } else {
-          this.originY.setValue(0, {emitEvent: false});
+          this.originY.setValue(0, {
+            emitEvent: false
+          });
         }
       });
     });
@@ -59,26 +63,5 @@ export class GElementPanelOptionsComponent implements OnInit {
   private isInputValid() {
     return this.originX.value && this.originY.value;
   }
-
-  // ngAfterViewInit() {
-  //   console.log('ngAfterViewInit', this.graphicSelected);
-  //   if (this.graphicSelected) {
-  //     this.originForm.setValue(this.graphicSelected.getOrigin().x);
-
-  //     // this.originForm.valueChanges.subscribe((x: number) => {
-  //     //   console.log('form changed', x);
-  //     //   this.graphicSelected.setOrigin(new Point(30, x));
-  //     // });
-  //   }
-  // }
-
-  // getOrigin(): Point {
-  //   console.log('getOrigin');
-  //   if (this.graphicSelected) {
-  //     return this.graphicSelected.getOrigin();
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
 }

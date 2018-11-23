@@ -9,7 +9,6 @@ import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
 import { GSideCover } from './schema/graphics/GSideCover';
 import { GFan } from './schema/graphics/GFan';
-import { SCompressor } from './schema/SCompressor';
 import { GParallelWrapper } from './schema/graphics/GParallelWrapper';
 import { GPump } from './schema/graphics/GPump';
 import { Direction } from './schema/graphics/utils/Direction';
