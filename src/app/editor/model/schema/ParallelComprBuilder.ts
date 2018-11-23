@@ -2,15 +2,13 @@ import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
 import { GCompressor } from './graphics/GCompressor';
 import { Direction } from './graphics/utils/Direction';
-import { DCompressor } from './SCompressor';
 import { GParallelWrapper } from './graphics/GParallelWrapper';
+import { SElement } from './SElement';
+import { DType } from './DElement';
 
 export class ParallelComprBuilder {
 
-  private data: DCompressor;
-  private graphic: GParallelWrapper;
-
-  constructor(data: DCompressor, origin: Point, svgRef: SVG.G, comprNum: number) {
+  public static create(origin: Point, svgParent: SVG.G, comprNum: number): SElement {
 
     const xMargin = 5;
     const yMargin = 10;
@@ -20,13 +18,10 @@ export class ParallelComprBuilder {
     const radius = 10;
 
     // Graphic
-    const carbonCopy = new GCompressor(origin, svgRef, radius, direction);
+    const carbonCopy = new GCompressor(origin, svgParent, radius, direction);
+    const graphic = new GParallelWrapper(origin, svgParent, carbonCopy, comprNum);
 
-    this.graphic = new GParallelWrapper(origin, svgRef, carbonCopy, comprNum);
-  }
-
-  public draw() {
-    this.graphic.drawAll();
+    return new SElement(graphic, DType.Compressor);
   }
 
 }
