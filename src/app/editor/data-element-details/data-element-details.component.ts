@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { StateSelectionService } from '../state-selection.service';
 import { SElement } from '../model/schema/SElement';
+import { DElement } from '../model/schema/DElement';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-data-element-details',
@@ -9,22 +11,39 @@ import { SElement } from '../model/schema/SElement';
 })
 export class DataElementDetailsComponent implements OnInit {
 
-  keyValuePairs: any[] = [];
+  message = 'No element selected';
+  keyValuePairs: any[];
+
+  selectDataSub: Subscription;
 
   constructor(private editor: StateSelectionService) { }
 
   ngOnInit() {
 
-    this.editor.selectedElement$.subscribe((selection: SElement) => {
+    console.log('SUB:selectedData$');
 
-      const data = selection.getData();
+    this.selectDataSub = this.editor.selectedData$.subscribe((dataElem: DElement) => {
+      console.log('EVENT:selectedData$');
 
-      Object.keys(data).forEach((key: string) => {
-        this.keyValuePairs.push({
-            key: key.charAt(0).toUpperCase() + key.slice(1),
-            value: data[key]
-          });
-      });
+      // reset all
+      this.keyValuePairs = [];
+
+      if (dataElem !== null) {
+        this.message = 'Machine Component assigned to element';
+
+        Object.keys(dataElem).forEach((key: string) => {
+          this.keyValuePairs.push({
+              key: key.charAt(0).toUpperCase() + key.slice(1),
+              value: dataElem[key]
+            });
+        });
+      } else {
+        this.message = 'This Element has no Machine Component assigned';
+      }
+
+      // } else {
+      //   this.message = 'No Element selected';
+      // }
 
     });
   }

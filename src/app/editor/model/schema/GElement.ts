@@ -2,8 +2,12 @@ import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
 import { Gate } from './Gate';
 import { fromEvent, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export abstract class GElement {
+
+  // DEBUG
+  private drawCounter = 0;
 
   // SVG drawing
   private origin: Point;
@@ -37,29 +41,36 @@ export abstract class GElement {
   }
 
   public drawAll() {
-    this.drawInternal();
+    if (this.drawCounter === 0) {
+      this.drawCounter++;
 
-    if (this.gateConf) {
-      this.gates.forEach(gate => {
-        gate.draw(this.svgGroup);
-        gate.hide();
-        // this.gateClick$ = fromEvent(graphicGate, 'click');
-      });
+      this.drawInternal();
 
-      this.setInteractions();
+      if (this.gateConf) {
+        this.gates.forEach(gate => {
+          gate.draw(this.svgGroup);
+          gate.hide();
+          // this.gateClick$ = fromEvent(graphicGate, 'click');
+        });
+
+        this.setInteractions();
+      }
+
+      if (this.selectRect) {
+        this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
+            .fill('transparent')
+            .stroke('transparent');
+
+        this.click$ = fromEvent<MouseEvent>(this.containerRect, 'click')
+          // .pipe(tap(_ => console.log('EVENT:click$')));
+        this.pointerUp$ = fromEvent(this.containerRect, 'pointerup');
+      }
+
+      this.svgGroup.move(this.origin.x, this.origin.y);
+    } else {
+      throw Error('GElement ' + this.getId() + ' is drawed more times!');
     }
 
-    if (this.selectRect) {
-      this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
-          .fill('transparent')
-          .stroke('transparent');
-
-      this.click$ = fromEvent(this.containerRect, 'click');
-      this.pointerUp$ = fromEvent(this.containerRect, 'pointerup');
-    }
-
-
-    this.svgGroup.move(this.origin.x, this.origin.y);
   }
 
   private setInteractions() {
@@ -129,6 +140,10 @@ export abstract class GElement {
   public setOrigin(newOrigin: Point) {
     this.origin = newOrigin;
     this.svgGroup.move(this.origin.x, this.origin.y);
+  }
+
+  public getId(): string {
+    return this.svgGroup.id();
   }
 
 }

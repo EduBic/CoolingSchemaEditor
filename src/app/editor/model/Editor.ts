@@ -9,7 +9,6 @@ import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
 import { GSideCover } from './schema/GSideCover';
 import { GFan } from './schema/GFan';
-import { SPump } from './schema/SPump';
 import { SCompressor } from './schema/SCompressor';
 import { GParallelWrapper } from './schema/GParallelWrapper';
 import { GPump } from './schema/GPump';
@@ -25,7 +24,7 @@ import { SElement } from './schema/SElement';
 import { DElement, DType } from './schema/DElement';
 
 import { Subscription, merge as staticMerge, Observable } from 'rxjs';
-import { first, merge, tap } from 'rxjs/operators';
+import { first, merge, tap, map, flatMap, switchMap } from 'rxjs/operators';
 
 import { GElement } from './schema/GElement';
 import { DryCoolerBuilder } from './schema/DryCoolerBuilder';
@@ -44,10 +43,12 @@ export class Editor {
   private children: SElement[] = [];
 
   private myValve: SElement;
-  private myComprs: SElement;
+  private myValve2: SElement;
   private myDc: SElement[];
 
-  public select$: Observable<SElement>;
+  private select$: Observable<SElement>;
+  public dataSelectedChange$: Observable<DElement>;
+  public graphicSelectedChange$: Observable<GElement>;
 
   constructor(svgId: string) {
     this.main = SVG.get(svgId) as SVG.G;
@@ -57,20 +58,23 @@ export class Editor {
   buildChildren() {
     const mainOrigin = new Point(150, 100);
 
-    this.myDc = DryCoolerBuilder.create(new Point(200, 200), this.main, 200, 150);
+    // this.myDc = DryCoolerBuilder.create(new Point(200, 200), this.main, 200, 150);
 
     const valve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
-    this.myValve = new SElement(valve, new Valve(42, 'super', 10, ValveActuator.OnOff));
+    this.myValve = new SElement(valve, DType.Valve, new Valve(42, 'super', 10, ValveActuator.OnOff));
 
-    // connect some lines
-    const line = GLine.connectElems(this.main, new Point(0, 0),
-      this.myDc[3].getGraphic().getAbsoluteGate(0), this.myValve.getGraphic().getAbsoluteGate(0));
-    const schemaLine = new SElement(line, new WaterLine(20, 'a water line'));
+    const valve2 = new GValve(new Point(200, 200), this.main, 20, 50, Direction.BottomToTop);
+    this.myValve2 = new SElement(valve2, DType.Valve);
+
+    // // connect some lines
+    // const line = GLine.connectElems(this.main, new Point(0, 0),
+    //   this.myDc[3].getGraphic().getAbsoluteGate(0), this.myValve.getGraphic().getAbsoluteGate(0));
+    // const schemaLine = new SElement(line, DType.WaterLine, new WaterLine(20, 'a water line'));
 
     // add child
-    this.children.push(schemaLine);
-    this.children.push(this.myValve);
-    this.children = this.children.concat(this.myDc);
+    // this.children.push(schemaLine);
+    this.children.push(this.myValve, this.myValve2);
+    // this.children = this.children.concat(this.myDc);
   }
 
   draw() {
@@ -78,7 +82,18 @@ export class Editor {
       child.draw();
     });
 
-    this.select$ = staticMerge(...this.children.map(x => x.click$));
+    this.select$ = staticMerge(...this.children.map(x => x.click$))
+      // .pipe(tap(_ => console.log('EVENT:select$')));
+    this.dataSelectedChange$ = this.select$.pipe(
+        // tap(_ => console.log('EVENT:dataSelectedChange$ BEFORE')),
+        switchMap(elem => elem.changeData$),
+        // tap(_ => console.log('EVENT:dataSelectedChange$ AFTER'))
+      );
+    this.graphicSelectedChange$ = this.select$.pipe(
+        // tap(_ => console.log('EVENT:graphicSelectedChange$ BEFORE')),
+        map(elem => elem.getGraphic()),
+        // tap(_ => console.log('EVENT:graphicSelectedChange$ AFTER'))
+      );
   }
 
 

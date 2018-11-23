@@ -3,6 +3,7 @@ import { GElement } from '../model/schema/GElement';
 import { Point } from '../model/core/Point';
 import { FormControl } from '@angular/forms';
 import { StateSelectionService } from '../state-selection.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-gelement-panel-options',
@@ -16,18 +17,28 @@ export class GElementPanelOptionsComponent implements OnInit {
   originX = new FormControl();
   originY = new FormControl();
 
+  subOriginX: Subscription;
+  subOriginY: Subscription;
+
   constructor(private selService: StateSelectionService) { }
 
   ngOnInit() {
-    this.selService.selectedElement$.subscribe((selection) => {
-      // console.log('GElem panel before/after', this.graphicSelected, selection.getGraphic())
+    this.selService.selectedGraphic$.subscribe((graphic: GElement) => {
+      // console.log('GElem panel before/after', this.graphicSelected, selection.getGraphic());
 
-      this.graphicSelected = selection.getGraphic();
+      if (this.subOriginX) {
+        this.subOriginX.unsubscribe();
+      }
+      if (this.subOriginY) {
+        this.subOriginY.unsubscribe();
+      }
+
+      this.graphicSelected = graphic;
 
       this.originX.setValue(this.graphicSelected.getOrigin().x);
       this.originY.setValue(this.graphicSelected.getOrigin().y);
 
-      this.originX.valueChanges.subscribe((val: number) => {
+      this.subOriginX = this.originX.valueChanges.subscribe((val: number) => {
         if (this.isInputValid()) {
           this.graphicSelected.setOrigin(new Point(val, this.originY.value));
         } else {
@@ -35,7 +46,7 @@ export class GElementPanelOptionsComponent implements OnInit {
         }
       });
 
-      this.originY.valueChanges.subscribe((val: number) => {
+      this.subOriginY = this.originY.valueChanges.subscribe((val: number) => {
         if (this.isInputValid()) {
           this.graphicSelected.setOrigin(new Point(this.originX.value, val));
         } else {

@@ -4,6 +4,7 @@ import { SElement } from './model/schema/SElement';
 import { Editor } from './model/Editor';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import { DElement } from './model/schema/DElement';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class StateSelectionService {
   private editor: Editor;
 
   private selected: SElement;
-  selectedElement$: Observable<SElement>;
+  selectedData$: Observable<DElement>;
+  selectedGraphic$: Observable<GElement>;
 
   constructor() { }
 
@@ -23,16 +25,11 @@ export class StateSelectionService {
     this.editor.buildChildren();
     this.editor.draw();
 
-    // expose stream
-    this.selectedElement$ = this.editor.select$.pipe(
-      tap(this.log),
-      // map(selected => selected !== this.selected ? selected : undefined)
-    );
+    // expose streams
+    this.selectedData$ = this.editor.dataSelectedChange$;
+    this.selectedGraphic$ = this.editor.graphicSelectedChange$;
 
     return this.editor;
   }
 
-  private log(x) {
-    console.log('State Selection Service stream', x);
-  }
 }

@@ -1,5 +1,6 @@
-<div style="border: 1px solid black">
+<div id="panel" style="border: 1px solid black">
 
+  <p *ngIf="message">{{ message }}</p>
   <div *ngFor="let pair of keyValuePairs">
     <p>{{ pair.key }}: {{ pair.value }}</p>
   </div>
