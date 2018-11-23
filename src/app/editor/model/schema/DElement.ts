@@ -4,7 +4,11 @@ export enum DType {
   Fan = 'Fan',
   SideCover = 'SideCover',
   Coil = 'Coil',
-  WaterLine = 'WaterLine'
+  WaterLine = 'WaterLine',
+  Compressor = 'Compressor',
+  Pump = 'Pump',
+  Evaporator = 'Evaporator',
+  Condenser = 'Condenser',
 }
 
 
