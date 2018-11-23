@@ -30,7 +30,7 @@ import { DryCoolerBuilder } from './schema/DryCoolerBuilder';
 import { Valve, ValveActuator } from './schema/data/Valve';
 import { LineDrawer } from './core/LineDrawer';
 import { WaterLine } from './schema/data/WaterLine';
-import { GText } from './schema/graphics/GText';
+import { Label } from './schema/graphics/utils/Label';
 
 
 export class Editor {

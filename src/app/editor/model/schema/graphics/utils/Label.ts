@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
-import { Point } from '../../core/Point';
+import { Point } from '../../../core/Point';
 
-export class GText {
+export class Label {
 
   private svgElem: SVG.Text;
   private coord: Point;

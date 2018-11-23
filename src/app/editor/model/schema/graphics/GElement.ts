@@ -3,7 +3,7 @@ import { Point } from '../../core/Point';
 import { Gate } from './utils/Gate';
 import { fromEvent, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { GText } from './GText';
+import { Label } from './utils/Label';
 
 export abstract class GElement {
 
@@ -27,7 +27,7 @@ export abstract class GElement {
   private gates: Gate[] = [];
 
   // Decoration Text
-  private label: GText;
+  private label: Label;
 
   // Event stream
   click$: Observable<MouseEvent>;
@@ -176,7 +176,7 @@ export abstract class GElement {
       this.label.remove();
     }
 
-    this.label = new GText(new Point(this.totWidth, 0), text);
+    this.label = new Label(new Point(this.totWidth, 0), text);
   }
 
   public updateLabel(text: string) {
