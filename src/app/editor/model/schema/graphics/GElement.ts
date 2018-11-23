@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
-import { Point } from '../core/Point';
-import { Gate } from './Gate';
+import { Point } from '../../core/Point';
+import { Gate } from '../Gate';
 import { fromEvent, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -61,7 +61,7 @@ export abstract class GElement {
             .fill('transparent')
             .stroke('transparent');
 
-        this.click$ = fromEvent<MouseEvent>(this.containerRect, 'click')
+        this.click$ = fromEvent<MouseEvent>(this.containerRect, 'click');
           // .pipe(tap(_ => console.log('EVENT:click$')));
         this.pointerUp$ = fromEvent(this.containerRect, 'pointerup');
       }

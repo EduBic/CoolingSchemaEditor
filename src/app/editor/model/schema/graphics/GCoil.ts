@@ -1,8 +1,8 @@
 import * as SVG from 'svg.js';
-import { Point } from '../core/Point';
-import { HookPosition } from '../core/HookPosition';
+import { Point } from '../../core/Point';
+import { HookPosition } from '../../core/HookPosition';
 import { GElement } from './GElement';
-import { Gate } from './Gate';
+import { Gate } from '../Gate';
 
 export enum GCoilPos {
   Left, Right

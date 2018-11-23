@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
-import { GCompressor } from './GCompressor';
+import { GCompressor } from './graphics/GCompressor';
 import { Direction } from './Direction';
 
 export interface DCompressor {

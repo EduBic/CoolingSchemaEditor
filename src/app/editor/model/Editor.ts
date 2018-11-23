@@ -7,26 +7,26 @@ import { ParallelElements } from './layout/ParallelElements';
 import { Rect } from './primitive/Rect';
 import { Butterfly } from './primitive/Butterfly';
 import { ConnectorLine } from './primitive/ConnectorLine';
-import { GSideCover } from './schema/GSideCover';
-import { GFan } from './schema/GFan';
+import { GSideCover } from './schema/graphics/GSideCover';
+import { GFan } from './schema/graphics/GFan';
 import { SCompressor } from './schema/SCompressor';
-import { GParallelWrapper } from './schema/GParallelWrapper';
-import { GPump } from './schema/GPump';
+import { GParallelWrapper } from './schema/graphics/GParallelWrapper';
+import { GPump } from './schema/graphics/GPump';
 import { Direction } from './schema/Direction';
-import { GLine } from './schema/GLine';
-import { GCompressor } from './schema/GCompressor';
-import { SParallelCompressor } from './schema/SParallelCompressors';
-import { GCoil, GCoilPos } from './schema/GCoil';
-import { GDryCooler } from './schema/GDryCooler';
-import { GCoilPair } from './schema/GCoilPair';
-import { GValve } from './schema/GValve';
+import { GLine } from './schema/graphics/GLine';
+import { GCompressor } from './schema/graphics/GCompressor';
+import { ParallelComprBuilder } from './schema/ParallelComprBuilder';
+import { GCoil, GCoilPos } from './schema/graphics/GCoil';
+import { GDryCooler } from './schema/graphics/GDryCooler';
+import { GCoilPair } from './schema/graphics/GCoilPair';
+import { GValve } from './schema/graphics/GValve';
 import { SElement } from './schema/SElement';
 import { DElement, DType } from './schema/DElement';
 
 import { Subscription, merge as staticMerge, Observable } from 'rxjs';
 import { first, merge, tap, map, flatMap, switchMap } from 'rxjs/operators';
 
-import { GElement } from './schema/GElement';
+import { GElement } from './schema/graphics/GElement';
 import { DryCoolerBuilder } from './schema/DryCoolerBuilder';
 import { Valve, ValveActuator } from './schema/data/Valve';
 import { LineDrawer } from './core/LineDrawer';
@@ -82,7 +82,7 @@ export class Editor {
       child.draw();
     });
 
-    this.select$ = staticMerge(...this.children.map(x => x.click$))
+    this.select$ = staticMerge(...this.children.map(x => x.click$));
       // .pipe(tap(_ => console.log('EVENT:select$')));
     this.dataSelectedChange$ = this.select$.pipe(
         // tap(_ => console.log('EVENT:dataSelectedChange$ BEFORE')),

@@ -3,7 +3,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Editor } from '../model/Editor';
 import { DElement } from '../model/schema/DElement';
 import { SElement } from '../model/schema/SElement';
-import { GElement } from '../model/schema/GElement';
+import { GElement } from '../model/schema/graphics/GElement';
 import { StateSelectionService } from '../state-selection.service';
 
 

@@ -2,9 +2,9 @@ import * as SVG from 'svg.js';
 import { fromEvent } from 'rxjs';
 
 import { GElement } from './GElement';
-import { Point } from '../core/Point';
-import { Direction } from './Direction';
-import { Gate } from './Gate';
+import { Point } from '../../core/Point';
+import { Direction } from '../Direction';
+import { Gate } from '../Gate';
 
 export class GValve extends GElement {
 

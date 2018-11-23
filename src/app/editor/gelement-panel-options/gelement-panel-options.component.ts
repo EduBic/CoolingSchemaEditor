@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { GElement } from '../model/schema/GElement';
+import { GElement } from '../model/schema/graphics/GElement';
 import { Point } from '../model/core/Point';
 import { FormControl } from '@angular/forms';
 import { StateSelectionService } from '../state-selection.service';

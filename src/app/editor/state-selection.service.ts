@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GElement } from './model/schema/GElement';
+import { GElement } from './model/schema/graphics/GElement';
 import { SElement } from './model/schema/SElement';
 import { Editor } from './model/Editor';
 import { Observable } from 'rxjs';

@@ -1,9 +1,9 @@
 import * as SVG from 'svg.js';
-import { GElement } from './GElement';
+import { GElement } from './graphics/GElement';
 import { Point } from '../core/Point';
-import { GFan } from './GFan';
-import { GCoilPair } from './GCoilPair';
-import { GSideCover } from './GSideCover';
+import { GFan } from './graphics/GFan';
+import { GCoilPair } from './graphics/GCoilPair';
+import { GSideCover } from './graphics/GSideCover';
 import { SElement } from './SElement';
 import { DElement, DType } from './DElement';
 

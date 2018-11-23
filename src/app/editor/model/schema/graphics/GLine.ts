@@ -1,9 +1,9 @@
 import * as SVG from 'svg.js';
 import { GElement } from './GElement';
-import { Point } from '../core/Point';
-import { Gate } from './Gate';
-import { LineDrawer } from '../core/LineDrawer';
-import { HookPoint } from '../core/HookPoint';
+import { Point } from '../../core/Point';
+import { Gate } from '../Gate';
+import { LineDrawer } from '../../core/LineDrawer';
+import { HookPoint } from '../../core/HookPoint';
 
 export class GLine extends GElement {
 

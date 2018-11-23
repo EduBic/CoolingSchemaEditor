@@ -1,5 +1,5 @@
 import * as SVG from 'svg.js';
-import { Point } from '../core/Point';
+import { Point } from '../../core/Point';
 import { GElement } from './GElement';
 
 export class GFan extends GElement {

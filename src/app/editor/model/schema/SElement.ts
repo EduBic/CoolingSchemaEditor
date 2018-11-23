@@ -1,4 +1,4 @@
-import { GElement } from './GElement';
+import { GElement } from './graphics/GElement';
 import { DElement, DType } from './DElement';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';

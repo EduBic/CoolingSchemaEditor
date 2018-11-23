@@ -1,9 +1,9 @@
 import * as SVG from 'svg.js';
-import { Point } from '../core/Point';
+import { Point } from '../../core/Point';
 import { GElement } from './GElement';
-import { TriangleDrawer } from './TriangleDrawer';
-import { Direction } from './Direction';
-import { Gate } from './Gate';
+import { TriangleDrawer } from '../TriangleDrawer';
+import { Direction } from '../Direction';
+import { Gate } from '../Gate';
 import { GParallelElement } from './GParallelWrapper';
 
 export class GCompressor extends GElement implements GParallelElement {

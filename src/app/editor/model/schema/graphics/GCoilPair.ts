@@ -1,9 +1,9 @@
 import * as SVG from 'svg.js';
 import { GElement } from './GElement';
-import { Point } from '../core/Point';
+import { Point } from '../../core/Point';
 import { GCoil } from './GCoil';
-import { Gate } from './Gate';
-import { HookPosition } from '../core/HookPosition';
+import { Gate } from '../Gate';
+import { HookPosition } from '../../core/HookPosition';
 
 export class GCoilPair extends GElement {
 
