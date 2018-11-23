@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 
 import { Editor } from '../model/Editor';
 import { DElement } from '../model/schema/DElement';
@@ -20,7 +20,14 @@ export class PureSvgEditorComponent implements OnInit {
 
   ngOnInit() {
     this.editor = this.selService.initEditor('editor');
+
+    // window.addEventListener('resize', this.resizeSvg, false);
   }
+
+  // resizeSvg() {
+  //   const proportion = 3 / 5;
+  //   // this.mainSvg.setAttribute('viewBox', '0 0 ' + window.innerWidth * proportion  + ' ' + window.innerHeight);
+  // }
 
   dragElem(elem: DElement) {
     // console.log('editor.comp', elem);

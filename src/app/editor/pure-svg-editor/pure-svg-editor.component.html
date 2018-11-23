@@ -1,6 +1,14 @@
 <div style="display: flex">
-  <div>
-    <svg xmlns="http://www.w3.org/2000/svg" id="container" width="600" height="600">
+
+  <div class="side-panel">
+    <app-store-selection
+      (elemDragStart)="dragElem($event)"
+      (elemDragEnd)="dropElem($event)">
+    </app-store-selection>
+  </div>
+
+  <div class="main-panel">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
 
       <!-- Utils SVG -->
       <defs>
@@ -22,17 +30,12 @@
 
   </div>
 
-  <div>
-      <app-store-selection
-        (elemDragStart)="dragElem($event)"
-        (elemDragEnd)="dropElem($event)">
-      </app-store-selection>
+  <div class="side-panel">
+    <app-graphic-element-details>
+    </app-graphic-element-details>
 
-      <app-graphic-element-details>
-      </app-graphic-element-details>
-
-      <app-data-element-details>
-      </app-data-element-details>
+    <app-data-element-details>
+    </app-data-element-details>
   </div>
 
 </div>
