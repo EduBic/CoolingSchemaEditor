@@ -3,8 +3,8 @@ import { fromEvent } from 'rxjs';
 
 import { GElement } from './GElement';
 import { Point } from '../../core/Point';
-import { Direction } from '../Direction';
-import { Gate } from '../Gate';
+import { Direction } from './utils/Direction';
+import { Gate } from './utils/Gate';
 
 export class GValve extends GElement {
 

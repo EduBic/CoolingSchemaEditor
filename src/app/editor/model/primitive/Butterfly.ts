@@ -2,7 +2,7 @@ import * as SVG from 'svg.js';
 import { GraphicSingle } from '../core/GraphicSingle';
 import { Point } from '../core/Point';
 import { HookPair } from '../core/HookPair';
-import { Direction } from "../core/Direction";
+import { Direction } from '../core/Direction';
 
 export class Butterfly extends GraphicSingle {
   private width: number;

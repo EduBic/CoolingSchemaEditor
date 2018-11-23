@@ -1,4 +1,4 @@
-import { HookPosition } from '../core/HookPosition';
+import { HookPosition } from '../../../core/HookPosition';
 
 export enum Direction {
   TopToBottom = 'TopToBottom',

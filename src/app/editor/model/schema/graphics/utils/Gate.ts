@@ -1,8 +1,8 @@
 import * as SVG from 'svg.js';
-import { Point } from '../core/Point';
-import { HookPosition } from '../core/HookPosition';
+import { Point } from '../../../core/Point';
+import { HookPosition } from '../../../core/HookPosition';
 import { Direction, UtilDirection } from './Direction';
-import { HookPoint } from '../core/HookPoint';
+import { HookPoint } from '../../../core/HookPoint';
 
 
 export class Gate {

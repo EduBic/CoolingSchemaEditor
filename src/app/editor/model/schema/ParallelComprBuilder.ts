@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
 import { GCompressor } from './graphics/GCompressor';
-import { Direction } from './Direction';
+import { Direction } from './graphics/utils/Direction';
 import { DCompressor } from './SCompressor';
 import { GParallelWrapper } from './graphics/GParallelWrapper';
 

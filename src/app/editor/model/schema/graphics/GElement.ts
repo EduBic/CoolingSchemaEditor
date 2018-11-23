@@ -1,6 +1,6 @@
 import * as SVG from 'svg.js';
 import { Point } from '../../core/Point';
-import { Gate } from '../Gate';
+import { Gate } from './utils/Gate';
 import { fromEvent, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

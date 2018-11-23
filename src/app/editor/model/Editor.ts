@@ -12,7 +12,7 @@ import { GFan } from './schema/graphics/GFan';
 import { SCompressor } from './schema/SCompressor';
 import { GParallelWrapper } from './schema/graphics/GParallelWrapper';
 import { GPump } from './schema/graphics/GPump';
-import { Direction } from './schema/Direction';
+import { Direction } from './schema/graphics/utils/Direction';
 import { GLine } from './schema/graphics/GLine';
 import { GCompressor } from './schema/graphics/GCompressor';
 import { ParallelComprBuilder } from './schema/ParallelComprBuilder';

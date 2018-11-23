@@ -1,9 +1,9 @@
 import * as SVG from 'svg.js';
 import { GElement } from './GElement';
 import { Point } from '../../core/Point';
-import { Gate } from '../Gate';
+import { Gate } from './utils/Gate';
 import { HookPosition } from '../../core/HookPosition';
-import { Direction, UtilDirection } from '../Direction';
+import { Direction, UtilDirection } from './utils/Direction';
 import { GLine } from './GLine';
 
 export interface GParallelElement {
