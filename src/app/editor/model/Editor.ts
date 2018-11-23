@@ -23,13 +23,14 @@ import { SElement } from './schema/SElement';
 import { DElement, DType } from './schema/DElement';
 
 import { Subscription, merge as staticMerge, Observable } from 'rxjs';
-import { first, merge, tap, map, flatMap, switchMap } from 'rxjs/operators';
+import { first, merge, tap, map, flatMap, switchMap, shareReplay } from 'rxjs/operators';
 
 import { GElement } from './schema/graphics/GElement';
 import { DryCoolerBuilder } from './schema/DryCoolerBuilder';
 import { Valve, ValveActuator } from './schema/data/Valve';
 import { LineDrawer } from './core/LineDrawer';
 import { WaterLine } from './schema/data/WaterLine';
+import { GText } from './schema/graphics/GText';
 
 
 export class Editor {
@@ -63,6 +64,7 @@ export class Editor {
     this.myValve = new SElement(valve, DType.Valve, new Valve(42, 'super', 10, ValveActuator.OnOff));
 
     const valve2 = new GValve(new Point(200, 200), this.main, 20, 50, Direction.BottomToTop);
+
     this.myValve2 = new SElement(valve2, DType.Valve);
 
     // // connect some lines

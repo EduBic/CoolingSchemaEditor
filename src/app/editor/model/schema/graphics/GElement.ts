@@ -3,6 +3,7 @@ import { Point } from '../../core/Point';
 import { Gate } from './utils/Gate';
 import { fromEvent, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { GText } from './GText';
 
 export abstract class GElement {
 
@@ -23,7 +24,10 @@ export abstract class GElement {
   private selectRect = true;
 
   // Connection
-  private gates: Gate[];
+  private gates: Gate[] = [];
+
+  // Decoration Text
+  private label: GText;
 
   // Event stream
   click$: Observable<MouseEvent>;
@@ -46,31 +50,32 @@ export abstract class GElement {
 
       this.drawInternal();
 
-      if (this.gateConf) {
-        this.gates.forEach(gate => {
-          gate.draw(this.svgGroup);
-          gate.hide();
-          // this.gateClick$ = fromEvent(graphicGate, 'click');
-        });
+      this.drawGates();
 
-        this.setInteractions();
-      }
+      this.drawBoxRect();
 
-      if (this.selectRect) {
-        this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
-            .fill('transparent')
-            .stroke('transparent');
-
-        this.click$ = fromEvent<MouseEvent>(this.containerRect, 'click');
-          // .pipe(tap(_ => console.log('EVENT:click$')));
-        this.pointerUp$ = fromEvent(this.containerRect, 'pointerup');
-      }
+      this.drawLabels();
 
       this.svgGroup.move(this.origin.x, this.origin.y);
     } else {
       throw Error('GElement ' + this.getId() + ' is drawed more times!');
     }
 
+  }
+
+  // Template method
+  protected abstract drawInternal();
+
+  private drawGates() {
+    if (this.gateConf) {
+      this.gates.forEach(gate => {
+        gate.draw(this.svgGroup);
+        gate.hide();
+        // this.gateClick$ = fromEvent(graphicGate, 'click');
+      });
+
+      this.setInteractions();
+    }
   }
 
   private setInteractions() {
@@ -94,8 +99,23 @@ export abstract class GElement {
     });
   }
 
-  // Template method
-  protected abstract drawInternal();
+  private drawBoxRect() {
+    if (this.selectRect) {
+      this.containerRect = this.svgGroup.rect(this.totWidth, this.totHeight)
+          .fill('transparent')
+          .stroke('transparent');
+
+      this.click$ = fromEvent<MouseEvent>(this.containerRect, 'click');
+        // .pipe(tap(_ => console.log('EVENT:click$')));
+      this.pointerUp$ = fromEvent(this.containerRect, 'pointerup');
+    }
+  }
+
+  private drawLabels() {
+    if (this.label) {
+      this.label.draw(this.svgGroup);
+    }
+  }
 
   /**
    * Change default behaviour of GElement base class. Call this method inside
@@ -144,6 +164,28 @@ export abstract class GElement {
 
   public getId(): string {
     return this.svgGroup.id();
+  }
+
+  /**
+   * Set the label, call when you are initializing the GElement.
+   * If you want change the label use @updateLabel() instead.
+   * @param labels the string to show
+   */
+  public setLabel(text: string) {
+    if (this.label) {
+      this.label.remove();
+    }
+
+    this.label = new GText(new Point(this.totWidth, 0), text);
+  }
+
+  public updateLabel(text: string) {
+    this.setLabel(text);
+    this.drawLabels();
+  }
+
+  public removeLabel() {
+    this.label.remove();
   }
 
 }

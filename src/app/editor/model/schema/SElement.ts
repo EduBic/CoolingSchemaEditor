@@ -1,7 +1,7 @@
 import { GElement } from './graphics/GElement';
 import { DElement, DType } from './DElement';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, shareReplay } from 'rxjs/operators';
 import { Valve } from './data/Valve';
 
 export class SElement {
@@ -39,6 +39,7 @@ export class SElement {
       if (data.getType() === dataType) {
         this.data = data;
         this.initChangeData();
+        this.graphic.setLabel(this.data.name);
         this.graphic.setVoidStyle(false);
       } else {
         throw Error('DElement type doesn\' match with dataType');
@@ -53,7 +54,8 @@ export class SElement {
     if (this.graphic.click$) {
       this.click$ = this.graphic.click$.pipe(
         map(_ => this),
-        // tap(_ => console.log('EVENT:click$'))
+        tap(_ => console.log('EVENT:click$')),
+        shareReplay(1), // share same click event to all descendent observable
       );
     }
 
@@ -79,6 +81,7 @@ export class SElement {
 
       if (data.getType() === this.dataType) {
         this.data = data;
+        this.graphic.updateLabel(this.data.name);
         this.graphic.setVoidStyle(false);
         this.changeData$.next(this.data);
       } else {
@@ -88,6 +91,7 @@ export class SElement {
     } else {  // data === null || undefined
       this.data = data;
       this.graphic.setVoidStyle(true);
+      this.graphic.removeLabel();
       this.changeData$.next(this.data);
     }
   }
