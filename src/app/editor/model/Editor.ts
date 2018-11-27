@@ -31,6 +31,8 @@ import { Valve, ValveActuator } from './schema/data/Valve';
 import { LineDrawer } from './core/LineDrawer';
 import { WaterLine } from './schema/data/WaterLine';
 import { Label } from './schema/graphics/utils/Label';
+import { GFluidTransformer } from './schema/graphics/GFluidTransformer';
+import { HookPosition } from './core/HookPosition';
 
 
 export class Editor {
@@ -52,7 +54,6 @@ export class Editor {
 
   constructor(svgId: string) {
     this.main = SVG.get(svgId) as SVG.G;
-    const container = SVG.get('container') as SVG.Doc;
   }
 
   buildChildren() {
@@ -67,6 +68,9 @@ export class Editor {
 
     this.myValve2 = new SElement(valve2, DType.Valve);
 
+    const cond = new GFluidTransformer(new Point(300, 40), this.main, HookPosition.Top);
+    const condSchema = new SElement(cond, DType.Condenser);
+
     // // connect some lines
     // const line = GLine.connectElems(this.main, new Point(0, 0),
     //   this.myDc[3].getGraphic().getAbsoluteGate(0), this.myValve.getGraphic().getAbsoluteGate(0));
@@ -74,7 +78,7 @@ export class Editor {
 
     // add child
     // this.children.push(schemaLine);
-    this.children.push(this.myValve, this.myValve2);
+    this.children.push(this.myValve, this.myValve2, condSchema);
     // this.children = this.children.concat(this.myDc);
   }
 
@@ -95,6 +99,14 @@ export class Editor {
         map(elem => elem.getGraphic()),
         // tap(_ => console.log('EVENT:graphicSelectedChange$ AFTER'))
       );
+  }
+
+  public getConfiguration() {
+    this.children.forEach(child => {
+      if (child.getData()) {
+        console.log(child.getData());
+      }
+    });
   }
 
 

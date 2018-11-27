@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GElement } from './model/schema/graphics/GElement';
 import { SElement } from './model/schema/SElement';
 import { Editor } from './model/Editor';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { DElement } from './model/schema/DElement';
 
@@ -19,7 +19,7 @@ export class StateSelectionService {
 
   constructor() { }
 
-  initEditor(svgId: string): Editor {
+  public initEditor(svgId: string): Editor {
     this.editor = new Editor(svgId);
 
     this.editor.buildChildren();
@@ -30,6 +30,12 @@ export class StateSelectionService {
     this.selectedGraphic$ = this.editor.graphicSelectedChange$;
 
     return this.editor;
+  }
+
+  public getConfiguration() {
+    if (this.editor) {
+      this.editor.getConfiguration();
+    }
   }
 
 }
