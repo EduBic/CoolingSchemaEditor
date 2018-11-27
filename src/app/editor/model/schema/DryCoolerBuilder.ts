@@ -10,7 +10,7 @@ import { DElement, DType } from './DElement';
 
 export class DryCoolerBuilder {
 
-  public static create(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number) {
+  public static create(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number): SElement[] {
       // super(origin, svgParent, totWidth, totHeight, []);
       const res: SElement[] = [];
 

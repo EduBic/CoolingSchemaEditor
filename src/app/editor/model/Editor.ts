@@ -33,6 +33,7 @@ import { WaterLine } from './schema/data/WaterLine';
 import { Label } from './schema/graphics/utils/Label';
 import { GFluidTransformer } from './schema/graphics/GFluidTransformer';
 import { HookPosition } from './core/HookPosition';
+import { DxUnitBuilder } from './schema/DxUnitBuilder';
 
 
 export class Editor {
@@ -68,8 +69,11 @@ export class Editor {
 
     this.myValve2 = new SElement(valve2, DType.Valve);
 
-    const cond = new GFluidTransformer(new Point(300, 40), this.main, HookPosition.Top);
-    const condSchema = new SElement(cond, DType.Condenser);
+    const dxUnit = DxUnitBuilder.create(new Point(300, 40), this.main, 400, 400);
+
+    // const cond = new GFluidTransformer(new Point(300, 40), this.main, HookPosition.Top);
+    // const condSchema = new SElement(cond, DType.Condenser);
+
 
     // // connect some lines
     // const line = GLine.connectElems(this.main, new Point(0, 0),
@@ -78,7 +82,7 @@ export class Editor {
 
     // add child
     // this.children.push(schemaLine);
-    this.children.push(this.myValve, this.myValve2, condSchema);
+    this.children.push(this.myValve, this.myValve2, ...dxUnit);
     // this.children = this.children.concat(this.myDc);
   }
 

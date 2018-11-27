@@ -11,19 +11,19 @@ export class GFluidTransformer extends GElement {
 
   private static readonly PERCENT = 0.1;
 
-  constructor(origin: Point, svgParent: SVG.G, position: HookPosition) {
+  constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number,  position: HookPosition) {
     super(origin, svgParent,
-      GFluidTransformer.RECT_WIDTH, GFluidTransformer.RECT_HEIGHT,
-      GFluidTransformer.getExternalGates(position)
-        .concat(GFluidTransformer.getInternalGates(HookPosition.Right, position))
-        .concat(GFluidTransformer.getInternalGates(HookPosition.Left, position))
+      totWidth, totHeight,
+      GFluidTransformer.getExternalGates(position, totWidth, totHeight)
+        .concat(GFluidTransformer.getInternalGates(HookPosition.Right, position, totWidth, totHeight))
+        .concat(GFluidTransformer.getInternalGates(HookPosition.Left, position, totWidth, totHeight))
     );
   }
 
-  private static getExternalGates(position: HookPosition): Gate[] {
+  private static getExternalGates(position: HookPosition, width: number, height: number): Gate[] {
     const percent = GFluidTransformer.PERCENT;
-    const width = GFluidTransformer.RECT_WIDTH;
-    const height = GFluidTransformer.RECT_HEIGHT;
+    // const width = GFluidTransformer.RECT_WIDTH;
+    // const height = GFluidTransformer.RECT_HEIGHT;
 
     let exitPoint;
     let entryPoint;
@@ -48,10 +48,10 @@ export class GFluidTransformer extends GElement {
     ];
   }
 
-  private static getInternalGates(position: HookPosition, toExtPosition: HookPosition): Gate[] {
+  private static getInternalGates(position: HookPosition, toExtPosition: HookPosition, width: number, height: number): Gate[] {
     const percent = GFluidTransformer.PERCENT * 2;
-    const width = GFluidTransformer.RECT_WIDTH;
-    const height = GFluidTransformer.RECT_HEIGHT;
+    // const width = GFluidTransformer.RECT_WIDTH;
+    // const height = GFluidTransformer.RECT_HEIGHT;
 
     let entryPoint;
     let exitPoint;
@@ -107,7 +107,7 @@ export class GFluidTransformer extends GElement {
 
   protected drawInternal() {
     const rect = this.svgGroup
-      .rect(GFluidTransformer.RECT_WIDTH, GFluidTransformer.RECT_HEIGHT);
+      .rect(this.totWidth, this.totHeight);
   }
 
 
