@@ -4,7 +4,7 @@ import { HookPoint } from './HookPoint';
 
 export class LineDrawer {
 
-  private static readonly DEBUG = true;
+  private static readonly DEBUG = false;
 
   public static createLinePoints(_out: HookPoint, _in: HookPoint): Point[] {
 
@@ -274,7 +274,6 @@ export class LineDrawer {
       case HookPosition.Bottom: {
         if (inPoint.isTopRightOf(outPoint)) {
           // L shape
-          console.log('OH MY MY');
           const m1 = new Point(inPoint.x, outPoint.y);
           points.push(m1);
 

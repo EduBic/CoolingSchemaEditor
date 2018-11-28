@@ -9,6 +9,7 @@ export enum DType {
   Pump = 'Pump',
   Evaporator = 'Evaporator',
   Condenser = 'Condenser',
+  None = 'None'
 }
 
 

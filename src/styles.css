@@ -45,3 +45,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .hide-elem {
   display: none;
 }
+
+.gpoint {
+  stroke: gainsboro;
+  fill: black;
+}

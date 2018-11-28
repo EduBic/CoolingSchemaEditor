@@ -78,7 +78,7 @@ export class Editor {
     // add child
     // this.children.push(schemaLine);
     this.children = machineElem;
-    console.log(this.children);
+    // console.log(this.children);
     // this.children = this.children.concat(this.myDc);
   }
 
