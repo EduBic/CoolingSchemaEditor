@@ -1,8 +1,5 @@
 import * as SVG from 'svg.js';
 import { Point } from '../core/Point';
-import { GFan } from './graphics/GFan';
-import { GCoilPair } from './graphics/GCoilPair';
-import { GSideCover } from './graphics/GSideCover';
 import { SElement } from './SElement';
 import { DType } from './DElement';
 import { SubsystemBuilder } from './SubsystemBuilder';
@@ -17,7 +14,7 @@ import { GLine } from './graphics/GLine';
 
 export class DxUnitBuilder {
 
-  public static create(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number): SElement[] {
+  public static create(origin: Point, svgParent: SVG.G): SElement[] {
       // super(origin, svgParent, totWidth, totHeight, []);
       const res: SElement[] = [];
 

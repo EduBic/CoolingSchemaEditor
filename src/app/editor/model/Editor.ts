@@ -69,20 +69,15 @@ export class Editor {
 
     this.myValve2 = new SElement(valve2, DType.Valve);
 
-    const dxUnit = DxUnitBuilder.create(new Point(300, 40), this.main, 400, 400);
+    // const dxUnit = DxUnitBuilder.create(new Point(300, 40), this.main, 400, 400);
 
-    // const cond = new GFluidTransformer(new Point(300, 40), this.main, HookPosition.Top);
-    // const condSchema = new SElement(cond, DType.Condenser);
-
-
-    // // connect some lines
-    // const line = GLine.connectElems(this.main, new Point(0, 0),
-    //   this.myDc[3].getGraphic().getAbsoluteGate(0), this.myValve.getGraphic().getAbsoluteGate(0));
-    // const schemaLine = new SElement(line, DType.WaterLine, new WaterLine(20, 'a water line'));
+    // const pumpCarbonCopy = new GPump(new Point(0, 0), this.main, 10, Direction.TopToBottom);
+    // const pumps = new GParallelWrapper(new Point(300, 50), this.main, pumpCarbonCopy, 3, 5);
+    // const pumpsElem = new SElement(pumps, DType.Pump);
 
     // add child
     // this.children.push(schemaLine);
-    this.children.push(this.myValve, this.myValve2, ...dxUnit);
+    this.children.push(this.myValve, this.myValve2);
     // this.children = this.children.concat(this.myDc);
   }
 

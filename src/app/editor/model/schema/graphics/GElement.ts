@@ -87,6 +87,10 @@ export abstract class GElement {
       }
 
       this.gates.forEach(gate => gate.show());
+
+      if (this.label) {
+        this.label.show();
+      }
     });
 
     this.svgGroup.on('mouseleave', (e: MouseEvent) => {
@@ -95,6 +99,10 @@ export abstract class GElement {
 
       if (this.selectRect) {
         this.containerRect.stroke('transparent');
+      }
+
+      if (this.label) {
+        this.label.hide();
       }
     });
   }
@@ -114,6 +122,7 @@ export abstract class GElement {
   private drawLabels() {
     if (this.label) {
       this.label.draw(this.svgGroup);
+      this.label.hide();
     }
   }
 

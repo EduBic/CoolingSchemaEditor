@@ -28,4 +28,12 @@ export class Label {
     this.svgElem = null;
   }
 
+  public show() {
+    this.svgElem.removeClass('hide-elem');
+  }
+
+  public hide() {
+    this.svgElem.addClass('hide-elem');
+  }
+
 }
