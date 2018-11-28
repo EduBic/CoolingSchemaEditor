@@ -34,20 +34,18 @@ import { Label } from './schema/graphics/utils/Label';
 import { GFluidTransformer } from './schema/graphics/GFluidTransformer';
 import { HookPosition } from './core/HookPosition';
 import { DxUnitBuilder } from './schema/DxUnitBuilder';
+import { TrimChillerBuilder } from './schema/TrimChillerBuilder';
 
 
 export class Editor {
 
   private main: SVG.G;
-  private currScale = 1;
+  private currScaleX = 1;
+  private currScaleY = 1;
   private currTransX = 0;
   private currTransY = 0;
 
   private children: SElement[] = [];
-
-  private myValve: SElement;
-  private myValve2: SElement;
-  private myDc: SElement[];
 
   private select$: Observable<SElement>;
   public dataSelectedChange$: Observable<DElement>;
@@ -55,6 +53,7 @@ export class Editor {
 
   constructor(svgId: string) {
     this.main = SVG.get(svgId) as SVG.G;
+    this.zoom(-0.4);
   }
 
   buildChildren() {
@@ -62,22 +61,24 @@ export class Editor {
 
     // this.myDc = DryCoolerBuilder.create(new Point(200, 200), this.main, 200, 150);
 
-    const valve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
-    this.myValve = new SElement(valve, DType.Valve, new Valve(42, 'super', 10, ValveActuator.OnOff));
+    // const valve = new GValve(mainOrigin, this.main, 30, 60, Direction.BottomToTop);
+    // this.myValve = new SElement(valve, DType.Valve, new Valve(42, 'super', 10, ValveActuator.OnOff));
 
-    const valve2 = new GValve(new Point(200, 200), this.main, 20, 50, Direction.BottomToTop);
+    // const valve2 = new GValve(new Point(200, 200), this.main, 20, 50, Direction.BottomToTop);
 
-    this.myValve2 = new SElement(valve2, DType.Valve);
+    // this.myValve2 = new SElement(valve2, DType.Valve);
 
-    // const dxUnit = DxUnitBuilder.create(new Point(300, 40), this.main, 400, 400);
 
     // const pumpCarbonCopy = new GPump(new Point(0, 0), this.main, 10, Direction.TopToBottom);
     // const pumps = new GParallelWrapper(new Point(300, 50), this.main, pumpCarbonCopy, 3, 5);
     // const pumpsElem = new SElement(pumps, DType.Pump);
 
+    const machineElem = TrimChillerBuilder.create(new Point(0, 0), this.main);
+
     // add child
     // this.children.push(schemaLine);
-    this.children.push(this.myValve, this.myValve2);
+    this.children = machineElem;
+    console.log(this.children);
     // this.children = this.children.concat(this.myDc);
   }
 
@@ -124,14 +125,26 @@ export class Editor {
   // Manipolate main svg
 
   public zoom(percent: number) {
-    this.currScale += percent;
-    this.main.transform({ scale: this.currScale });
+    // this.currScale += percent;
+    this.currScaleX += percent;
+    this.currScaleY += percent;
+    this.main.transform({
+      a: this.currScaleX,
+      d: this.currScaleY,
+      e: this.currTransX,
+      f: this.currTransY
+    });
   }
 
   public pan(dx: number, sx: number) {
     this.currTransX += dx;
     this.currTransY += sx;
-    this.main.translate(this.currTransX, this.currTransY);
+    this.main.transform({
+      a: this.currScaleX,
+      d: this.currScaleY,
+      e: this.currTransX,
+      f: this.currTransY
+    });
   }
 
 }
