@@ -57,7 +57,7 @@ export class GParallelWrapper extends GElement {
       for (let i = 0; i < 2; i++) {
 
         const line = GLine.connectParentToChildEntries(
-          svgParent, origin, this.getGate(i), child.getAbsoluteGate(i)
+          this.svgGroup, new Point(0, 0), this.getGate(i), child.getAbsoluteGate(i)
         );
 
         line.disableGateDraw();
@@ -69,6 +69,8 @@ export class GParallelWrapper extends GElement {
 
   private static getGates(totWidth: number, TotHeight: number, direction: Direction): Gate[] {
     const positions = UtilDirection.getPosition(direction);
+
+    // console.log('parallel gates', positions);
 
     switch (direction) {
       case Direction.BottomToTop:

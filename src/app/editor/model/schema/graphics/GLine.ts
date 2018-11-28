@@ -12,7 +12,7 @@ export class GLine extends GElement {
   private constructor(origin, svgParent: SVG.G, start: Gate, end: Gate, points: Point[]) {
     super(origin, svgParent, 0, 0, [start, end]);
 
-    this.disableGateDraw();
+    // this.disableGateDraw();
     this.disableSelectRect();
 
     this.points = points;
@@ -23,11 +23,11 @@ export class GLine extends GElement {
     return new GLine(parentOrigin, svgParent, exitElem, entryElem, points);
   }
 
-  public static connectParentToChildEntries(svgParent: SVG.G, parentOrigin: Point, parent: Gate,
+  public static connectParentToChildEntries(svgParent: SVG.G, lineOrigin: Point, parent: Gate,
     absChild: Gate): GLine {
 
       const points = LineDrawer.createLinePoints(parent.toInternalHook(), absChild.toExternalHook());
-      return new GLine(parentOrigin, svgParent, parent, absChild, points);
+      return new GLine(lineOrigin, svgParent, parent, absChild, points);
   }
 
   public static connectChildToParentExits(svgParent: SVG.G, parentOrigin: Point, parent: Gate,

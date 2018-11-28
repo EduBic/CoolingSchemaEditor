@@ -1,4 +1,4 @@
-<div style="display: flex">
+<div style="display: flex" (click)="setFocusOnSvg($event, false)">
 
   <div class="side-panel">
     <app-store-selection
@@ -7,7 +7,7 @@
     </app-store-selection>
   </div>
 
-  <div class="main-panel">
+  <div class="main-panel" (click)="setFocusOnSvg($event, true)">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
 
       <!-- Utils SVG -->

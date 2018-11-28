@@ -30,9 +30,9 @@ export abstract class GElement {
   private label: Label;
 
   // Event stream
-  click$: Observable<MouseEvent>;
-  gateClick$: Observable<MouseEvent>;
-  pointerUp$: Observable<MouseEvent>;
+  click$: Observable<MouseEvent> = new Observable();
+  gateClick$: Observable<MouseEvent> = new Observable();
+  pointerUp$: Observable<MouseEvent> = new Observable();
 
   constructor(origin: Point, svgParent: SVG.G, totWidth: number, totHeight: number, gates: Gate[] = []) {
     this.origin = origin;
@@ -50,9 +50,9 @@ export abstract class GElement {
 
       this.drawInternal();
 
-      this.drawGates();
-
       this.drawBoxRect();
+
+      this.drawGates();
 
       this.drawLabels();
 

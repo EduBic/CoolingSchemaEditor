@@ -18,6 +18,8 @@ export class GFluidTransformer extends GElement {
         .concat(GFluidTransformer.getInternalGates(HookPosition.Right, position, totWidth, totHeight))
         .concat(GFluidTransformer.getInternalGates(HookPosition.Left, position, totWidth, totHeight))
     );
+
+    console.log('GFluid', GFluidTransformer.getInternalGates(HookPosition.Left, position, totWidth, totHeight));
   }
 
   private static getExternalGates(position: HookPosition, width: number, height: number): Gate[] {
@@ -56,8 +58,10 @@ export class GFluidTransformer extends GElement {
     let entryPoint;
     let exitPoint;
 
+    // Check position of internal Gates: Left or Right
     switch (position) {
       case HookPosition.Left:
+        // Check position of all GFluidTransformer element: Top or Bottom
         if (toExtPosition === HookPosition.Top) {
           entryPoint = new Point(percent * width, height);
 
@@ -89,8 +93,8 @@ export class GFluidTransformer extends GElement {
     }
 
     if (toExtPosition === HookPosition.Bottom) {
-      return [  // invert entry with exit
-        new Gate(entryPoint, HookPosition.Bottom, false),
+      return [  // entry and exit points are inverted
+        new Gate(entryPoint, HookPosition.Top, false),
         new Gate(exitPoint, position, true)
       ];
     } else if (toExtPosition === HookPosition.Top) {

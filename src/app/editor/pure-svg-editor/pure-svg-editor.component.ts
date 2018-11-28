@@ -15,6 +15,7 @@ import { StateSelectionService } from '../state-selection.service';
 export class PureSvgEditorComponent implements OnInit {
 
   editor: Editor;
+  isFocusOnSvg = true;
 
   constructor(private selService: StateSelectionService) { }
 
@@ -39,34 +40,52 @@ export class PureSvgEditorComponent implements OnInit {
     this.editor.stopListenerDrop();
   }
 
-  // @HostListener('document:keydown.Q', ['$event'])
-  // zoomIn(event: KeyboardEvent) {
-  //   this.editor.zoom(0.1);
-  // }
+  @HostListener('document:keydown.Q', ['$event'])
+  zoomIn(event: KeyboardEvent) {
+    if (this.isFocusOnSvg) {
+      this.editor.zoom(0.1);
+    }
+  }
 
-  // @HostListener('document:keydown.A', ['$event'])
-  // zoomOut(event: KeyboardEvent) {
-  //   this.editor.zoom(-0.1);
-  // }
+  @HostListener('document:keydown.A', ['$event'])
+  zoomOut(event: KeyboardEvent) {
+    if (this.isFocusOnSvg) {
+      this.editor.zoom(-0.1);
+    }
+  }
+
+  setFocusOnSvg(e: MouseEvent, on: boolean) {
+    e.stopPropagation();
+    this.isFocusOnSvg = on;
+    // console.log('pan set to:', this.isPanEnable);
+  }
 
   @HostListener('document:keydown.ArrowLeft', ['$event'])
   goLeft(event: KeyboardEvent) {
-    this.editor.pan(1, 0);
+    if (this.isFocusOnSvg) {
+      this.editor.pan(1, 0);
+    }
   }
 
   @HostListener('document:keydown.ArrowRight', ['$event'])
   goRight(event: KeyboardEvent) {
-    this.editor.pan(-1, 0);
+    if (this.isFocusOnSvg) {
+      this.editor.pan(-1, 0);
+    }
   }
 
   @HostListener('document:keydown.ArrowUp', ['$event'])
   goAhead(event: KeyboardEvent) {
-    this.editor.pan(0, +1);
+    if (this.isFocusOnSvg) {
+      this.editor.pan(0, +1);
+    }
   }
 
   @HostListener('document:keydown.ArrowDown', ['$event'])
   goBack(event: KeyboardEvent) {
-    this.editor.pan(0, -1);
+    if (this.isFocusOnSvg) {
+      this.editor.pan(0, -1);
+    }
   }
 
 }
