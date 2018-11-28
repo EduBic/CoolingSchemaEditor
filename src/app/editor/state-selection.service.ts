@@ -19,8 +19,8 @@ export class StateSelectionService {
 
   constructor() { }
 
-  public initEditor(svgId: string): Editor {
-    this.editor = new Editor(svgId);
+  public initEditor(svgId: string, svgWidth: number, svgHeight: number): Editor {
+    this.editor = new Editor(svgId, svgWidth, svgHeight);
 
     this.editor.buildChildren();
     this.editor.draw();

@@ -39,11 +39,13 @@ import { TrimChillerBuilder } from './schema/TrimChillerBuilder';
 
 export class Editor {
 
-  private main: SVG.G;
-  private currScaleX = 1;
-  private currScaleY = 1;
-  private currTransX = 0;
-  private currTransY = 0;
+  private main: SVG.Nested;
+  private width: number;
+  private height: number;
+  // a c e
+  // b d f
+  // 0 0 1
+  private matrix = [1, 0, 0, 1, 0, 0];
 
   private children: SElement[] = [];
 
@@ -51,9 +53,10 @@ export class Editor {
   public dataSelectedChange$: Observable<DElement>;
   public graphicSelectedChange$: Observable<GElement>;
 
-  constructor(svgId: string) {
-    this.main = SVG.get(svgId) as SVG.G;
-    this.zoom(-0.4);
+  constructor(svgId: string, svgWidth: number, svgHeight: number) {
+    this.main = SVG.get(svgId) as SVG.Nested;
+    this.width = svgWidth;
+    this.height = svgHeight;
   }
 
   buildChildren() {
@@ -125,26 +128,33 @@ export class Editor {
   // Manipolate main svg
 
   public zoom(percent: number) {
-    // this.currScale += percent;
-    this.currScaleX += percent;
-    this.currScaleY += percent;
-    this.main.transform({
-      a: this.currScaleX,
-      d: this.currScaleY,
-      e: this.currTransX,
-      f: this.currTransY
-    });
+    for (let i = 0; i < this.matrix.length; i++) {
+      this.matrix[i] *= percent;
+    }
+
+    console.log(this.width);
+
+    this.matrix[4] += (1 - percent) * this.width / 2;
+    this.matrix[5] += (1 - percent) * this.height / 2;
+
+    this.updateMatrix();
   }
 
   public pan(dx: number, sx: number) {
-    this.currTransX += dx;
-    this.currTransY += sx;
-    this.main.transform({
-      a: this.currScaleX,
-      d: this.currScaleY,
-      e: this.currTransX,
-      f: this.currTransY
-    });
+    this.matrix[4] += dx;
+    this.matrix[5] += sx;
+
+    this.updateMatrix();
   }
 
+  private updateMatrix() {
+    this.main.transform({
+      a: this.matrix[0],
+      b: this.matrix[1],
+      c: this.matrix[2],
+      d: this.matrix[3],
+      e: this.matrix[4],
+      f: this.matrix[5]
+    });
+  }
 }

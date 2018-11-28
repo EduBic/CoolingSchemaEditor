@@ -15,13 +15,16 @@ import { StateSelectionService } from '../state-selection.service';
 export class PureSvgEditorComponent implements OnInit {
 
   editor: Editor;
+  svgWidth = 600;
+  svgHeight = 400;
   isFocusOnSvg = true;
 
   constructor(private selService: StateSelectionService) { }
 
   ngOnInit() {
-    this.editor = this.selService.initEditor('editor');
-
+    this.editor = this.selService.initEditor('editor', this.svgWidth, this.svgHeight);
+    this.editor.zoom(0.5);
+    this.editor.pan(-90, -90);
     // window.addEventListener('resize', this.resizeSvg, false);
   }
 
@@ -43,14 +46,14 @@ export class PureSvgEditorComponent implements OnInit {
   @HostListener('document:keydown.Q', ['$event'])
   zoomIn(event: KeyboardEvent) {
     if (this.isFocusOnSvg) {
-      this.editor.zoom(0.1);
+      this.editor.zoom(1.25);
     }
   }
 
   @HostListener('document:keydown.A', ['$event'])
   zoomOut(event: KeyboardEvent) {
     if (this.isFocusOnSvg) {
-      this.editor.zoom(-0.1);
+      this.editor.zoom(0.75);
     }
   }
 
