@@ -73,18 +73,6 @@ export class ConnectorLine extends GraphicSingle {
     return res;
   }
 
-  private getCrossShapePoints(intersection: Point): Point[] {
-    const res: Point[] = [];
-    const size = 5;
-
-    res.push(new Point(intersection.x - size, intersection.y - size));
-    res.push(new Point(intersection.x + size, intersection.y + size));
-    res.push(new Point(intersection.x - size, intersection.y + size));
-    res.push(new Point(intersection.x + size, intersection.y - size));
-
-    return res;
-  }
-
   private drawIntersections(host: SVG.G) {
     this.intersections.forEach((intersection: Point) => {
       const ps = this.getCrossShapePoints(intersection);
@@ -96,6 +84,18 @@ export class ConnectorLine extends GraphicSingle {
         ).addClass('intersection-point')
       );
     });
+  }
+
+  private getCrossShapePoints(intersection: Point): Point[] {
+    const res: Point[] = [];
+    const size = 5;
+
+    res.push(new Point(intersection.x - size, intersection.y - size));
+    res.push(new Point(intersection.x + size, intersection.y + size));
+    res.push(new Point(intersection.x - size, intersection.y + size));
+    res.push(new Point(intersection.x + size, intersection.y - size));
+
+    return res;
   }
 
   private removeIntersectionShapes() {

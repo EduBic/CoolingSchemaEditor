@@ -102,6 +102,10 @@ export class Gate {
     return new Gate(new Point(origin.x + this.coord.x, origin.y + this.coord.y), this.extPos, this.entry);
   }
 
+  public getPosition(): HookPosition {
+    return this.extPos;
+  }
+
   public show() {
     this.svgElem.removeClass('hide-elem');
   }

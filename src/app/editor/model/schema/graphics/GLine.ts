@@ -4,6 +4,8 @@ import { Point } from '../../core/Point';
 import { Gate } from './utils/Gate';
 import { LineDrawer } from '../../core/LineDrawer';
 import { HookPoint } from '../../core/HookPoint';
+import { HookPosition } from '../../core/HookPosition';
+import { UtilDirection } from './utils/Direction';
 
 export class GLine extends GElement {
 
@@ -52,6 +54,99 @@ export class GLine extends GElement {
     });
 
     return res;
+  }
+
+  // Intersection management
+
+  public intersectWithOutputOf(svgParent: SVG.G, parentOrigin: Point, startGate: Gate): GLine {
+    const startPos = startGate.getPosition();
+
+    const intersections = this.findIntersections(startGate.toExternalHook());
+    const intersection = this.minDistance(intersections, startGate.toExternalHook().coord);
+    const interPos = UtilDirection.getOppositePosition(startPos);
+
+    const points = LineDrawer.createLinePoints(startGate.toExternalHook(), new HookPoint(intersection, interPos));
+
+    return new GLine(parentOrigin, svgParent, startGate, new Gate(intersection, HookPosition.Bottom, true), points);
+  }
+
+  private minDistance(inters: Point[], start: Point): Point {
+    let res = inters[0];
+    let minDist = Math.sqrt( Math.pow(res.x - start.x, 2) + Math.pow(res.y - start.y, 2) );
+
+    for (let i = 1; i < inters.length; i++) {
+      const interDist = Math.sqrt( Math.pow(inters[i].x - start.x, 2) + Math.pow(inters[i].y - start.y, 2) );
+
+      // console.log('Inters X/Y', interDist, 'inters min ', minDist);
+
+      if (interDist < minDist) {
+        minDist = interDist;
+        res = inters[i];
+      }
+    }
+
+    return res;
+
+  }
+
+  // public connectWithInputOf(element: GElement, svgParent: SVG.G): GLine {
+  //   const inHookElem = element.getInHook();
+  //   const intersection = this.findIntersections(inHookElem)[0];
+
+  //   return new GLine(
+  //     new HookPoint(intersection, inHookElem.getOppositePosition()),
+  //     new HookPoint(inHookElem.coord, inHookElem.position)
+  //   );
+  // }
+
+  private findIntersections(outPoint: HookPoint): Point[] {
+
+    const segments = this.takeSegment();
+    const intersectionsFound: Point[] = [];
+
+    // Search FIRST intersection with lines
+    segments.forEach((segment: Point[]) => {
+
+      let intersection: Point;
+
+      if (this.lineIsHorizontal(segment)) {
+        intersection = new Point(segment[0].x, outPoint.coord.y);
+      } else if (this.lineIsVertical(segment)) {
+        intersection = new Point(outPoint.coord.x, segment[0].y);
+      }
+
+      if (intersection.isIntoSegment(segment[0], segment[1])) {
+        intersectionsFound.push(intersection);
+      }
+    });
+
+    return intersectionsFound;
+  }
+
+  private takeSegment(): Point[][] {
+    const lines: Point[][] = [];
+
+    // take segment between the points
+    const max = this.points.length % 2 === 0 ? this.points.length : this.points.length - 1;
+    for (let i = 0; i < max - 1; i++) {
+      lines.push([ this.points[i], this.points[i + 1] ]);
+    }
+
+    return lines;
+  }
+
+  private lineIsHorizontal(twoPoints: Point[]): boolean {
+    if (twoPoints.length > 2) {
+      console.log('Max points is 2!');
+    }
+    return twoPoints[0].x === twoPoints[1].x;
+  }
+
+  private lineIsVertical(twoPoints: Point[]): boolean {
+    if (twoPoints.length > 2) {
+      console.log('Max points is 2!');
+    }
+    return twoPoints[0].y === twoPoints[1].y;
   }
 
 }
