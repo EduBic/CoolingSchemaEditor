@@ -133,12 +133,12 @@ export class DxUnitBuilder {
       // Build elements
 
       res.push(
+        new SElement(condenser, DType.Condenser),
+        new SElement(evaporator, DType.Evaporator),
         new SElement(compr1parall, DType.Compressor),
         new SElement(valveLeft, DType.Valve),
         new SElement(compr2parall, DType.Compressor),
         new SElement(valveRight, DType.Valve),
-        new SElement(condenser, DType.Condenser),
-        new SElement(evaporator, DType.Evaporator)
       );
 
       lines.forEach(line => {
