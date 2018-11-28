@@ -18,8 +18,6 @@ export class GFluidTransformer extends GElement {
         .concat(GFluidTransformer.getInternalGates(HookPosition.Right, position, totWidth, totHeight))
         .concat(GFluidTransformer.getInternalGates(HookPosition.Left, position, totWidth, totHeight))
     );
-
-    console.log('GFluid', GFluidTransformer.getInternalGates(HookPosition.Left, position, totWidth, totHeight));
   }
 
   private static getExternalGates(position: HookPosition, width: number, height: number): Gate[] {
