@@ -8,7 +8,7 @@
   </div>
 
   <div class="main-panel" (click)="setFocusOnSvg($event, true)">
-    <svg id="main-svg" xmlns="http://www.w3.org/2000/svg" attr.viewBox="0 0 {{ svgWidth }} {{ svgHeight }}">
+    <svg #mainSvg id="main-svg" xmlns="http://www.w3.org/2000/svg" attr.viewBox="0 0 {{ svgWidth }} {{ svgHeight }}">
 
       <!-- Utils SVG -->
       <defs>

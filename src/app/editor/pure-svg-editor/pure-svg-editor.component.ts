@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 import { Editor } from '../model/Editor';
 import { DElement } from '../model/schema/DElement';
@@ -16,6 +16,11 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./pure-svg-editor.component.css']
 })
 export class PureSvgEditorComponent implements OnInit {
+
+  private static readonly speedPan = 0.8;
+
+  @ViewChild('mainSvg')
+  mainSvg: ElementRef;
 
   editor: Editor;
   svgWidth = 600;
@@ -35,53 +40,46 @@ export class PureSvgEditorComponent implements OnInit {
     this.editor.pan(-this.svgWidth / 2, -this.svgHeight / 2);
     this.editor.zoom(0.5);
 
-    const domEditor = document.getElementById('main-svg');
-
-    // hot lisener
-    fromEvent(domEditor, 'pointerdown').subscribe((e: MouseEvent) => {
+    // hot listener
+    fromEvent(this.mainSvg.nativeElement, 'pointerdown').subscribe((e: MouseEvent) => {
       console.log('pointerdown', e);
 
       this.pointerOrigin = {
-        x: e.clientX, y: e.clientY
+        x: e.clientX, y: e.clientY, time: e.timeStamp
       };
 
-      domEditor.classList.add('moving');
+      this.mainSvg.nativeElement.classList.add('moving');
 
-      this.pointerMove = fromEvent(domEditor, 'pointermove')
-        // .pipe(debounceTime(5))
-        .subscribe((ev: MouseEvent) => {
+      this.pointerMove = fromEvent(this.mainSvg.nativeElement, 'pointermove').subscribe((ev: MouseEvent) => {
         ev.preventDefault();
-        ev.stopPropagation();
 
-        const currPointerX = ev.clientX;
-        const currPointerY = ev.clientY;
-
-        const speed = 0.6;
+        // const spaceX = ev.clientX - this.pointerOrigin.x;
+        // const spaceY = ev.clientY - this.pointerOrigin.y;
+        // const timeDiff = ev.timeStamp - this.pointerOrigin.time;
+        // const speed2 = Math.min( 0.2 * Math.sqrt( Math.pow(spaceX, 2) + Math.pow(spaceY, 2)), 4); // / timeDiff;
 
         this.editor.pan(
-          (currPointerX - this.pointerOrigin.x) * speed,
-          (currPointerY - this.pointerOrigin.y) * speed
+          (ev.clientX - this.pointerOrigin.x) * PureSvgEditorComponent.speedPan,
+          (ev.clientY - this.pointerOrigin.y) * PureSvgEditorComponent.speedPan
         );
 
-        this.pointerOrigin = {
-          x: ev.clientX, y: ev.clientY
-        };
-
-        // console.log('pointermove', e);
+        this.pointerOrigin.x = ev.clientX;
+        this.pointerOrigin.y = ev.clientY;
+        this.pointerOrigin.time = ev.timeStamp;
       });
 
-      this.pointerUp = fromEvent(domEditor, 'pointerup').subscribe((ev: MouseEvent) => {
+      this.pointerUp = fromEvent(this.mainSvg.nativeElement, 'pointerup').subscribe((ev: MouseEvent) => {
         console.log('pointerup');
 
-        domEditor.classList.remove('moving');
+        this.mainSvg.nativeElement.classList.remove('moving');
         this.pointerMove.unsubscribe();
         this.pointerUp.unsubscribe();
         this.pointerLeave.unsubscribe();
       });
-      this.pointerLeave = fromEvent(domEditor, 'pointerleave').subscribe((ev: MouseEvent) => {
+      this.pointerLeave = fromEvent(this.mainSvg.nativeElement, 'pointerleave').subscribe((ev: MouseEvent) => {
         console.log('pointerleave');
 
-        domEditor.classList.remove('moving');
+        this.mainSvg.nativeElement.classList.remove('moving');
         this.pointerMove.unsubscribe();
         this.pointerUp.unsubscribe();
         this.pointerLeave.unsubscribe();
