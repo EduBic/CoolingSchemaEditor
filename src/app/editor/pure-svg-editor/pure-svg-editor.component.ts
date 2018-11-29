@@ -6,7 +6,7 @@ import { SElement } from '../model/schema/SElement';
 import { GElement } from '../model/schema/graphics/GElement';
 import { StateSelectionService } from '../state-selection.service';
 import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, merge } from 'rxjs/operators';
 
 
 
@@ -27,9 +27,8 @@ export class PureSvgEditorComponent implements OnInit {
   svgHeight = 400;
   isFocusOnSvg = true;
 
-  private pointerUp: Subscription;
-  private pointerMove: Subscription;
-  private pointerLeave: Subscription;
+  private panEnd: Subscription;
+  private panMove: Subscription;
 
   private pointerOrigin;
 
@@ -42,16 +41,14 @@ export class PureSvgEditorComponent implements OnInit {
 
     // hot listener
     fromEvent(this.mainSvg.nativeElement, 'pointerdown').subscribe((e: MouseEvent) => {
-      console.log('pointerdown', e);
 
       this.pointerOrigin = {
         x: e.clientX, y: e.clientY, time: e.timeStamp
       };
 
-      this.mainSvg.nativeElement.classList.add('moving');
-
-      this.pointerMove = fromEvent(this.mainSvg.nativeElement, 'pointermove').subscribe((ev: MouseEvent) => {
+      this.panMove = fromEvent(this.mainSvg.nativeElement, 'pointermove').subscribe((ev: MouseEvent) => {
         ev.preventDefault();
+        this.mainSvg.nativeElement.classList.add('moving');
 
         // const spaceX = ev.clientX - this.pointerOrigin.x;
         // const spaceY = ev.clientY - this.pointerOrigin.y;
@@ -68,22 +65,15 @@ export class PureSvgEditorComponent implements OnInit {
         this.pointerOrigin.time = ev.timeStamp;
       });
 
-      this.pointerUp = fromEvent(this.mainSvg.nativeElement, 'pointerup').subscribe((ev: MouseEvent) => {
-        console.log('pointerup');
-
-        this.mainSvg.nativeElement.classList.remove('moving');
-        this.pointerMove.unsubscribe();
-        this.pointerUp.unsubscribe();
-        this.pointerLeave.unsubscribe();
-      });
-      this.pointerLeave = fromEvent(this.mainSvg.nativeElement, 'pointerleave').subscribe((ev: MouseEvent) => {
-        console.log('pointerleave');
-
-        this.mainSvg.nativeElement.classList.remove('moving');
-        this.pointerMove.unsubscribe();
-        this.pointerUp.unsubscribe();
-        this.pointerLeave.unsubscribe();
-      });
+      this.panEnd = fromEvent(this.mainSvg.nativeElement, 'pointerup')
+        .pipe(
+          merge(fromEvent(this.mainSvg.nativeElement, 'pointerleave'))
+        )
+        .subscribe((ev: MouseEvent) => {
+          this.mainSvg.nativeElement.classList.remove('moving');
+          this.panMove.unsubscribe();
+          this.panEnd.unsubscribe();
+        });
 
     });
 

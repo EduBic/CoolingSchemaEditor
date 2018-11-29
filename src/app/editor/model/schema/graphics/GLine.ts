@@ -101,7 +101,7 @@ export class GLine extends GElement {
 
   private findIntersections(outPoint: HookPoint): Point[] {
 
-    const segments = this.takeSegment();
+    const segments = this.takeSegments();
     const intersectionsFound: Point[] = [];
 
     // Search FIRST intersection with lines
@@ -123,12 +123,11 @@ export class GLine extends GElement {
     return intersectionsFound;
   }
 
-  private takeSegment(): Point[][] {
+  private takeSegments(): Point[][] {
     const lines: Point[][] = [];
 
     // take segment between the points
-    const max = this.points.length % 2 === 0 ? this.points.length : this.points.length - 1;
-    for (let i = 0; i < max - 1; i++) {
+    for (let i = 0; i < this.points.length - 1; i++) {
       lines.push([ this.points[i], this.points[i + 1] ]);
     }
 
