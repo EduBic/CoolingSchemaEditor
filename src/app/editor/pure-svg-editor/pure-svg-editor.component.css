@@ -2,3 +2,7 @@
 .side-panel {
   width: 20vw;
 }
+
+.moving {
+  cursor: move;
+}

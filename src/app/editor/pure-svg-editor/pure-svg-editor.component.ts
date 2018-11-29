@@ -5,6 +5,9 @@ import { DElement } from '../model/schema/DElement';
 import { SElement } from '../model/schema/SElement';
 import { GElement } from '../model/schema/graphics/GElement';
 import { StateSelectionService } from '../state-selection.service';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
 
 
 @Component({
@@ -19,13 +22,73 @@ export class PureSvgEditorComponent implements OnInit {
   svgHeight = 400;
   isFocusOnSvg = true;
 
+  private pointerUp: Subscription;
+  private pointerMove: Subscription;
+  private pointerLeave: Subscription;
+
+  private pointerOrigin;
+
   constructor(private selService: StateSelectionService) { }
 
   ngOnInit() {
     this.editor = this.selService.initEditor('editor', this.svgWidth, this.svgHeight);
+    this.editor.pan(-this.svgWidth / 2, -this.svgHeight / 2);
     this.editor.zoom(0.5);
-    this.editor.pan(-90, -90);
-    // window.addEventListener('resize', this.resizeSvg, false);
+
+    const domEditor = document.getElementById('main-svg');
+
+    // hot lisener
+    fromEvent(domEditor, 'pointerdown').subscribe((e: MouseEvent) => {
+      console.log('pointerdown', e);
+
+      this.pointerOrigin = {
+        x: e.clientX, y: e.clientY
+      };
+
+      domEditor.classList.add('moving');
+
+      this.pointerMove = fromEvent(domEditor, 'pointermove')
+        // .pipe(debounceTime(5))
+        .subscribe((ev: MouseEvent) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        const currPointerX = ev.clientX;
+        const currPointerY = ev.clientY;
+
+        const speed = 0.6;
+
+        this.editor.pan(
+          (currPointerX - this.pointerOrigin.x) * speed,
+          (currPointerY - this.pointerOrigin.y) * speed
+        );
+
+        this.pointerOrigin = {
+          x: ev.clientX, y: ev.clientY
+        };
+
+        // console.log('pointermove', e);
+      });
+
+      this.pointerUp = fromEvent(domEditor, 'pointerup').subscribe((ev: MouseEvent) => {
+        console.log('pointerup');
+
+        domEditor.classList.remove('moving');
+        this.pointerMove.unsubscribe();
+        this.pointerUp.unsubscribe();
+        this.pointerLeave.unsubscribe();
+      });
+      this.pointerLeave = fromEvent(domEditor, 'pointerleave').subscribe((ev: MouseEvent) => {
+        console.log('pointerleave');
+
+        domEditor.classList.remove('moving');
+        this.pointerMove.unsubscribe();
+        this.pointerUp.unsubscribe();
+        this.pointerLeave.unsubscribe();
+      });
+
+    });
+
   }
 
   // resizeSvg() {
