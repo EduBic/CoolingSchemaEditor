@@ -20,11 +20,9 @@ export class GPoint extends GElement {
 
 
   protected drawInternal() {
-    const origin = this.getOrigin();
     const sizeCircle = 15;
     const half = sizeCircle / 2;
 
-    console.log('draw');
     const point = this.svgGroup.circle(sizeCircle)
       .move(-half, -half)
       .addClass('gpoint');

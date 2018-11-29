@@ -132,8 +132,6 @@ export class Editor {
       this.matrix[i] *= percent;
     }
 
-    console.log(this.width);
-
     this.matrix[4] += (1 - percent) * this.width / 2;
     this.matrix[5] += (1 - percent) * this.height / 2;
 
