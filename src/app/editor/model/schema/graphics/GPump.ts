@@ -26,7 +26,7 @@ export class GPump extends GElement implements GParallelElement {
       .attr('stroke', 'black');
     // Draw inner triangle
     const triangle = this.svgGroup
-      .polygon(TriangleDrawer.getTrianglePoints(this.radius));
+      .polygon(TriangleDrawer.getTrianglePointsIntoCircle(this.radius));
 
     switch (this.direction) {
       case Direction.TopToBottom:

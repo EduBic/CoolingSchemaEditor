@@ -27,7 +27,7 @@ export class GCompressor extends GElement implements GParallelElement {
       .attr('stroke', 'black');
 
     const triangle = this.svgGroup
-      .polyline(TriangleDrawer.getTrianglePoints(this.radius))
+      .polyline(TriangleDrawer.getTrianglePointsIntoCircle(this.radius))
       .attr('fill', 'transparent')
       .attr('stroke', 'black');
 

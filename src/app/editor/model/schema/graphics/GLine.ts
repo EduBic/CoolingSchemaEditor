@@ -56,16 +56,58 @@ export class GLine extends GElement {
     return res;
   }
 
+  /** Side Effect function */
+  public addInnerPoints() {
+    if (this.points.length === 4) {
+
+      const distY = 150;
+      const distX = 314;
+
+      const newPoints: Point[] = [];
+
+      newPoints.push(this.points[0]);
+      newPoints.push(new Point(this.points[1].x, this.points[1].y + distY));
+      newPoints.push(new Point(this.points[1].x + distX, this.points[1].y + distY));
+      newPoints.push(new Point(this.points[1].x + distX, this.points[2].y));
+      newPoints.push(this.points[2]);
+      newPoints.push(this.points[3]);
+
+      this.points = newPoints;
+
+    } else {
+      console.log('Can\'t add inner points for no 4 points lines');
+    }
+  }
+
   // Intersection management
+
+  public connectNearestEdgeOf(svgParent: SVG.G, parentOrigin: Point, startGate: Gate): GLine {
+
+    const startHook = startGate.toExternalHook();
+
+    const nearestEdge = this.minDistance(this.points, startHook.coord);
+
+    let nearestEdgePos: HookPosition;
+    if (nearestEdge.isTopLeftOf(startHook.coord) || nearestEdge.isBottomLeftOf(startHook.coord)) {
+      nearestEdgePos = HookPosition.Right;
+    } else if (nearestEdge.isBottomRightOf(startHook.coord) || nearestEdge.isTopRightOf(startHook.coord)) {
+      nearestEdgePos = HookPosition.Left;
+    }
+
+    const points = LineDrawer.createLinePoints(startHook, new HookPoint(nearestEdge, nearestEdgePos));
+
+    return new GLine(parentOrigin, svgParent, startGate, new Gate(nearestEdge, nearestEdgePos, true), points);
+  }
 
   public intersectWithOutputOf(svgParent: SVG.G, parentOrigin: Point, startGate: Gate): GLine {
     const startPos = startGate.getPosition();
 
     const intersections = this.findIntersections(startGate.toExternalHook());
     const intersection = this.minDistance(intersections, startGate.toExternalHook().coord);
-    const interPos = UtilDirection.getOppositePosition(startPos);
 
-    const points = LineDrawer.createLinePoints(startGate.toExternalHook(), new HookPoint(intersection, interPos));
+    const interPosition = UtilDirection.getOppositePosition(startPos);
+
+    const points = LineDrawer.createLinePoints(startGate.toExternalHook(), new HookPoint(intersection, interPosition));
 
     return new GLine(parentOrigin, svgParent, startGate, new Gate(intersection, HookPosition.Bottom, true), points);
   }
