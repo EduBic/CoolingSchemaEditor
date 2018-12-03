@@ -1,39 +1,13 @@
 import * as SVG from 'svg.js';
 
-import { SystemElement } from './layout/SystemElement';
 import { Point } from './core/Point';
-import { Circle } from './primitive/Circle';
-import { ParallelElements } from './layout/ParallelElements';
-import { Rect } from './primitive/Rect';
-import { Butterfly } from './primitive/Butterfly';
-import { ConnectorLine } from './primitive/ConnectorLine';
-import { GSideCover } from './schema/graphics/GSideCover';
-import { GFan } from './schema/graphics/GFan';
-import { GParallelWrapper } from './schema/graphics/GParallelWrapper';
-import { GPump } from './schema/graphics/GPump';
-import { Direction } from './schema/graphics/utils/Direction';
-import { GLine } from './schema/graphics/GLine';
-import { GCompressor } from './schema/graphics/GCompressor';
-import { ParallelComprBuilder } from './schema/ParallelComprBuilder';
-import { GCoil, GCoilPos } from './schema/graphics/GCoil';
-import { GDryCooler } from './schema/graphics/GDryCooler';
-import { GCoilPair } from './schema/graphics/GCoilPair';
-import { GValve } from './schema/graphics/GValve';
 import { SElement } from './schema/SElement';
-import { DElement, DType } from './schema/DElement';
+import { DElement } from './schema/DElement';
 
-import { Subscription, merge as staticMerge, Observable } from 'rxjs';
-import { first, merge, tap, map, flatMap, switchMap, shareReplay } from 'rxjs/operators';
+import { merge as staticMerge, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { GElement } from './schema/graphics/GElement';
-import { DryCoolerBuilder } from './schema/DryCoolerBuilder';
-import { Valve, ValveActuator } from './schema/data/Valve';
-import { LineDrawer } from './core/LineDrawer';
-import { WaterLine } from './schema/data/WaterLine';
-import { Label } from './schema/graphics/utils/Label';
-import { GFluidTransformer } from './schema/graphics/GFluidTransformer';
-import { HookPosition } from './core/HookPosition';
-import { DxUnitBuilder } from './schema/DxUnitBuilder';
 import { TrimChillerBuilder } from './schema/TrimChillerBuilder';
 
 
@@ -60,7 +34,6 @@ export class Editor {
   }
 
   buildChildren() {
-    const mainOrigin = new Point(150, 100);
 
     // this.myDc = DryCoolerBuilder.create(new Point(200, 200), this.main, 200, 150);
 

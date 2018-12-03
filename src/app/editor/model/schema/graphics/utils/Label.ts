@@ -10,7 +10,7 @@ export class Label {
     this.coord = coord;
 
     this.svgElem = svgParent.plain(text)
-      .move(this.coord.x, this.coord.y)
+      .move(this.coord.x + 2, this.coord.y - 8)
       .addClass('text');
   }
 
