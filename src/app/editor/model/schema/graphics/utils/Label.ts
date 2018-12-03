@@ -3,29 +3,15 @@ import { Point } from '../../../core/Point';
 
 export class Label {
 
-  private svgElem: SVG.Text;
-  private coord: Point;
+  private readonly svgElem: SVG.Text;
+  private readonly coord: Point;
 
-  private readonly text: string;
-
-  constructor(coord: Point, text: string) {
+  constructor(svgParent: SVG.G, coord: Point, text = '') {
     this.coord = coord;
-    this.text = text;
-  }
 
-  public draw(host: SVG.G): SVG.Shape {
-    console.log('DRAW-Label');
-
-    this.svgElem = host.plain(this.text)
+    this.svgElem = svgParent.plain(text)
       .move(this.coord.x, this.coord.y)
       .addClass('text');
-
-    return this.svgElem;
-  }
-
-  public remove() {
-    this.svgElem.remove();
-    this.svgElem = null;
   }
 
   public show() {
@@ -34,6 +20,10 @@ export class Label {
 
   public hide() {
     this.svgElem.addClass('hide-elem');
+  }
+
+  public setText(text: string) {
+    this.svgElem.text(text);
   }
 
 }

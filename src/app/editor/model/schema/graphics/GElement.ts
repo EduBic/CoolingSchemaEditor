@@ -1,7 +1,7 @@
 import * as SVG from 'svg.js';
 import { Point } from '../../core/Point';
 import { Gate } from './utils/Gate';
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent, Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Label } from './utils/Label';
 
@@ -28,6 +28,7 @@ export abstract class GElement {
 
   // Decoration Text
   private label: Label;
+  private nameSub: Subscription;
 
   // Event stream
   click$: Observable<MouseEvent> = new Observable();
@@ -42,6 +43,8 @@ export abstract class GElement {
 
     this.totWidth = totWidth;
     this.totHeight = totHeight;
+
+    this.createLabel();
   }
 
   public drawAll() {
@@ -53,8 +56,6 @@ export abstract class GElement {
       this.drawBoxRect();
 
       this.drawGates();
-
-      this.drawLabels();
 
       this.svgGroup.move(this.origin.x, this.origin.y);
     } else {
@@ -119,11 +120,9 @@ export abstract class GElement {
     }
   }
 
-  private drawLabels() {
-    if (this.label) {
-      this.label.draw(this.svgGroup);
-      this.label.hide();
-    }
+  private createLabel() {
+    this.label = new Label(this.svgGroup, new Point(this.totWidth, 0), '');
+    this.label.hide();
   }
 
   /**
@@ -175,26 +174,14 @@ export abstract class GElement {
     return this.svgGroup.id();
   }
 
-  /**
-   * Set the label, call when you are initializing the GElement.
-   * If you want change the label use @updateLabel() instead.
-   * @param labels the string to show
-   */
-  public setLabel(text: string) {
-    if (this.label) {
-      this.label.remove();
+  public setRxLabel(nameSchema: Observable<string>) {
+    if (this.nameSub) {
+      this.nameSub.unsubscribe();
     }
 
-    this.label = new Label(new Point(this.totWidth, 0), text);
-  }
-
-  public updateLabel(text: string) {
-    this.setLabel(text);
-    this.drawLabels();
-  }
-
-  public removeLabel() {
-    this.label.remove();
+    this.nameSub = nameSchema.subscribe((name: string) => {
+      this.label.setText(name);
+    });
   }
 
 }

@@ -2,12 +2,10 @@ import { GElement } from './graphics/GElement';
 import { DElement, DType } from './DElement';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { map, tap, shareReplay } from 'rxjs/operators';
-import { Valve } from './data/Valve';
 
 export class SElement {
 
-
-  private id: string;
+  private nameSchema: BehaviorSubject<string>;
 
   // private graphic: DGraphic;
   private data: DElement = null;
@@ -24,22 +22,19 @@ export class SElement {
   private subDrop: Subscription;
 
 
-  constructor(graphic: GElement, dataType: DType, data: DElement = null) {
-    this.id = graphic.getId();
-
+  constructor(graphic: GElement, dataType: DType, data: DElement = null, name: string = null) {
     this.graphic = graphic;
     this.dataType = dataType;
 
+    this.setName(name);
+
+    this.data = null;
+    this.initChangeData();
+
     if (data === null) {
-      this.data = null;
-      this.initChangeData();
       this.graphic.setVoidStyle(true);
     } else {
-
       if (data.getType() === dataType) {
-        this.data = data;
-        this.initChangeData();
-        this.graphic.setLabel(this.data.name);
         this.graphic.setVoidStyle(false);
       } else {
         throw Error('DElement type doesn\' match with dataType');
@@ -81,7 +76,6 @@ export class SElement {
 
       if (data.getType() === this.dataType) {
         this.data = data;
-        this.graphic.updateLabel(this.data.name);
         this.graphic.setVoidStyle(false);
         this.changeData$.next(this.data);
       } else {
@@ -91,17 +85,26 @@ export class SElement {
     } else {  // data === null || undefined
       this.data = data;
       this.graphic.setVoidStyle(true);
-      this.graphic.removeLabel();
       this.changeData$.next(this.data);
     }
   }
 
+  public setName(name: string) {
+    if (name !== undefined && name !== null) {
+
+      if (this.nameSchema === undefined) {
+        this.nameSchema = new BehaviorSubject(name);
+      } else {
+        this.nameSchema.next(name);
+      }
+
+      this.graphic.setRxLabel(this.nameSchema.asObservable());
+    }
+  }
+
   private initChangeData() {
-    console.log('SUB:changeData$');
+    // console.log('SUB:changeData$');
     this.changeData$ = new BehaviorSubject(this.data);
-    // this.changeData$.subscribe(val => {
-    //   console.log('EVENT:changeData$', 'SElement: ' + this.id + ' change DElement with', val);
-    // });
   }
 
   public subscribeDrop(newData: DElement) {

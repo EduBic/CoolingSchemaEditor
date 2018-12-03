@@ -60,10 +60,10 @@ export class DryCoolerBuilder {
 
 
       res.push(
-        new SElement(fan, DType.Fan),
-        new SElement(fan2, DType.Fan),
-        new SElement(sideCover, DType.SideCover),
-        new SElement(coilPair, DType.Coil)
+        new SElement(fan, DType.Fan, null, 'Fan'),
+        new SElement(fan2, DType.Fan, null, 'Fan'),
+        new SElement(sideCover, DType.SideCover, null, 'Side Cover'),
+        new SElement(coilPair, DType.Coil, null, 'Coils')
       );
 
       // console.log(fan.getHeight());
